@@ -17,7 +17,7 @@ PSRs you support to avoid any confusion with users and contributors.
 Via Composer
 
 ``` bash
-$ composer require yajra/acl
+$ composer require yajra/laravel-acl
 ```
 
 ## Usage
