@@ -2,8 +2,8 @@
 
 namespace Yajra\Acl\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Yajra\Acl\Traits\HasRole;
+use Illuminate\Database\Eloquent\Model;
 
 class Permission extends Model
 {

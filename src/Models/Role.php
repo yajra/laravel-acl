@@ -2,8 +2,8 @@
 
 namespace Yajra\Acl\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Yajra\Acl\Traits\HasPermission;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property \Yajra\Acl\Permission permissions
