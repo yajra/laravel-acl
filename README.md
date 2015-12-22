@@ -21,11 +21,17 @@ $ composer require yajra/acl
 ```
 
 ## Usage
-
+Register service provider:
 ``` php
-$skeleton = new League\Skeleton();
-echo $skeleton->echoPhrase('Hello, League!');
+Yajra\Acl\AclServiceProvider::class
 ```
+
+Publish assets:
+```php
+$ php artisan vendor:publish --tag=laravel-acl
+```
+
+This will publish `acl.php` config file and migrations files.
 
 ## Change log
 
