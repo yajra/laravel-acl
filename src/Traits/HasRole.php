@@ -75,6 +75,19 @@ trait HasRole
     }
 
     /**
+     * Attach a role to user using slug.
+     *
+     * @param $slug
+     * @return bool
+     */
+    public function attachRoleBySlug($slug)
+    {
+        $role = Role::where('slug', $slug)->first();
+
+        return $this->attachRole($role);
+    }
+
+    /**
      * Attach a role to user
      *
      * @param  Role $role
