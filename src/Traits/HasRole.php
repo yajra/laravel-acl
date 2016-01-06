@@ -68,7 +68,7 @@ trait HasRole
     public function getRoleSlugs()
     {
         if (! is_null($this->roles)) {
-            return $this->roles->all()->pluck('slug')->toArray();
+            return $this->roles->pluck('slug')->toArray();
         }
 
         return null;
