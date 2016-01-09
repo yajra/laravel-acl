@@ -26,9 +26,10 @@ class Permission extends Model
      * Create a permissions for a resource.
      *
      * @param $resource
+     * @param bool $system
      * @return \Illuminate\Support\Collection
      */
-    public static function createResource($resource)
+    public static function createResource($resource, $system = false)
     {
         $group        = ucfirst($resource);
         $slug         = strtolower($group);
@@ -37,31 +38,31 @@ class Permission extends Model
                 'slug'     => $slug . '.lists',
                 'resource' => $group,
                 'name'     => 'Lists ' . $group,
-                'system'   => true,
+                'system'   => $system,
             ],
             [
                 'slug'     => $slug . '.create',
                 'resource' => $group,
                 'name'     => 'Create ' . $group,
-                'system'   => true,
+                'system'   => $system,
             ],
             [
                 'slug'     => $slug . '.view',
                 'resource' => $group,
                 'name'     => 'View ' . $group,
-                'system'   => true,
+                'system'   => $system,
             ],
             [
                 'slug'     => $slug . '.update',
                 'resource' => $group,
                 'name'     => 'Update ' . $group,
-                'system'   => true,
+                'system'   => $system,
             ],
             [
                 'slug'     => $slug . '.delete',
                 'resource' => $group,
                 'name'     => 'Delete ' . $group,
-                'system'   => true,
+                'system'   => $system,
             ],
         ];
 
