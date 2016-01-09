@@ -2,6 +2,7 @@
 
 namespace Yajra\Acl\Models;
 
+use Illuminate\Support\Collection;
 use Yajra\Acl\Traits\HasRole;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,10 +26,11 @@ class Permission extends Model
      * Create a permissions for a resource.
      *
      * @param $resource
+     * @return \Illuminate\Support\Collection
      */
     public static function createResource($resource)
     {
-        $group        = ucfirst(str_plural($resource));
+        $group        = ucfirst($resource);
         $slug         = strtolower($group);
         $permissions  = [
             [
@@ -63,8 +65,15 @@ class Permission extends Model
             ],
         ];
 
+        $collection = new Collection;
         foreach ($permissions as $permission) {
-            static::create($permission);
+            try {
+                $collection->push(static::create($permission));
+            } catch (\Exception $e) {
+                // permission already exists.
+            }
         }
+
+        return $collection;
     }
 }
