@@ -18,18 +18,16 @@ class AclServiceProvider extends ServiceProvider
     public function boot(GateContract $gate)
     {
         $this->publishConfig();
-
         $this->publishMigrations();
-
         $this->registerPolicies($gate);
-
         $this->registerPermissions($gate);
+        $this->registerCacheListener();
     }
 
     /**
      * Publish package config file.
      */
-    private function publishConfig()
+    protected function publishConfig()
     {
         $this->publishes([
             __DIR__ . '/../config/acl.php' => config_path('acl.php'),
@@ -39,7 +37,7 @@ class AclServiceProvider extends ServiceProvider
     /**
      * Publish package migration files.
      */
-    private function publishMigrations()
+    protected function publishMigrations()
     {
         $this->publishes([
             __DIR__ . '/../migrations/' => database_path('migrations'),
@@ -51,7 +49,7 @@ class AclServiceProvider extends ServiceProvider
      *
      * @param \Illuminate\Contracts\Auth\Access\Gate $gate
      */
-    private function registerPermissions(GateContract $gate)
+    protected function registerPermissions(GateContract $gate)
     {
         // Ignore permissions when running in console.
         if ($this->app->runningInConsole()) {
@@ -78,8 +76,24 @@ class AclServiceProvider extends ServiceProvider
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    private function getPermissions()
+    protected function getPermissions()
     {
-        return Permission::with('roles')->get();
+        return $this->app['cache.store']->rememberForever('permissions.policies', function () {
+            return Permission::with('roles')->get();
+        });
+    }
+
+    /**
+     * Register ACL models cache listener.
+     */
+    protected function registerCacheListener()
+    {
+        Permission::saved(function () {
+            $this->app['cache.store']->forget('permissions.policies');
+        });
+
+        Permission::deleted(function () {
+            $this->app['cache.store']->forget('permissions.policies');
+        });
     }
 }
