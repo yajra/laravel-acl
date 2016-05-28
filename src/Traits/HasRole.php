@@ -232,4 +232,16 @@ trait HasRole
 
         return false;
     }
+
+    /**
+     * Check if the given entity/model is owned by the user.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $entity
+     * @param string $relation
+     * @return bool
+     */
+    public function owns($entity, $relation = 'user_id')
+    {
+        return $this->id === $entity->{$relation};
+    }
 }
