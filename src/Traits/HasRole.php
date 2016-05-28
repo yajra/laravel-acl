@@ -2,6 +2,7 @@
 
 namespace Yajra\Acl\Traits;
 
+use Illuminate\Support\Str;
 use Yajra\Acl\Models\Role;
 
 trait HasRole
@@ -198,14 +199,14 @@ trait HasRole
     public function __call($method, $arguments = [])
     {
         // Handle isRoleSlug() methods
-        if (starts_with($method, 'is') and $method !== 'is') {
+        if (Str::startsWith($method, 'is') and $method !== 'is') {
             $role = substr($method, 2);
 
             return $this->is($role);
         }
 
         // Handle canDoSomething() methods
-        if (starts_with($method, 'can') and $method !== 'can') {
+        if (Str::startsWith($method, 'can') and $method !== 'can') {
             $permission = substr($method, 3);
 
             return $this->can($permission);
@@ -222,7 +223,7 @@ trait HasRole
      */
     public function is($slug)
     {
-        $slug = strtolower($slug);
+        $slug = Str::lower($slug);
 
         foreach ($this->roles as $role) {
             if ($role->slug == $slug) {
