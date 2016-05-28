@@ -4,6 +4,7 @@ namespace Yajra\Acl;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Str;
 use Yajra\Acl\Models\Permission;
 
 class AclServiceProvider extends ServiceProvider
@@ -58,9 +59,17 @@ class AclServiceProvider extends ServiceProvider
         }
 
         foreach ($this->getPermissions() as $permission) {
-            $gate->define($permission->slug, function ($user) use ($permission) {
+            $ability = $permission->slug;
+            $policy  = function ($user) use ($permission) {
                 return $user->hasRole($permission->roles);
-            });
+            };
+
+            if (Str::contains($permission->slug, '@')) {
+                $policy  = $permission->slug;
+                $ability = $permission->name;
+            }
+
+            $gate->define($ability, $policy);
         }
     }
 
