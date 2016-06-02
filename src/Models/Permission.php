@@ -6,6 +6,12 @@ use Illuminate\Support\Collection;
 use Yajra\Acl\Traits\HasRole;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property string resource
+ * @property string name
+ * @property string slug
+ * @property bool system
+ */
 class Permission extends Model
 {
     use HasRole;
