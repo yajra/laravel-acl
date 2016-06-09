@@ -2,6 +2,9 @@
 
 namespace Yajra\Acl\Traits;
 
+use Illuminate\Support\Collection;
+use Illuminate\Support\Fluent;
+
 trait AuthorizesPermissionResources
 {
     /**
@@ -29,20 +32,25 @@ trait AuthorizesPermissionResources
     /**
      * Authorize a permission resource action based on the incoming request.
      *
-     * @param  string $model
-     * @param  string|null $parameter
+     * @param  string $resource
      * @param  array $options
      * @return void
      */
-    public function authorizePermissionResource($model, $parameter = null, array $options = [])
+    public function authorizePermissionResource($resource, array $options = [])
     {
-        $parameter = $parameter ?: strtolower(class_basename($model));
-
-        foreach ($this->resourcePermissionMap() as $method => $ability) {
-            $modelName = in_array($method, ['index', 'create', 'store']) ? $model : $parameter;
-
-            $this->middleware("can:{$modelName}.{$ability}", $options)->only($method);
+        $permissions = $this->resourcePermissionMap();
+        $collection  = new Collection;
+        foreach ($permissions as $method => $ability) {
+            $collection->push(new Fluent([
+                'ability' => $ability,
+                'method'  => $method,
+            ]));
         }
+
+        $collection->groupBy('ability')->each(function ($permission, $ability) use ($resource, $options) {
+            $this->middleware("can:{$resource}.{$ability}", $options)
+                 ->only($permission->pluck('method')->toArray());
+        });
     }
 
     /**
