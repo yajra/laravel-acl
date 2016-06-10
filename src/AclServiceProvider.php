@@ -110,4 +110,12 @@ class AclServiceProvider extends ServiceProvider
             return "<?php echo app('Yajra\\Acl\\CanAtLeastDirective')->handle{$expression}; ?>";
         });
     }
+
+    /**
+     * Register providers.
+     */
+    public function register()
+    {
+        $this->app->singleton(CanAtLeastDirective::class, CanAtLeastDirective::class);
+    }
 }
