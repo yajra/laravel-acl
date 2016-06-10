@@ -5,6 +5,7 @@ namespace Yajra\Acl;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\View\Compilers\BladeCompiler;
 use Yajra\Acl\Models\Permission;
 
 class AclServiceProvider extends ServiceProvider
@@ -22,6 +23,7 @@ class AclServiceProvider extends ServiceProvider
         $this->registerPolicies($gate);
         $this->registerPermissions($gate);
         $this->registerCacheListener();
+        $this->registerBladeDirectives();
     }
 
     /**
@@ -94,6 +96,18 @@ class AclServiceProvider extends ServiceProvider
 
         Permission::deleted(function () {
             $this->app['cache.store']->forget('permissions.policies');
+        });
+    }
+
+    /**
+     * Register custom blade directives.
+     */
+    protected function registerBladeDirectives()
+    {
+        /** @var BladeCompiler $blade */
+        $blade = $this->app['blade.compiler'];
+        $blade->directive('canAtLeast', function ($expression) {
+            return "<?php echo app('Yajra\\Acl\\CanAtLeastDirective')->handle{$expression}; ?>";
         });
     }
 }
