@@ -1,9 +1,13 @@
 {
     "name": "yajra/laravel-acl",
-    "description": "Simple Role Permission Acl for Laravel Framework.",
+    "description": "Simple User Role Permission ACL for Laravel Framework.",
     "keywords": [
         "yajra",
-        "acl"
+        "laravel",
+        "acl",
+        "user",
+        "role",
+        "permissions"
     ],
     "homepage": "https://github.com/yajra/laravel-acl",
     "license": "MIT",
