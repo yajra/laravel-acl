@@ -3,6 +3,7 @@
 namespace Yajra\Acl;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\View\Compilers\BladeCompiler;
@@ -53,23 +54,22 @@ class AclServiceProvider extends ServiceProvider
      */
     protected function registerPermissions(GateContract $gate)
     {
-        // Ignore permissions when running in console.
-        if ($this->app->runningInConsole()) {
-            return;
-        }
+        try {
+            foreach ($this->getPermissions() as $permission) {
+                $ability = $permission->slug;
+                $policy  = function ($user) use ($permission) {
+                    return $user->hasRole($permission->roles);
+                };
 
-        foreach ($this->getPermissions() as $permission) {
-            $ability = $permission->slug;
-            $policy  = function ($user) use ($permission) {
-                return $user->hasRole($permission->roles);
-            };
+                if (Str::contains($permission->slug, '@')) {
+                    $policy  = $permission->slug;
+                    $ability = $permission->name;
+                }
 
-            if (Str::contains($permission->slug, '@')) {
-                $policy  = $permission->slug;
-                $ability = $permission->name;
+                $gate->define($ability, $policy);
             }
-
-            $gate->define($ability, $policy);
+        } catch (QueryException $e) {
+            // \\_(",)_//
         }
     }
 
