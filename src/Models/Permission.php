@@ -41,21 +41,15 @@ class Permission extends Model
         $slug         = strtolower($group);
         $permissions  = [
             [
-                'slug'     => $slug . '.lists',
+                'slug'     => $slug . '.view',
                 'resource' => $group,
-                'name'     => 'Lists ' . $group,
+                'name'     => 'View ' . $group,
                 'system'   => $system,
             ],
             [
                 'slug'     => $slug . '.create',
                 'resource' => $group,
                 'name'     => 'Create ' . $group,
-                'system'   => $system,
-            ],
-            [
-                'slug'     => $slug . '.view',
-                'resource' => $group,
-                'name'     => 'View ' . $group,
                 'system'   => $system,
             ],
             [
