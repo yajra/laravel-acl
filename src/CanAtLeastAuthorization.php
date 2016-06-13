@@ -19,7 +19,7 @@ class CanAtLeastAuthorization
         $abilities = explode(',', $permissions);
 
         if (! auth()->check() || ! auth()->user()->canAtLeast($abilities)) {
-            abort(403, 'You are not allowed to view this content!');
+            abort(403, trans('texts.forbidden'));
         }
 
         return $next($request);

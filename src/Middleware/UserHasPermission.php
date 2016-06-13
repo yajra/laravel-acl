@@ -6,6 +6,8 @@ use Closure;
 
 class UserHasPermission
 {
+    const INSUFFICIENT_PERMISSIONS_STATUS_CODE = 401;
+
     /**
      * Handle an incoming request.
      *
@@ -20,14 +22,14 @@ class UserHasPermission
             if ($request->ajax()) {
                 return response()->json([
                     'error' => [
-                        'status_code' => 401,
+                        'status_code' => self::INSUFFICIENT_PERMISSIONS_STATUS_CODE,
                         'code'        => 'INSUFFICIENT_PERMISSIONS',
-                        'description' => 'You are not authorized to access this resource.',
+                        'description' => trans('texts.unauthorized'),
                     ],
-                ], 401);
+                ], self::INSUFFICIENT_PERMISSIONS_STATUS_CODE);
             }
 
-            return abort(401, 'You are not authorized to access this resource.');
+            return abort(self::INSUFFICIENT_PERMISSIONS_STATUS_CODE, trans('texts.unauthorized'));
         }
 
         return $next($request);
