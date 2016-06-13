@@ -25,4 +25,3 @@ class CanAtLeastAuthorization
         return $next($request);
     }
 }
-
