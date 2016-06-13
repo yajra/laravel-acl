@@ -1,6 +1,6 @@
 {
     "name": "yajra/laravel-acl",
-    "description": "Simple User Role Permission ACL for Laravel Framework.",
+    "description": "Laravel ACL is a simple role, permission ACL for Laravel Framework.",
     "keywords": [
         "yajra",
         "laravel",
