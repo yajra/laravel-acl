@@ -7,7 +7,8 @@
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-Simple Role Permission ACL for Laravel Framework.
+## Laravel ACL is a simple role, permission ACL for Laravel Framework.
+This package was based on the great package [Caffeinated/Shinobi](https://github.com/caffeinated/shinobi) but is fully compatible with Laravel's built-in Gate/Authorization system.
 
 ## Install
 
@@ -51,6 +52,7 @@ If you discover any security related issues, please email aqangeles@gmail.com in
 ## Credits
 
 - [Arjay Angeles][link-author]
+- [Caffeinated/Shinobi](https://github.com/caffeinated/shinobi)
 - [All Contributors][link-contributors]
 
 ## License
