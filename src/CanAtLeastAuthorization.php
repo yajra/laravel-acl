@@ -21,7 +21,7 @@ class CanAtLeastAuthorization
         $abilities = explode(',', $permissions);
 
         if (! auth()->check() || ! auth()->user()->canAtLeast($abilities)) {
-            abort(self::FORBIDDEN_STATUS_CODE, trans('texts.forbidden'));
+            abort(self::FORBIDDEN_STATUS_CODE, trans('laravel-acl::texts.forbidden'));
         }
 
         return $next($request);

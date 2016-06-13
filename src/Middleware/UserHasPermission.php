@@ -24,12 +24,12 @@ class UserHasPermission
                     'error' => [
                         'status_code' => self::INSUFFICIENT_PERMISSIONS_STATUS_CODE,
                         'code'        => 'INSUFFICIENT_PERMISSIONS',
-                        'description' => trans('texts.unauthorized'),
+                        'description' => trans('laravel-acl::texts.unauthorized'),
                     ],
                 ], self::INSUFFICIENT_PERMISSIONS_STATUS_CODE);
             }
 
-            return abort(self::INSUFFICIENT_PERMISSIONS_STATUS_CODE, trans('texts.unauthorized'));
+            return abort(self::INSUFFICIENT_PERMISSIONS_STATUS_CODE, trans('laravel-acl::texts.unauthorized'));
         }
 
         return $next($request);
