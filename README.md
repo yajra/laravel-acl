@@ -59,17 +59,17 @@ If you discover any security related issues, please email aqangeles@gmail.com in
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/yajra/acl.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/yajra/laravel-acl.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/yajra/acl/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/yajra/acl.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/yajra/acl.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/yajra/acl.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/yajra/laravel-acl/master.svg?style=flat-square
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/yajra/laravel-acl.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/yajra/laravel-acl.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/yajra/laravel-acl.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/yajra/acl
-[link-travis]: https://travis-ci.org/yajra/acl
-[link-scrutinizer]: https://scrutinizer-ci.com/g/yajra/acl/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/yajra/acl
-[link-downloads]: https://packagist.org/packages/yajra/acl
+[link-packagist]: https://packagist.org/packages/yajra/laravel-acl
+[link-travis]: https://travis-ci.org/yajra/laravel-acl
+[link-scrutinizer]: https://scrutinizer-ci.com/g/yajra/laravel-acl/code-structure
+[link-code-quality]: https://scrutinizer-ci.com/g/yajra/laravel-acl
+[link-downloads]: https://packagist.org/packages/yajra/laravel-acl
 [link-author]: https://github.com/yajra
 [link-contributors]: ../../contributors
