@@ -8,6 +8,7 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Illuminate\Support\Str;
 use Illuminate\View\Compilers\BladeCompiler;
 use Yajra\Acl\Models\Permission;
+use Yajra\Acl\Models\Role;
 
 class AclServiceProvider extends ServiceProvider
 {
@@ -95,6 +96,14 @@ class AclServiceProvider extends ServiceProvider
         });
 
         Permission::deleted(function () {
+            $this->app['cache.store']->forget('permissions.policies');
+        });
+
+        Role::saved(function () {
+            $this->app['cache.store']->forget('permissions.policies');
+        });
+
+        Role::deleted(function () {
             $this->app['cache.store']->forget('permissions.policies');
         });
     }
