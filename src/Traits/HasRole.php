@@ -221,7 +221,7 @@ trait HasRole
      * @param  string $slug
      * @return bool
      */
-    public function is($slug)
+    public function isRole($slug)
     {
         $slug = Str::lower($slug);
 
