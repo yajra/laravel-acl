@@ -28,9 +28,17 @@ trait HasRole
     {
         $can = false;
 
-        foreach ($this->roles as $role) {
-            if ($role->canAtLeast($permissions)) {
-                $can = true;
+        if (auth()->check()) {
+            foreach ($this->roles as $role) {
+                if ($role->canAtLeast($permissions)) {
+                    $can = true;
+                }
+            }
+        } else {
+            $guest = Role::whereSlug('guest')->first();
+
+            if ($guest) {
+                return $guest->canAtLeast($permissions);
             }
         }
 
