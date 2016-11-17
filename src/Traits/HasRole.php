@@ -131,7 +131,7 @@ trait HasRole
      */
     public function roles()
     {
-        return $this->belongsToMany(config('acl.role', Role::class))->withTimestamps();
+        return $this->belongsToMany(config('acl.role', Role::class), 'role_user', 'user_id')->withTimestamps();
     }
 
     /**
