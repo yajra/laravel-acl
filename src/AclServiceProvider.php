@@ -43,9 +43,7 @@ class AclServiceProvider extends ServiceProvider
      */
     protected function publishMigrations()
     {
-        $this->publishes([
-            __DIR__ . '/../migrations/' => database_path('migrations'),
-        ], 'laravel-acl');
+        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
     }
 
     /**
