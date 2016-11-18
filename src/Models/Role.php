@@ -2,8 +2,8 @@
 
 namespace Yajra\Acl\Models;
 
-use Yajra\Acl\Traits\HasPermission;
 use Illuminate\Database\Eloquent\Model;
+use Yajra\Acl\Traits\HasPermission;
 
 /**
  * @property \Yajra\Acl\Models\Permission permissions
@@ -30,7 +30,7 @@ class Role extends Model
     /**
      * Roles can belong to many users.
      *
-     * @return Model
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
     {

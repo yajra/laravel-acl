@@ -64,6 +64,27 @@ trait HasPermission
     }
 
     /**
+     * Checks if the role has the given permission.
+     *
+     * @param  string $permission
+     * @return bool
+     */
+    public function can($permission)
+    {
+        $permissions = $this->getPermissions();
+
+        if (is_array($permission)) {
+            $permissionCount    = count($permission);
+            $intersection       = array_intersect($permissions, $permission);
+            $intersectionCount  = count($intersection);
+
+            return ($permissionCount == $intersectionCount) ? true : false;
+        } else {
+            return in_array($permission, $permissions);
+        }
+    }
+
+    /**
      * Check if the role has at least one of the given permissions
      *
      * @param  array $permission
@@ -71,7 +92,7 @@ trait HasPermission
      */
     public function canAtLeast(array $permission = [])
     {
-        $permissions = $this->getPermissionSlugs();
+        $permissions = $this->getPermissions();
 
         $intersection      = array_intersect($permissions, $permission);
         $intersectionCount = count($intersection);
@@ -84,7 +105,7 @@ trait HasPermission
      *
      * @return mixed
      */
-    public function getPermissionSlugs()
+    public function getPermissions()
     {
         return $this->permissions->pluck('slug')->toArray();
     }
