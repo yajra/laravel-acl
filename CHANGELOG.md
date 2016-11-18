@@ -1,17 +1,22 @@
 # Changelog
 
-All Notable changes to `acl` will be documented in this file
-
-## NEXT - YYYY-MM-DD
+## v3.0.0 - 2016-11-18
 
 ### Added
-- Nothing
+- RoleMiddleware
+- PermissionMiddleware
+- CanAtLeastMiddleware
+- Role can ability.
+- @hasRole directive
+- @isRole directive
 
 ### Deprecated
-- Nothing
+- HasPermission trait getPermissionsSlug renamed to getPermissions.
 
 ### Fixed
-- Nothing
+- Fix doc blocks.
+- Fix @canAtLeast directive
+- Fix year on license.
 
 ### Removed
 - Nothing
