@@ -10,15 +10,18 @@
 Laravel ACL is a simple role, permission ACL for Laravel Framework.
 This package was based on the great package [Caffeinated/Shinobi](https://github.com/caffeinated/shinobi) but is fully compatible with Laravel's built-in Gate/Authorization system.
 
-## Install
+## Documentations
+- [Laravel ACL][link-docs]
+
+## Installation
 
 Via Composer
 
 ``` bash
-$ composer require yajra/laravel-acl
+$ composer require yajra/laravel-acl:^3.0
 ```
 
-## Usage
+## Configuration
 Register service provider:
 ``` php
 Yajra\Acl\AclServiceProvider::class
@@ -29,17 +32,14 @@ Publish assets:
 $ php artisan vendor:publish --tag=laravel-acl
 ```
 
-This will publish `acl.php` config file and migrations files.
+Run migrations:
+```php
+php artisan migrate
+```
 
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
-
-## Testing
-
-``` bash
-$ composer test
-```
 
 ## Contributing
 
@@ -73,3 +73,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-downloads]: https://packagist.org/packages/yajra/laravel-acl
 [link-author]: https://github.com/yajra
 [link-contributors]: ../../contributors
+[link-docs]: https://yajrabox.com/docs/laravel-acl/3.0
