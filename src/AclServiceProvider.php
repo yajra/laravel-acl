@@ -22,7 +22,7 @@ class AclServiceProvider extends ServiceProvider
     {
         $this->publishConfig();
         $this->publishMigrations();
-        $this->registerPolicies($gate);
+        $this->registerPolicies();
         $this->registerPermissions($gate);
         $this->registerCacheListener();
         $this->registerBladeDirectives();
