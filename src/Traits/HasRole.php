@@ -10,10 +10,10 @@ trait HasRole
     /**
      * Check if user have access using any of the acl.
      *
-     * @param  string|array $acl
+     * @param  array $acl
      * @return boolean
      */
-    public function canAccess($acl)
+    public function canAccess(array $acl)
     {
         return $this->canAtLeast($acl) || $this->hasRole($acl);
     }
@@ -48,7 +48,7 @@ trait HasRole
     /**
      * Check if user has the given role.
      *
-     * @param $role
+     * @param string $role
      * @return bool
      */
     public function hasRole($role)
