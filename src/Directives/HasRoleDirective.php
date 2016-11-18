@@ -7,7 +7,7 @@ class HasRoleDirective extends DirectiveAbstract
     /**
      * Handle hasRole directive.
      *
-     * @param mixed $roles
+     * @param string|array $roles
      * @return bool
      */
     public function handle($roles)

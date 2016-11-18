@@ -48,7 +48,7 @@ trait HasRole
     /**
      * Check if user has the given role.
      *
-     * @param string $role
+     * @param string|array $role
      * @return bool
      */
     public function hasRole($role)
