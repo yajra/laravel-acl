@@ -17,13 +17,17 @@ trait HasPermission
         $permissions = $this->permissions;
 
         if (! $permissions->contains($permissionId)) {
-            return $this->permissions()->attach($permissionId);
+            $this->permissions()->attach($permissionId);
+
+            return true;
         }
 
         return false;
     }
 
     /**
+     * Get related permissions.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function permissions()
@@ -46,7 +50,7 @@ trait HasPermission
      * Syncs the given permission(s) with the role.
      *
      * @param  array $permissionIds
-     * @return bool
+     * @return array|bool
      */
     public function syncPermissions(array $permissionIds = [])
     {
@@ -74,9 +78,9 @@ trait HasPermission
         $permissions = $this->getPermissions();
 
         if (is_array($permission)) {
-            $permissionCount    = count($permission);
-            $intersection       = array_intersect($permissions, $permission);
-            $intersectionCount  = count($intersection);
+            $permissionCount   = count($permission);
+            $intersection      = array_intersect($permissions, $permission);
+            $intersectionCount = count($intersection);
 
             return ($permissionCount == $intersectionCount) ? true : false;
         } else {
@@ -85,7 +89,17 @@ trait HasPermission
     }
 
     /**
-     * Check if the role has at least one of the given permissions
+     * Get list of permissions slug.
+     *
+     * @return array
+     */
+    public function getPermissions()
+    {
+        return $this->permissions->pluck('slug')->toArray();
+    }
+
+    /**
+     * Check if the role has at least one of the given permissions.
      *
      * @param  array $permission
      * @return bool
@@ -98,15 +112,5 @@ trait HasPermission
         $intersectionCount = count($intersection);
 
         return ($intersectionCount > 0) ? true : false;
-    }
-
-    /**
-     * Get list of permissions slug.
-     *
-     * @return mixed
-     */
-    public function getPermissions()
-    {
-        return $this->permissions->pluck('slug')->toArray();
     }
 }
