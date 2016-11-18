@@ -114,7 +114,10 @@ class AclServiceProvider extends ServiceProvider
         /** @var BladeCompiler $blade */
         $blade = $this->app['blade.compiler'];
         $blade->directive('canAtLeast', function ($expression) {
-            return "<?php echo app('Yajra\\Acl\\CanAtLeastDirective')->handle{$expression}; ?>";
+            return "<?php if (app('laravel-acl.directives.canAtLeast')->handle({$expression})): ?>";
+        });
+        $blade->directive('endCanAtLeast', function ($expression) {
+            return '<?php endif; ?>';
         });
     }
 
@@ -123,6 +126,6 @@ class AclServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(CanAtLeastDirective::class, CanAtLeastDirective::class);
+        $this->app->singleton('laravel-acl.directives.canAtLeast', Directives\CanAtLeastDirective::class);
     }
 }

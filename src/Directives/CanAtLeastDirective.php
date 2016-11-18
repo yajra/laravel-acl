@@ -1,10 +1,10 @@
 <?php
 
-namespace Yajra\Acl;
+namespace Yajra\Acl\Directives;
 
 use Yajra\Acl\Models\Role;
 
-class CanAtLeastDirective
+class CanAtLeastDirective extends DirectiveAbstract
 {
     /**
      * Can at least blade directive compiler.
@@ -16,8 +16,8 @@ class CanAtLeastDirective
      */
     public function handle($permissions)
     {
-        if (auth()->check()) {
-            return auth()->user()->canAtLeast((array) $permissions);
+        if ($this->auth->check()) {
+            return $this->auth->user()->canAtLeast((array) $permissions);
         } else {
             $guest = Role::whereSlug('guest')->first();
             if ($guest) {
