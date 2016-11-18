@@ -4,7 +4,7 @@ namespace Yajra\Acl\Middleware;
 
 use Closure;
 
-class UserHasRole
+class RoleMiddleware
 {
     /**
      * Handle an incoming request.

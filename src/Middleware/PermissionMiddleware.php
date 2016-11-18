@@ -4,7 +4,7 @@ namespace Yajra\Acl\Middleware;
 
 use Closure;
 
-class UserHasPermission
+class PermissionMiddleware
 {
     /**
      * Handle an incoming request.
