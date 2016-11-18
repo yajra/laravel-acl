@@ -119,6 +119,12 @@ class AclServiceProvider extends ServiceProvider
         $blade->directive('endCanAtLeast', function ($expression) {
             return '<?php endif; ?>';
         });
+        $blade->directive('isRole', function ($expression) {
+            return "<?php if (app('laravel-acl.directives.isRole')->handle({$expression})): ?>";
+        });
+        $blade->directive('endIsRole', function ($expression) {
+            return '<?php endif; ?>';
+        });
     }
 
     /**
@@ -127,5 +133,6 @@ class AclServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('laravel-acl.directives.canAtLeast', Directives\CanAtLeastDirective::class);
+        $this->app->singleton('laravel-acl.directives.isRole', Directives\IsRoleDirective::class);
     }
 }
