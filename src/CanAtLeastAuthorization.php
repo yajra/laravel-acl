@@ -2,19 +2,17 @@
 
 namespace Yajra\Acl;
 
-use Closure;
-
 class CanAtLeastAuthorization
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param  callable $next
      * @param  string $permissions
      * @return mixed
      */
-    public function handle($request, Closure $next, $permissions)
+    public function handle($request, callable $next, $permissions)
     {
         $abilities = explode(',', $permissions);
 
