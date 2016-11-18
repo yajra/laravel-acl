@@ -210,7 +210,7 @@ trait HasRole
         if (Str::startsWith($method, 'is') and $method !== 'is') {
             $role = substr($method, 2);
 
-            return $this->is($role);
+            return $this->isRole($role);
         }
 
         // Handle canDoSomething() methods
