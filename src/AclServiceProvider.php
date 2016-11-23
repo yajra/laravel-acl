@@ -26,6 +26,7 @@ class AclServiceProvider extends ServiceProvider
         $this->registerPermissions($gate);
         $this->registerCacheListener();
         $this->registerBladeDirectives();
+        $this->loadTranslations();
     }
 
     /**
@@ -46,6 +47,14 @@ class AclServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../migrations/' => database_path('migrations'),
         ], 'laravel-acl');
+    }
+
+    /**
+     * Load package language files.
+     */
+    protected function loadTranslations()
+    {
+        $this->loadTranslationsFrom(__DIR__. '/../lang', 'laravel-acl');
     }
 
     /**

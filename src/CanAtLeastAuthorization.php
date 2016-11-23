@@ -6,6 +6,8 @@ use Closure;
 
 class CanAtLeastAuthorization
 {
+    const FORBIDDEN_STATUS_CODE = 403;
+
     /**
      * Handle an incoming request.
      *
@@ -19,7 +21,7 @@ class CanAtLeastAuthorization
         $abilities = explode(',', $permissions);
 
         if (! auth()->check() || ! auth()->user()->canAtLeast($abilities)) {
-            abort(403, 'You are not allowed to view this content!');
+            abort(self::FORBIDDEN_STATUS_CODE, trans('laravel-acl::texts.forbidden'));
         }
 
         return $next($request);
