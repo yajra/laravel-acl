@@ -48,12 +48,8 @@ trait AuthorizesPermissionResources
         }
 
         $collection->groupBy('ability')->each(function ($permission, $ability) use ($resource, $options) {
-            $this->middleware(function ($request, $next) use ($resource, $permission, $ability) {
-                $this->middleware("can:{$resource}.{$ability}")
-                     ->only($permission->pluck('method')->toArray());
-
-                return $next($request);
-            });
+            $this->middleware("can:{$resource}.{$ability}")
+                 ->only($permission->pluck('method')->toArray());
         });
     }
 
