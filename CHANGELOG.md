@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.0.1 - 2016-12-01
+- Fix permission resource middleware.
+
 ## v3.0.0 - 2016-11-18
 
 ### Added
