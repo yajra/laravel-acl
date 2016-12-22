@@ -150,6 +150,19 @@ trait HasRole
     }
 
     /**
+     * Revokes the given role from the user using slug.
+     *
+     * @param $slug
+     * @return bool
+     */
+    public function revokeRoleBySlug($slug)
+    {
+        $role = Role::where('slug', $slug)->first();
+
+        return $this->roles()->detach($role);
+    }
+
+    /**
      * Revokes the given role from the user.
      *
      * @param $role
