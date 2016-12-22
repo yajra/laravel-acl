@@ -135,7 +135,9 @@ trait HasRole
     }
 
     /**
-     * @param $query
+     * Query scope for user having the given roles.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @param array $roles
      * @return mixed
      */
@@ -152,7 +154,7 @@ trait HasRole
     /**
      * Revokes the given role from the user using slug.
      *
-     * @param $slug
+     * @param  string $slug
      * @return bool
      */
     public function revokeRoleBySlug($slug)
@@ -165,7 +167,7 @@ trait HasRole
     /**
      * Revokes the given role from the user.
      *
-     * @param $role
+     * @param  mixed $role
      * @return bool
      */
     public function revokeRole($role = "")
