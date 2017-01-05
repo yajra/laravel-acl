@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.1.2 - 2017-01-05
+- Removed the unnecessary variadic operator.
+- PR #6, credits to @orumad.
+
 ## v3.1.1 - 2017-01-04
 - Fix the issue with the case of variadic arguments. 
 - PR #5, credits to @orumad.
