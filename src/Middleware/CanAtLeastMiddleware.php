@@ -11,7 +11,7 @@ class CanAtLeastMiddleware
      *
      * @param  \Illuminate\Http\Request $request
      * @param  \Closure $next
-     * @param  array|string ...$permissions
+     * @param  array|string $permissions
      * @return mixed
      */
     public function handle($request, Closure $next, $permissions)
