@@ -1,5 +1,10 @@
 # Changelog
 
+## v3.2.0 - 2017-01-05
+- Add github templates.
+- Add php_cs.
+- Update gitattributes.
+
 ## v3.1.2 - 2017-01-05
 - Removed the unnecessary variadic operator.
 - PR #6, credits to @orumad.
