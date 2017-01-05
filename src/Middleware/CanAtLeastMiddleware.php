@@ -14,7 +14,7 @@ class CanAtLeastMiddleware
      * @param  array|string ...$permissions
      * @return mixed
      */
-    public function handle($request, Closure $next, ...$permissions)
+    public function handle($request, Closure $next, $permissions)
     {
         $abilities = is_array($permissions) ? $permissions : explode(',', $permissions);
 
