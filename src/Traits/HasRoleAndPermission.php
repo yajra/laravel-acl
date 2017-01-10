@@ -71,26 +71,26 @@ trait HasRoleAndPermission
         return $this->permissions()->detach();
     }
 
-    /**
-     * Checks if the role or user has the given permission.
-     *
-     * @param  string $permission
-     * @return bool
-     */
-    public function can($permission)
-    {
-        $permissions = $this->getPermissions();
+    // /**
+    //  * Checks if the role or user has the given permission.
+    //  *
+    //  * @param  string $permission
+    //  * @return bool
+    //  */
+    // public function can($permission)
+    // {
+    //     $permissions = $this->getPermissions();
 
-        if (is_array($permission)) {
-            $permissionCount   = count($permission);
-            $intersection      = array_intersect($permissions, $permission);
-            $intersectionCount = count($intersection);
+    //     if (is_array($permission)) {
+    //         $permissionCount   = count($permission);
+    //         $intersection      = array_intersect($permissions, $permission);
+    //         $intersectionCount = count($intersection);
 
-            return ($permissionCount == $intersectionCount) ? true : false;
-        } else {
-            return in_array($permission, $permissions);
-        }
-    }
+    //         return ($permissionCount == $intersectionCount) ? true : false;
+    //     } else {
+    //         return in_array($permission, $permissions);
+    //     }
+    // }
 
     /**
      * Check if user have access using any of the acl.

@@ -57,7 +57,7 @@ class AclServiceProvider extends ServiceProvider
             foreach ($this->getPermissions() as $permission) {
                 $ability = $permission->slug;
                 $policy  = function ($user) use ($permission) {
-                    return $user->hasRole($permission->roles);
+                    return $user->hasRole($permission->roles) || in_array($permission, $user->permissions);
                 };
 
                 if (Str::contains($permission->slug, '@')) {
