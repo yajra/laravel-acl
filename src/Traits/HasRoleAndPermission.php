@@ -228,16 +228,6 @@ trait HasRoleAndPermission
     }
 
     /**
-     * Model can have many users.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    public function users()
-    {
-        return $ this->belongsToMany(config('acl.user', User::class))->withTimestamps();
-    }
-
-    /**
      * Query scope for user having the given roles.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query

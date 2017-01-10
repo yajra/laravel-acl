@@ -1,6 +1,6 @@
 # Changelog
 
-## v3.3 - 2017-01-10 passionatedreamer19@gmail.com http://facebook.com/muhsaeedparacha
+## v3.3 - 2017-01-10
 - Added permissions directly on Users in addition to being on roles.
 - While checking for user permissions, the package checks via two ways $user->permissions() and $user->roles()->permissions
 - use HasRoleAndPermission trait in User Model instead of HasRole

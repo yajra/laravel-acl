@@ -3,6 +3,7 @@
 namespace Yajra\Acl\Traits;
 
 use Yajra\Acl\Models\Permission;
+use App\User;
 
 trait HasPermission
 {
@@ -35,6 +36,10 @@ trait HasPermission
         return $this->belongsToMany(config('acl.permission', Permission::class))->withTimestamps();
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(config('acl.user', Permission::class))->withTimestamps();
+    }
     /**
      * Revokes the given permission from the role or user.
      *
