@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.3 - 2017-01-10 passionatedreamer19@gmail.com http://facebook.com/muhsaeedparacha
+- Added permissions directly on Users in addition to being on roles.
+- While checking for user permissions, the package checks via two ways $user->permissions() and $user->roles()->permissions
+- use HasRoleAndPermission trait in User Model instead of HasRole
+- Changed HasRole Trait to subtract functionality for User Model, most of that functionality has been copied to HasRoleAndPermission Trait
+
 ## v3.2.0 - 2017-01-05
 - Add github templates.
 - Add php_cs.

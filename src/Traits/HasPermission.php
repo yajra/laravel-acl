@@ -7,7 +7,7 @@ use Yajra\Acl\Models\Permission;
 trait HasPermission
 {
     /**
-     * Assigns the given permission to the role.
+     * Assigns the given permission to the role or user.
      *
      * @param  int $permissionId
      * @return bool
@@ -36,7 +36,7 @@ trait HasPermission
     }
 
     /**
-     * Revokes the given permission from the role.
+     * Revokes the given permission from the role or user.
      *
      * @param  int|null $permissionId
      * @return bool
@@ -47,7 +47,7 @@ trait HasPermission
     }
 
     /**
-     * Syncs the given permission(s) with the role.
+     * Syncs the given permission(s) with the role or user.
      *
      * @param  array $permissionIds
      * @return array|bool
@@ -58,7 +58,7 @@ trait HasPermission
     }
 
     /**
-     * Revokes all permissions from the role.
+     * Revokes all permissions from the role or user.
      *
      * @return bool
      */
@@ -68,7 +68,7 @@ trait HasPermission
     }
 
     /**
-     * Checks if the role has the given permission.
+     * Checks if the role or user has the given permission.
      *
      * @param  string $permission
      * @return bool
@@ -99,7 +99,7 @@ trait HasPermission
     }
 
     /**
-     * Check if the role has at least one of the given permissions.
+     * Check if the role or user has at least one of the given permissions.
      *
      * @param  array $permission
      * @return bool

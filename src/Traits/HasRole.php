@@ -8,82 +8,6 @@ use Yajra\Acl\Models\Role;
 trait HasRole
 {
     /**
-     * Check if user have access using any of the acl.
-     *
-     * @param  array $acl
-     * @return boolean
-     */
-    public function canAccess(array $acl)
-    {
-        return $this->canAtLeast($acl) || $this->hasRole($acl);
-    }
-
-    /**
-     * Check if user has at least one of the given permissions
-     *
-     * @param  array $permissions
-     * @return bool
-     */
-    public function canAtLeast(array $permissions)
-    {
-        $can = false;
-
-        if (auth()->check()) {
-            foreach ($this->roles as $role) {
-                if ($role->canAtLeast($permissions)) {
-                    $can = true;
-                }
-            }
-        } else {
-            $guest = Role::whereSlug('guest')->first();
-
-            if ($guest) {
-                return $guest->canAtLeast($permissions);
-            }
-        }
-
-        return $can;
-    }
-
-    /**
-     * Check if user has the given role.
-     *
-     * @param string|array $role
-     * @return bool
-     */
-    public function hasRole($role)
-    {
-        if (is_string($role)) {
-            return $this->roles->contains('name', $role);
-        }
-
-        if (is_array($role)) {
-            $roles = $this->getRoleSlugs();
-
-            $intersection      = array_intersect($roles, (array) $role);
-            $intersectionCount = count($intersection);
-
-            return ($intersectionCount > 0) ? true : false;
-        }
-
-        return ! ! $role->intersect($this->roles)->count();
-    }
-
-    /**
-     * Get all user roles.
-     *
-     * @return array|null
-     */
-    public function getRoleSlugs()
-    {
-        if (! is_null($this->roles)) {
-            return $this->roles->pluck('slug')->toArray();
-        }
-
-        return null;
-    }
-
-    /**
      * Attach a role to user using slug.
      *
      * @param $slug
@@ -208,6 +132,8 @@ trait HasRole
         foreach ($this->roles as $role) {
             $permissions[] = $role->getPermissions();
         }
+
+        $permissions[] = $this->permissions->pluck('slug')->toArray();
 
         return call_user_func_array('array_merge', $permissions);
     }
