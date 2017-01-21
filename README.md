@@ -27,6 +27,25 @@ Register service provider:
 Yajra\Acl\AclServiceProvider::class
 ```
 
+Register Middlewares: in App\Http\Kernel.php
+```php
+'canAtLeast' => \Yajra\Acl\Middleware\CanAtLeastMiddleware::class,
+'permission' => \Yajra\Acl\Middleware\PermissionMiddleware::class,
+'role' => \Yajra\Acl\Middleware\RoleMiddleware::class,
+```
+
+Define User Trait in User Model
+```php
+...
+use Yajra\Acl\Traits\HasRoleAndPermission;
+
+class User extends Authenticatable
+{
+...
+use HasRoleAndPerimssions; 
+...
+```
+
 Publish assets:
 ```php
 $ php artisan vendor:publish --tag=laravel-acl
