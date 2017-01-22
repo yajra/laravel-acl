@@ -114,7 +114,7 @@ trait HasRoleAndPermission
         $permissions = $this->getPermissions();
         $intersection      = array_intersect($permissions, $permission);
 
-        if(count($intersection); > 0){
+        if(count($intersection) > 0){
             return true;
         }
 
