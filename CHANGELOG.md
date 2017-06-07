@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.2.1 - 2017-07-07
+- Fix publishing of migrations.
+
 ## v3.2.0 - 2017-01-05
 - Add github templates.
 - Add php_cs.
