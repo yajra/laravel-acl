@@ -28,12 +28,32 @@ Yajra\Acl\AclServiceProvider::class
 ```
 
 Publish assets:
-```php
+``` bash
 $ php artisan vendor:publish --tag=laravel-acl
 ```
 
+Publish migrations:
+``` bash
+$ php artisan vendor:publish --tag=laravel-acl-migrations
+```
+
+or
+
+
+``` php
+<?php
+// config/acl.php
+return [
+    /**
+     * Export database migrations
+     */
+    'migrations' => true,
+    
+    ...
+```
+
 Run migrations:
-```php
+``` bash
 php artisan migrate
 ```
 

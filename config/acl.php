@@ -2,6 +2,11 @@
 
 return [
     /**
+     * Export database migrations
+     */
+    'migrations' => false,
+    
+    /**
      * Role class used for ACL.
      */
     'role'       => \Yajra\Acl\Models\Role::class,
