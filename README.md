@@ -41,7 +41,6 @@ or
 
 
 ``` php
-
 <?php
 // config/acl.php
 return [
