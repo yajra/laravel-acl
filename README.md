@@ -32,6 +32,27 @@ Publish assets:
 $ php artisan vendor:publish --tag=laravel-acl
 ```
 
+Publish migrations:
+```
+$ php artisan vendor:publish --tag=laravel-acl-migrations
+```
+
+or
+
+
+```php
+
+<?php
+// config/acl.php
+return [
+    /**
+     * Export database migrations
+     */
+    'migrations' => true,
+    
+    ...
+```
+
 Run migrations:
 ```php
 php artisan migrate
