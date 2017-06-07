@@ -43,8 +43,8 @@ class AclServiceProvider extends ServiceProvider
      */
     protected function publishMigrations()
     {
-        if(!config('acl.migrations')) {
-           return $this->loadMigrationsFrom(__DIR__ . '/../migrations');    
+        if (!config('acl.migrations')) {
+            return $this->loadMigrationsFrom(__DIR__ . '/../migrations');
         }
 
         $this->publishes([
