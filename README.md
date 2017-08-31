@@ -22,12 +22,12 @@ $ composer require yajra/laravel-acl:^3.0
 ```
 
 ## Configuration
-Register service provider:
+Register service provider (Optional on Laravel 5.5).
 ``` php
 Yajra\Acl\AclServiceProvider::class
 ```
 
-Publish assets:
+Publish assets (Optional):
 ```php
 $ php artisan vendor:publish --tag=laravel-acl
 ```

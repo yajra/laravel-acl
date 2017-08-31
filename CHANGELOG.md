@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.3.0 - 2017-07-31
+- Fix 3.0 branch alias.
+- Add support for Laravel 5.5 auto-package discovery.
+
 ## v3.2.1 - 2017-07-07
 - Fix publishing of migrations.
 
