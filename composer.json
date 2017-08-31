@@ -44,7 +44,12 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "3.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Yajra\\Acl\\AclServiceProvider"
+            ]
         }
     }
 }
