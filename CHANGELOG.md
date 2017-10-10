@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.3.1 - 2017-10-10
+- Compare hasRole using slug. #16
+- Fix #8.
+
 ## v3.3.0 - 2017-07-31
 - Fix 3.0 branch alias.
 - Add support for Laravel 5.5 auto-package discovery.
