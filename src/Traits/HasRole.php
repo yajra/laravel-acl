@@ -66,7 +66,7 @@ trait HasRole
             return ($intersectionCount > 0) ? true : false;
         }
 
-        return ! ! $role->intersect($this->roles)->count();
+        return ! ! array_filter($role->only($this->roles))->count();
     }
 
     /**
