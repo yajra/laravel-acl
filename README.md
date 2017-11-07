@@ -55,12 +55,12 @@ If you discover any security related issues, please email aqangeles@gmail.com in
 - [Caffeinated/Shinobi](https://github.com/caffeinated/shinobi)
 - [All Contributors][link-contributors]
 
-## Buy me a coffee
-<a href="https://www.patreon.com/bePatron?u=4521203" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
-
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
+## Buy me a coffee
+<a href='https://www.patreon.com/bePatron?u=4521203'><img alt='Become a Patron' src='https://s3.amazonaws.com/patreon_public_assets/toolbox/patreon.png' border='0' width='200px' ></a>
 
 [ico-version]: https://img.shields.io/packagist/v/yajra/laravel-acl.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
