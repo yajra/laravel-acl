@@ -10,14 +10,19 @@ class RoleMiddleware
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
-     * @param  string $role
+     * @param  \Closure                 $next
+     * @param  string                   $role
      * @return mixed
      */
     public function handle($request, Closure $next, $role)
     {
         $role = explode('|', $role);
-        if (! $request->user() || ! $request->user()->hasRole($role)) {
+        $user = $request->user();
+        if ($user && app()->runningInConsole()) {
+            $user = $user->fresh('roles');
+        }
+
+        if (! $user || ! $user->hasRole($role)) {
             if ($request->ajax()) {
                 return response()->json([
                     'error' => [

@@ -10,8 +10,8 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="yajra Test Suite">
-            <directory>tests</directory>
+        <testsuite name="ACL Test Suite">
+            <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>
     <filter>
