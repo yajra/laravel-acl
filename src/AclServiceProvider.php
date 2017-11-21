@@ -122,12 +122,22 @@ class AclServiceProvider extends ServiceProvider
         $blade->directive('endCanAtLeast', function ($expression) {
             return '<?php endif; ?>';
         });
+        
+        /** @deprecated Please use @role directive. */
         $blade->directive('isRole', function ($expression) {
-            return "<?php if (app('laravel-acl.directives.isRole')->handle({$expression})): ?>";
+            return "<?php if (app('laravel-acl.directives.role')->handle({$expression})): ?>";
         });
         $blade->directive('endIsRole', function ($expression) {
             return '<?php endif; ?>';
         });
+
+        $blade->directive('role', function ($expression) {
+            return "<?php if (app('laravel-acl.directives.role')->handle({$expression})): ?>";
+        });
+        $blade->directive('endRole', function ($expression) {
+            return '<?php endif; ?>';
+        });
+
         $blade->directive('hasRole', function ($expression) {
             return "<?php if (app('laravel-acl.directives.hasRole')->handle({$expression})): ?>";
         });
@@ -142,7 +152,7 @@ class AclServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('laravel-acl.directives.canAtLeast', Directives\CanAtLeastDirective::class);
-        $this->app->singleton('laravel-acl.directives.isRole', Directives\IsRoleDirective::class);
+        $this->app->singleton('laravel-acl.directives.role', Directives\RoleDirective::class);
         $this->app->singleton('laravel-acl.directives.hasRole', Directives\HasRoleDirective::class);
     }
 }

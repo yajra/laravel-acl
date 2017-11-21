@@ -2,7 +2,7 @@
 
 namespace Yajra\Acl\Directives;
 
-class IsRoleDirective extends DirectiveAbstract
+class RoleDirective extends DirectiveAbstract
 {
     /**
      * Is Role blade directive compiler.
