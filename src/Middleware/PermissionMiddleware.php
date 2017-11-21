@@ -16,7 +16,7 @@ class PermissionMiddleware
      */
     public function handle($request, Closure $next, $permission)
     {
-        if (! $request->user() || ! $request->user()->can($permission)) {
+        if (! auth()->user() || ! auth()->user()->can($permission)) {
             if ($request->ajax()) {
                 return response()->json([
                     'error' => [

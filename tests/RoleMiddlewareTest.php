@@ -2,12 +2,8 @@
 
 namespace Yajra\Acl\Tests;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-
 class RoleMiddlewareTest extends TestCase
 {
-    use DatabaseTransactions;
-
     /** @test */
     public function it_cannot_access_protected_routes()
     {
@@ -25,7 +21,7 @@ class RoleMiddlewareTest extends TestCase
     /** @test */
     public function it_can_access_role_protected_routes()
     {
-        $this->actingAs($this->admin)->getJson('/')->assertSee('Pass');
+        $this->actingAs($this->admin)->get('/')->assertSee('Pass');
     }
 
     protected function setUp()

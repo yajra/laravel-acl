@@ -5,12 +5,9 @@ namespace Yajra\Acl\Tests;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabaseState;
-use Illuminate\Routing\Router;
 use Illuminate\Support\Str;
+use Monolog\Handler\TestHandler;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Yajra\Acl\Directives\CanAtLeastDirective;
-use Yajra\Acl\Middleware\PermissionMiddleware;
-use Yajra\Acl\Middleware\RoleMiddleware;
 use Yajra\Acl\Models\Permission;
 use Yajra\Acl\Models\Role;
 use Yajra\Acl\Tests\Models\User;
@@ -32,35 +29,11 @@ abstract class TestCase extends BaseTestCase
 
     protected function setupAuthRoutes()
     {
-        $this->app['router']->get('login', function () {
-        })->name('login');
-        $this->app['router']->get('logout', function () {
-        })->name('logout');
-    }
-
-    /**
-     * Resolve application HTTP Kernel implementation.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
-     */
-    protected function resolveApplicationHttpKernel($app)
-    {
-        $app->singleton('Illuminate\Contracts\Http\Kernel', 'Yajra\Acl\Tests\Http\Kernel');
+        $this->app['router']->auth();
     }
 
     protected function runDatabaseMigrations()
     {
-        $this->artisan('migrate:fresh');
-
-        $this->app[Kernel::class]->setArtisan(null);
-
-        $this->beforeApplicationDestroyed(function () {
-            $this->artisan('migrate:rollback');
-
-            RefreshDatabaseState::$migrated = false;
-        });
-
         /** @var \Illuminate\Database\Schema\Builder $schemaBuilder */
         $schemaBuilder = $this->app['db']->connection()->getSchemaBuilder();
         $schemaBuilder->create('users', function (Blueprint $table) {
@@ -68,6 +41,16 @@ abstract class TestCase extends BaseTestCase
             $table->string('name');
             $table->string('email');
             $table->timestamps();
+        });
+
+        $this->artisan('migrate');
+
+        $this->app[Kernel::class]->setArtisan(null);
+
+        $this->beforeApplicationDestroyed(function () {
+            $this->artisan('migrate:rollback');
+
+            RefreshDatabaseState::$migrated = false;
         });
     }
 
@@ -82,13 +65,11 @@ abstract class TestCase extends BaseTestCase
 
         $this->admin = tap($this->createUser('admin'), function (User $user) use ($adminRole) {
             $user->attachRole($adminRole);
-            $user->fresh('roles');
-        });
+        })->fresh('roles');
 
         $this->user = tap($this->createUser('user'), function (User $user) use ($registeredRole) {
             $user->attachRole($registeredRole);
-            $user->fresh('roles');
-        });
+        })->fresh('roles');
     }
 
     /**
@@ -120,6 +101,17 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * Resolve application HTTP Kernel implementation.
+     *
+     * @param  \Illuminate\Foundation\Application $app
+     * @return void
+     */
+    protected function resolveApplicationHttpKernel($app)
+    {
+        $app->singleton('Illuminate\Contracts\Http\Kernel', 'Yajra\Acl\Tests\Http\Kernel');
+    }
+
+    /**
      * Set up the environment.
      *
      * @param \Illuminate\Foundation\Application $app
@@ -127,12 +119,20 @@ abstract class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('app.debug', true);
+        $app['config']->set('cache.default', 'array');
+        $app['config']->set('session.driver', 'file');
+        $app['config']->set('session.expire_on_close', false);
+
         $app['config']->set('database.default', 'sqlite');
         $app['config']->set('database.connections.sqlite', [
             'driver'   => 'sqlite',
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+
+        $app['config']->set('view.paths', [__DIR__ . '/resources/views']);
+        $app['config']->set('auth.providers.users.model', User::class);
+        $app['log']->getMonolog()->pushHandler(new TestHandler());
     }
 
     protected function getPackageProviders($app)
