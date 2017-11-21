@@ -16,7 +16,8 @@ class RoleMiddleware
      */
     public function handle($request, Closure $next, $role)
     {
-        if (! $request->user() || ! $request->user()->isRole($role)) {
+        $role = explode('|', $role);
+        if (! $request->user() || ! $request->user()->hasRole($role)) {
             if ($request->ajax()) {
                 return response()->json([
                     'error' => [
