@@ -26,7 +26,6 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         $this->setupAuthRoutes();
-        $this->setupRouteMiddleware();
         $this->runDatabaseMigrations();
         $this->seedDatabase();
     }
@@ -39,20 +38,22 @@ abstract class TestCase extends BaseTestCase
         })->name('logout');
     }
 
-    protected function setupRouteMiddleware()
+    /**
+     * Resolve application HTTP Kernel implementation.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    protected function resolveApplicationHttpKernel($app)
     {
-        /** @var Router $router */
-        $router = $this->app['router'];
-        $router->aliasMiddleware('role', RoleMiddleware::class);
-        $router->aliasMiddleware('permission', PermissionMiddleware::class);
-        $router->aliasMiddleware('canAtLeast', CanAtLeastDirective::class);
+        $app->singleton('Illuminate\Contracts\Http\Kernel', 'Yajra\Acl\Tests\Http\Kernel');
     }
 
     protected function runDatabaseMigrations()
     {
         $this->artisan('migrate:fresh');
 
-//        $this->app[Kernel::class]->setArtisan(null);
+        $this->app[Kernel::class]->setArtisan(null);
 
         $this->beforeApplicationDestroyed(function () {
             $this->artisan('migrate:rollback');

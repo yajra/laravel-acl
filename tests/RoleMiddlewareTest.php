@@ -34,6 +34,6 @@ class RoleMiddlewareTest extends TestCase
 
         $this->app['router']->get('/', function () {
             return 'Pass';
-        })->middleware(['role:admin']);
+        })->middleware(['web', 'role:admin']);
     }
 }
