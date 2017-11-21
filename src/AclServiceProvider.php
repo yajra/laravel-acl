@@ -125,7 +125,7 @@ class AclServiceProvider extends ServiceProvider
         
         /** @deprecated Please use @role directive. */
         $blade->directive('isRole', function ($expression) {
-            return "<?php if (app('laravel-acl.directives.isRole')->handle({$expression})): ?>";
+            return "<?php if (app('laravel-acl.directives.role')->handle({$expression})): ?>";
         });
         $blade->directive('endIsRole', function ($expression) {
             return '<?php endif; ?>';
@@ -152,7 +152,6 @@ class AclServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('laravel-acl.directives.canAtLeast', Directives\CanAtLeastDirective::class);
-        $this->app->singleton('laravel-acl.directives.isRole', Directives\RoleDirective::class);
         $this->app->singleton('laravel-acl.directives.role', Directives\RoleDirective::class);
         $this->app->singleton('laravel-acl.directives.hasRole', Directives\HasRoleDirective::class);
     }
