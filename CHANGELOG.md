@@ -1,15 +1,20 @@
 # Changelog
 
+## v3.6.0 - 2018-01-03
+- Add unit tests. [#24](https://github.com/yajra/laravel-acl/pull/24)
+- Bump to php 7.0.
+- Bump to phpunit 6.0.
+
 ## v3.5.0 - 2017-11-21
-- Add @role directive. #22
+- Add @role directive. [#22](https://github.com/yajra/laravel-acl/pull/22)
 - Deprecate @isRole directive in favor of @role directive.
 
 ## v3.4.0 - 2017-11-21
-- Add support for multiple role middleware. #21
+- Add support for multiple role middleware. [#21](https://github.com/yajra/laravel-acl/pull/21)
 - Fix #20.
 
 ## v3.3.1 - 2017-10-10
-- Compare hasRole using slug. #16
+- Compare hasRole using slug. [#16](https://github.com/yajra/laravel-acl/pull/16)
 - Fix #8.
 
 ## v3.3.0 - 2017-07-31
