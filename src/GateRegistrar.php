@@ -26,7 +26,7 @@ class GateRegistrar
      * @param GateContract $gate
      * @param Repository   $cache
      */
-    public function __construct(GateContract $gate, Repository $cache)
+    public function __construct(GateContract $gate, $cache)
     {
         $this->gate  = $gate;
         $this->cache = $cache;
@@ -37,7 +37,7 @@ class GateRegistrar
      */
     public function register()
     {
-        $this->getPermissions()->each(function (Permission $permission) {
+        $this->getPermissions()->each(function ($permission) {
             $ability = $permission->slug;
             $policy  = function ($user) use ($permission) {
                 return $user->hasRole($permission->roles);
@@ -61,7 +61,8 @@ class GateRegistrar
     {
         try {
             return $this->cache->rememberForever('permissions.policies', function () {
-                return Permission::with('roles')->get();
+                $permission_class=config('acl.permission','Yajra\Acl\Models\Permission');
+                return $permission_class::with('roles')->get();
             });
         } catch (\Exception $exception) {
             $this->cache->forget('permissions.policies');

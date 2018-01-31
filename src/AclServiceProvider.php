@@ -9,6 +9,7 @@ use Yajra\Acl\Models\Role;
 
 class AclServiceProvider extends ServiceProvider
 {
+
     /**
      * Register any application authentication / authorization services.
      *
@@ -52,19 +53,22 @@ class AclServiceProvider extends ServiceProvider
      */
     protected function registerCacheListener()
     {
-        Permission::saved(function () {
+        $permission_class=config('acl.permission','Yajra\Acl\Models\Permission');
+        $role_class=config('acl.role','Yajra\Acl\Models\Role');
+
+        $permission_class::saved(function () {
             $this->app['cache.store']->forget('permissions.policies');
         });
 
-        Permission::deleted(function () {
+        $permission_class::deleted(function () {
             $this->app['cache.store']->forget('permissions.policies');
         });
 
-        Role::saved(function () {
+        $role_class::saved(function () {
             $this->app['cache.store']->forget('permissions.policies');
         });
 
-        Role::deleted(function () {
+        $role_class::deleted(function () {
             $this->app['cache.store']->forget('permissions.policies');
         });
     }

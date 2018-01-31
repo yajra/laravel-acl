@@ -35,7 +35,8 @@ trait HasRole
                 }
             }
         } else {
-            $guest = Role::whereSlug('guest')->first();
+            $role_class=config('acl.role','Yajra\Acl\Models\Role');
+            $guest = $role_class::whereSlug('guest')->first();
 
             if ($guest) {
                 return $guest->canAtLeast($permissions);
@@ -91,7 +92,8 @@ trait HasRole
      */
     public function attachRoleBySlug($slug)
     {
-        $role = Role::where('slug', $slug)->first();
+        $role_class=config('acl.role','Yajra\Acl\Models\Role');
+        $role = $role_class::where('slug', $slug)->first();
 
         return $this->attachRole($role);
     }
@@ -102,7 +104,7 @@ trait HasRole
      * @param  Role $role
      * @return boolean
      */
-    public function attachRole(Role $role)
+    public function attachRole($role)
     {
         return $this->assignRole($role->id);
     }
@@ -159,7 +161,8 @@ trait HasRole
      */
     public function revokeRoleBySlug($slug)
     {
-        $role = Role::where('slug', $slug)->first();
+        $role_class=config('acl.role','Yajra\Acl\Models\Role');
+        $role = $role_class::where('slug', $slug)->first();
 
         return $this->roles()->detach($role);
     }
