@@ -2,9 +2,9 @@
 
 namespace Yajra\Acl\Models;
 
-use Illuminate\Support\Collection;
 use Yajra\Acl\Traits\HasRole;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @property string resource
