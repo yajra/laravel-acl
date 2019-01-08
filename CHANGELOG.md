@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.6.1 - 2019-01-08
+- Fix eloquent collection.
+
 ## v3.6.0 - 2018-01-03
 - Add unit tests. [#24](https://github.com/yajra/laravel-acl/pull/24)
 - Bump to php 7.0.
@@ -34,11 +37,11 @@
 - PR #6, credits to @orumad.
 
 ## v3.1.1 - 2017-01-04
-- Fix the issue with the case of variadic arguments. 
+- Fix the issue with the case of variadic arguments.
 - PR #5, credits to @orumad.
 
 ## v3.1.0 - 2016-12-22
-- Add revokeRoleBySlug method. 
+- Add revokeRoleBySlug method.
 - PR #3, credits to @jiwom
 
 ## v3.0.1 - 2016-12-01
