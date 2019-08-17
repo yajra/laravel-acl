@@ -27,6 +27,19 @@ class Role extends Model
      */
     protected $fillable = ['name', 'slug', 'description', 'system'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saved(function () {
+            $this->app['cache.store']->forget('permissions.policies');
+        });
+
+        static::deleted(function () {
+            $this->app['cache.store']->forget('permissions.policies');
+        });
+    }
+
     /**
      * Roles can belong to many users.
      *

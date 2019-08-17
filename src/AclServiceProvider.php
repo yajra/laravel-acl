@@ -22,7 +22,6 @@ class AclServiceProvider extends ServiceProvider
         $this->publishConfig();
         $this->publishMigrations();
         $this->registerPolicies();
-        $this->registerCacheListener();
         $this->registerBladeDirectives();
     }
 
@@ -45,28 +44,6 @@ class AclServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../migrations' => database_path('migrations'),
         ], 'laravel-acl');
-    }
-
-    /**
-     * Register ACL models cache listener.
-     */
-    protected function registerCacheListener()
-    {
-        Permission::saved(function () {
-            $this->app['cache.store']->forget('permissions.policies');
-        });
-
-        Permission::deleted(function () {
-            $this->app['cache.store']->forget('permissions.policies');
-        });
-
-        Role::saved(function () {
-            $this->app['cache.store']->forget('permissions.policies');
-        });
-
-        Role::deleted(function () {
-            $this->app['cache.store']->forget('permissions.policies');
-        });
     }
 
     /**
