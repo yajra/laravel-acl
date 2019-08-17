@@ -2,15 +2,17 @@
 
 namespace Yajra\Acl\Traits;
 
-use Illuminate\Support\Str;
 use Yajra\Acl\Models\Role;
+use Illuminate\Support\Str;
 
 trait HasRole
 {
+    private $roleClass;
+
     /**
      * Check if user have access using any of the acl.
      *
-     * @param  array $acl
+     * @param array $acl
      * @return boolean
      */
     public function canAccess(array $acl)
@@ -21,7 +23,7 @@ trait HasRole
     /**
      * Check if user has at least one of the given permissions
      *
-     * @param  array $permissions
+     * @param array $permissions
      * @return bool
      */
     public function canAtLeast(array $permissions)
@@ -35,7 +37,7 @@ trait HasRole
                 }
             }
         } else {
-            $guest = Role::whereSlug('guest')->first();
+            $guest = $this->getRoleClass()->whereSlug('guest')->first();
 
             if ($guest) {
                 return $guest->canAtLeast($permissions);
@@ -43,6 +45,20 @@ trait HasRole
         }
 
         return $can;
+    }
+
+    /**
+     * Get Role class.
+     *
+     * @return Role
+     */
+    public function getRoleClass()
+    {
+        if (! isset($this->roleClass)) {
+            $this->roleClass = resolve(config('acl.role'));
+        }
+
+        return $this->roleClass;
     }
 
     /**
@@ -91,7 +107,7 @@ trait HasRole
      */
     public function attachRoleBySlug($slug)
     {
-        $role = Role::where('slug', $slug)->first();
+        $role = $this->getRoleClass()->where('slug', $slug)->first();
 
         return $this->attachRole($role);
     }
@@ -99,7 +115,7 @@ trait HasRole
     /**
      * Attach a role to user
      *
-     * @param  Role $role
+     * @param Role $role
      * @return boolean
      */
     public function attachRole(Role $role)
@@ -110,7 +126,7 @@ trait HasRole
     /**
      * Assigns the given role to the user.
      *
-     * @param  int $roleId
+     * @param int $roleId
      * @return bool
      */
     public function assignRole($roleId = null)
@@ -154,12 +170,12 @@ trait HasRole
     /**
      * Revokes the given role from the user using slug.
      *
-     * @param  string $slug
+     * @param string $slug
      * @return bool
      */
     public function revokeRoleBySlug($slug)
     {
-        $role = Role::where('slug', $slug)->first();
+        $role = $this->getRoleClass()->where('slug', $slug)->first();
 
         return $this->roles()->detach($role);
     }
@@ -167,7 +183,7 @@ trait HasRole
     /**
      * Revokes the given role from the user.
      *
-     * @param  mixed $role
+     * @param mixed $role
      * @return bool
      */
     public function revokeRole($role = "")
@@ -178,7 +194,7 @@ trait HasRole
     /**
      * Syncs the given role(s) with the user.
      *
-     * @param  array $roles
+     * @param array $roles
      * @return bool
      */
     public function syncRoles(array $roles)
@@ -215,8 +231,8 @@ trait HasRole
     /**
      * Magic __call method to handle dynamic methods.
      *
-     * @param  string $method
-     * @param  array $arguments
+     * @param string $method
+     * @param array $arguments
      * @return mixed
      */
     public function __call($method, $arguments = [])
@@ -241,7 +257,7 @@ trait HasRole
     /**
      * Checks if the user has the given role.
      *
-     * @param  string $slug
+     * @param string $slug
      * @return bool
      */
     public function isRole($slug)
