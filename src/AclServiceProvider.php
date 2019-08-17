@@ -30,9 +30,11 @@ class AclServiceProvider extends ServiceProvider
      */
     protected function publishConfig()
     {
-        $this->publishes([
-            __DIR__ . '/../config/acl.php' => config_path('acl.php'),
-        ], 'laravel-acl');
+        $path = __DIR__ . '/../config/acl.php';
+
+        $this->publishes([$path => config_path('acl.php')], 'laravel-acl');
+
+        $this->mergeConfigFrom($path, 'acl');
     }
 
     /**
