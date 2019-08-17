@@ -143,7 +143,7 @@ trait HasRole
     /**
      * Model can have many roles.
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function roles()
     {
