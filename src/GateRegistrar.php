@@ -2,11 +2,11 @@
 
 namespace Yajra\Acl;
 
-use Illuminate\Contracts\Auth\Access\Gate as GateContract;
-use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Yajra\Acl\Models\Permission;
+use Illuminate\Support\Collection;
+use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 
 class GateRegistrar
 {
@@ -24,7 +24,7 @@ class GateRegistrar
      * GateRegistrar constructor.
      *
      * @param GateContract $gate
-     * @param Repository   $cache
+     * @param Repository $cache
      */
     public function __construct(GateContract $gate, Repository $cache)
     {
@@ -37,7 +37,7 @@ class GateRegistrar
      */
     public function register()
     {
-        $this->getPermissions()->each(function (Permission $permission) {
+        $this->getPermissions()->each(function ($permission) {
             $ability = $permission->slug;
             $policy  = function ($user) use ($permission) {
                 return $user->hasRole($permission->roles);
@@ -59,14 +59,27 @@ class GateRegistrar
      */
     protected function getPermissions()
     {
+        $key = config('acl.cache.key', 'permissions.policies');
         try {
-            return $this->cache->rememberForever('permissions.policies', function () {
-                return Permission::with('roles')->get();
-            });
+            if (config('acl.cache.enabled', true)) {
+                return $this->cache->rememberForever($key, function () {
+                    return $this->getPermissionClass()->with('roles')->get();
+                });
+            } else {
+                return $this->getPermissionClass()->with('roles')->get();
+            }
         } catch (\Exception $exception) {
-            $this->cache->forget('permissions.policies');
+            $this->cache->forget($key);
 
             return new Collection;
         }
+    }
+
+    /**
+     * @return Permission
+     */
+    protected function getPermissionClass()
+    {
+        return resolve(config('acl.permission', Permission::class));
     }
 }

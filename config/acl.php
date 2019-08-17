@@ -15,4 +15,13 @@ return [
      * Permission class used for ACL.
      */
     'permission' => Yajra\Acl\Models\Permission::class,
+
+    /**
+     * Cache config.
+     */
+    'cache'      => [
+        'enabled' => true,
+
+        'key' => 'permissions.policies',
+    ],
 ];
