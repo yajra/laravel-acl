@@ -13,7 +13,7 @@ class CreatePermissionsTable extends Migration
     public function up()
     {
         Schema::create('permissions', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('name', 50);
             $table->string('slug')->unique();
             $table->string('resource', 20)->default('System');
