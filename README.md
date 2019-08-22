@@ -18,7 +18,7 @@ This package was based on the great package [Caffeinated/Shinobi](https://github
 Via Composer
 
 ``` bash
-$ composer require yajra/laravel-acl:^3.0
+$ composer require yajra/laravel-acl:^4.0
 ```
 
 ## Configuration

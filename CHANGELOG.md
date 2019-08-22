@@ -1,5 +1,12 @@
 # Changelog
 
+## v4.0.0 - 2019-09-22
+- Use bigIncrements to match laravel 5.8 migrations.
+- Resolve models from config file.
+- Set min support to Laravel 5.8.
+- Fix merging of config.
+- Add option to configure cache.
+
 ## v3.6.1 - 2019-01-08
 - Fix eloquent collection.
 
