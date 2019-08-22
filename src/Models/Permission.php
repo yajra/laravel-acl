@@ -33,11 +33,11 @@ class Permission extends Model
         parent::boot();
 
         static::saved(function () {
-            $this->app['cache.store']->forget(config('acl.cache.key', 'permissions.policies'));
+            app('cache.store')->forget(config('acl.cache.key', 'permissions.policies'));
         });
 
         static::deleted(function () {
-            $this->app['cache.store']->forget(config('acl.cache.key', 'permissions.policies'));
+            app('cache.store')->forget(config('acl.cache.key', 'permissions.policies'));
         });
     }
 
