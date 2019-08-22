@@ -1,5 +1,8 @@
 # Changelog
 
+## v4.0.1 - 2019-09-22
+- Resolve cache key from config.
+
 ## v4.0.0 - 2019-09-22
 - Use bigIncrements to match laravel 5.8 migrations.
 - Resolve models from config file.
