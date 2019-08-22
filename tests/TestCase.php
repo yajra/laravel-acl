@@ -18,7 +18,7 @@ abstract class TestCase extends BaseTestCase
 
     protected $user;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -132,7 +132,7 @@ abstract class TestCase extends BaseTestCase
 
         $app['config']->set('view.paths', [__DIR__ . '/resources/views']);
         $app['config']->set('auth.providers.users.model', User::class);
-        $app['log']->getMonolog()->pushHandler(new TestHandler());
+        $app['log']->getLogger()->pushHandler(new TestHandler());
     }
 
     protected function getPackageProviders($app)

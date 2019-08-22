@@ -15,7 +15,7 @@ class RoleMiddlewareTest extends TestCase
     {
         $this->actingAs($this->user)
              ->get('/')
-             ->assertSee('You are not authorized to access this resource.');
+             ->assertSee('Unauthorized');
     }
 
     /** @test */
@@ -24,7 +24,7 @@ class RoleMiddlewareTest extends TestCase
         $this->actingAs($this->admin)->get('/')->assertSee('Pass');
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
