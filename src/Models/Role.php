@@ -32,11 +32,11 @@ class Role extends Model
         parent::boot();
 
         static::saved(function () {
-            app('cache.store')->forget('permissions.policies');
+            app('cache.store')->forget(config('acl.cache.key', 'permissions.policies'));
         });
 
         static::deleted(function () {
-            app('cache.store')->forget('permissions.policies');
+            app('cache.store')->forget(config('acl.cache.key', 'permissions.policies'));
         });
     }
 
