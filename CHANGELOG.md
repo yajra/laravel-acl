@@ -1,5 +1,9 @@
 # Changelog
 
+## v4.0.2 - 2019-09-31
+- Implement strict comparison on permission slug.
+- Fix issue with cache where old permission roles are still being used for comparison.
+
 ## v4.0.1 - 2019-09-22
 - Resolve cache key from config.
 
