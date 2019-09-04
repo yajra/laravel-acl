@@ -80,7 +80,7 @@ abstract class TestCase extends BaseTestCase
     {
         return Role::query()->create([
             'name'        => Str::title($role),
-            'slug'        => str_slug($role),
+            'slug'        => Str::slug($role),
             'system'      => true,
             'description' => "{$role} role.",
         ]);
@@ -92,7 +92,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function createUser($user = null)
     {
-        $user = $user ?: str_random(10);
+        $user = $user ?: Str::random(10);
 
         return User::query()->forceCreate([
             'name'  => Str::title($user),
