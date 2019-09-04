@@ -1,13 +1,16 @@
 # Changelog
 
-## v4.0.2 - 2019-09-31
+## v4.1.0 - 2019-09-04
+- Add support laravel 6.0. [#31](https://github.com/yajra/laravel-acl/pull/24)
+
+## v4.0.2 - 2019-08-31
 - Implement strict comparison on permission slug.
 - Fix issue with cache where old permission roles are still being used for comparison.
 
-## v4.0.1 - 2019-09-22
+## v4.0.1 - 2019-08-22
 - Resolve cache key from config.
 
-## v4.0.0 - 2019-09-22
+## v4.0.0 - 2019-08-22
 - Use bigIncrements to match laravel 5.8 migrations.
 - Resolve models from config file.
 - Set min support to Laravel 5.8.
