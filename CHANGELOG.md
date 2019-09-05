@@ -1,5 +1,9 @@
 # Changelog
 
+## v4.1.1 - 2019-09-05
+- Refactor model events to RefreshCache trait.
+- Fix role comparison not working due to logged in user cached roles.
+
 ## v4.1.0 - 2019-09-04
 - Add support laravel 6.0. [#31](https://github.com/yajra/laravel-acl/pull/24)
 
