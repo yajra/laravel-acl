@@ -2,10 +2,11 @@
 
 namespace Yajra\Acl;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\View\Compilers\BladeCompiler;
-use Yajra\Acl\Models\Permission;
 use Yajra\Acl\Models\Role;
+use Yajra\Acl\Models\Permission;
+use Yajra\Acl\Observers\AclModelObserver;
+use Illuminate\View\Compilers\BladeCompiler;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AclServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,7 @@ class AclServiceProvider extends ServiceProvider
         $this->publishMigrations();
         $this->registerPolicies();
         $this->registerBladeDirectives();
+        $this->registerObservers();
     }
 
     /**
@@ -83,6 +85,12 @@ class AclServiceProvider extends ServiceProvider
         $blade->directive('endHasRole', function ($expression) {
             return '<?php endif; ?>';
         });
+    }
+
+    public function registerObservers()
+    {
+        Role::observe(AclModelObserver::class);
+        Permission::observe(AclModelObserver::class);
     }
 
     /**

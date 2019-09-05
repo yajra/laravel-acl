@@ -27,19 +27,6 @@ class Role extends Model
      */
     protected $fillable = ['name', 'slug', 'description', 'system'];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::saved(function () {
-            app('cache.store')->forget(config('acl.cache.key', 'permissions.policies'));
-        });
-
-        static::deleted(function () {
-            app('cache.store')->forget(config('acl.cache.key', 'permissions.policies'));
-        });
-    }
-
     /**
      * Roles can belong to many users.
      *

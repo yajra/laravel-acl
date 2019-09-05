@@ -28,19 +28,6 @@ class Permission extends Model
      */
     protected $fillable = ['name', 'slug', 'resource', 'system'];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::saved(function () {
-            app('cache.store')->forget(config('acl.cache.key', 'permissions.policies'));
-        });
-
-        static::deleted(function () {
-            app('cache.store')->forget(config('acl.cache.key', 'permissions.policies'));
-        });
-    }
-
     /**
      * Create a permissions for a resource.
      *
