@@ -40,7 +40,7 @@ class GateRegistrar
         $this->getPermissions()->each(function ($permission) {
             $ability = $permission->slug;
             $policy  = function ($user) use ($permission) {
-                return collect($user->getPermissions())->contains($permission->slug);
+                return $user->hasRole($permission->roles);
             };
 
             if (Str::contains($permission->slug, '@')) {
