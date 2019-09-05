@@ -2,8 +2,9 @@
 
 namespace Yajra\Acl\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Yajra\Acl\Traits\RefreshCache;
 use Yajra\Acl\Traits\HasPermission;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property \Yajra\Acl\Models\Permission permissions
@@ -11,7 +12,7 @@ use Yajra\Acl\Traits\HasPermission;
  */
 class Role extends Model
 {
-    use HasPermission;
+    use HasPermission, RefreshCache;
 
     /**
      * The database table used by the model.

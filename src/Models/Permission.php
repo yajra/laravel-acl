@@ -3,6 +3,7 @@
 namespace Yajra\Acl\Models;
 
 use Yajra\Acl\Traits\HasRole;
+use Yajra\Acl\Traits\RefreshCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class Permission extends Model
 {
-    use HasRole;
+    use HasRole, RefreshCache;
 
     /**
      * The database table used by the model.
@@ -37,9 +38,9 @@ class Permission extends Model
      */
     public static function createResource($resource, $system = false)
     {
-        $group        = ucfirst($resource);
-        $slug         = strtolower($group);
-        $permissions  = [
+        $group       = ucfirst($resource);
+        $slug        = strtolower($group);
+        $permissions = [
             [
                 'slug'     => $slug . '.view',
                 'resource' => $group,
