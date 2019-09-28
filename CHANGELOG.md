@@ -1,5 +1,10 @@
 # Changelog
 
+## v4.1.2 - 2019-09-28
+
+- Revert to "Implement strict comparison on permission slug."
+- Fix for intermittent cache issues.
+
 ## v4.1.1 - 2019-09-05
 - Refactor model events to RefreshCache trait.
 - Fix role comparison not working due to logged in user cached roles.
