@@ -1,5 +1,9 @@
 # Changelog
 
+## v4.1.3 - 2019-09-28
+
+- Fix FatalErrorException when overriding customPermissionMap property.
+
 ## v4.1.2 - 2019-09-28
 
 - Revert to "Implement strict comparison on permission slug."
