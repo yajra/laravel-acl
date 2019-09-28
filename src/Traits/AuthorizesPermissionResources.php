@@ -23,13 +23,6 @@ trait AuthorizesPermissionResources
     ];
 
     /**
-     * Controller specific permission ability map.
-     *
-     * @var array
-     */
-    protected $customPermissionMap = [];
-
-    /**
      * Authorize a permission resource action based on the incoming request.
      *
      * @param  string $resource
@@ -60,6 +53,10 @@ trait AuthorizesPermissionResources
      */
     protected function resourcePermissionMap()
     {
-        return array_merge($this->resourcePermissionMap, $this->customPermissionMap);
+        if (property_exists($this, 'customPermissionMap') && is_array($this->customPermissionMap)) {
+            return array_merge($this->resourcePermissionMap, $this->customPermissionMap);
+        }
+
+        return $this->resourcePermissionMap;
     }
 }
