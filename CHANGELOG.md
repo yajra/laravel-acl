@@ -1,5 +1,10 @@
 # Changelog
 
+## v4.2.0 - 2020-02-14
+
+- Add scope havingRolesBySlugs.
+- Add roles property and method annotations.
+
 ## v4.1.3 - 2019-09-28
 
 - Fix FatalErrorException when overriding customPermissionMap property.
