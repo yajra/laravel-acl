@@ -5,6 +5,11 @@ namespace Yajra\Acl\Traits;
 use Yajra\Acl\Models\Role;
 use Illuminate\Support\Str;
 
+/**
+ * @property \Illuminate\Database\Eloquent\Collection roles
+ * @method static \Illuminate\Database\Eloquent\Builder havingRoles(array $roleIds)
+ * @method static \Illuminate\Database\Eloquent\Builder havingRolesBySlugs(array $slugs)
+ */
 trait HasRole
 {
     private $roleClass;
@@ -164,6 +169,20 @@ trait HasRole
                   ->from('role_user')
                   ->whereRaw('role_user.user_id = users.id')
                   ->whereIn('role_id', $roles);
+        });
+    }
+
+    /**
+     * Query scope for user having the given roles by slugs.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array $roles
+     * @return mixed
+     */
+    public function scopeHavingRolesBySlugs($query, array $slugs)
+    {
+        return $query->whereHas('roles', function ($query) use ($slugs) {
+            $query->whereIn('roles.slug', $slugs);
         });
     }
 
