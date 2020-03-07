@@ -1,5 +1,9 @@
 # Changelog
 
+## v4.3.0 - 2020-03-07
+
+- Allow Laravel 7.
+
 ## v4.2.0 - 2020-02-14
 
 - Add scope havingRolesBySlugs.
