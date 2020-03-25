@@ -13,7 +13,7 @@ trait AuthorizesPermissionResources
      * @var array
      */
     protected $resourcePermissionMap = [
-        'index'   => 'view',
+        'index'   => 'viewAny',
         'create'  => 'create',
         'store'   => 'create',
         'show'    => 'view',
