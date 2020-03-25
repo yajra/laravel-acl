@@ -17,17 +17,14 @@ class Permission extends Model
 {
     use HasRole, RefreshCache;
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
+    /** @var string */
     protected $table = 'permissions';
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $fillable = ['name', 'slug', 'resource', 'system'];
+
+    /** @var array  */
+    protected $casts = ['system' => 'bool'];
 
     /**
      * Create a permissions for a resource.
@@ -41,6 +38,12 @@ class Permission extends Model
         $group       = ucfirst($resource);
         $slug        = strtolower($group);
         $permissions = [
+            [
+                'slug'     => $slug . '.viewAny',
+                'resource' => $group,
+                'name'     => 'View Any ' . $group,
+                'system'   => $system,
+            ],
             [
                 'slug'     => $slug . '.view',
                 'resource' => $group,
