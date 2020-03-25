@@ -2,15 +2,15 @@
 
 namespace Yajra\Acl\Tests;
 
+use Yajra\Acl\Models\Role;
+use Illuminate\Support\Str;
+use Yajra\Acl\Models\Permission;
+use Monolog\Handler\TestHandler;
+use Yajra\Acl\Tests\Models\User;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Foundation\Testing\RefreshDatabaseState;
-use Illuminate\Support\Str;
-use Monolog\Handler\TestHandler;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Yajra\Acl\Models\Permission;
-use Yajra\Acl\Models\Role;
-use Yajra\Acl\Tests\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabaseState;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -22,14 +22,8 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->setupAuthRoutes();
         $this->runDatabaseMigrations();
         $this->seedDatabase();
-    }
-
-    protected function setupAuthRoutes()
-    {
-        $this->app['router']->auth();
     }
 
     protected function runDatabaseMigrations()
@@ -37,7 +31,7 @@ abstract class TestCase extends BaseTestCase
         /** @var \Illuminate\Database\Schema\Builder $schemaBuilder */
         $schemaBuilder = $this->app['db']->connection()->getSchemaBuilder();
         $schemaBuilder->create('users', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('name');
             $table->string('email');
             $table->timestamps();
@@ -103,7 +97,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Resolve application HTTP Kernel implementation.
      *
-     * @param  \Illuminate\Foundation\Application $app
+     * @param \Illuminate\Foundation\Application $app
      * @return void
      */
     protected function resolveApplicationHttpKernel($app)

@@ -15,12 +15,12 @@ class PermissionMiddlewareTest extends TestCase
     /** @test */
     public function it_can_access_permission_protected_routes()
     {
-        app(GateRegistrar::class)->register();
+        resolve(GateRegistrar::class)->register();
         Auth::login($this->admin);
 
-        $request    = Request::create(url('/'));
         $middleware = new PermissionMiddleware;
-        $response   = $middleware->handle($request, function () {
+
+        $response   = $middleware->handle(new Request(), function () {
             return 'Pass';
         }, 'article.create');
 
