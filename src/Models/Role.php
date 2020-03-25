@@ -13,24 +13,21 @@ class Role extends Model
 {
     use HasPermission, RefreshCache;
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
+    /** @var string  */
     protected $table = 'roles';
 
-    /**
-     * Fillable fields.
-     *
-     * @var array
-     */
+    /** @var array  */
     protected $fillable = ['name', 'slug', 'description', 'system'];
+
+    /** @var array  */
+    protected $casts = [
+        'system' => 'bool',
+    ];
 
     /**
      * Roles can belong to many users.
      *
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
     {
