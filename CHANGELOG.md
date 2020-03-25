@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.0.0 - Unreleased
+
+- [BC] Use viewAny permission for index method.
+- Update attach, detach and sync permission functions to match the framework api.
+- [BC] Cast role & permission system field to bool.
+
 ## v4.3.0 - 2020-03-07
 
 - Allow Laravel 7.
