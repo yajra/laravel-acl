@@ -2,6 +2,7 @@
 
 namespace Yajra\Acl\Models;
 
+use Illuminate\Support\Str;
 use Yajra\Acl\Traits\HasRole;
 use Yajra\Acl\Traits\RefreshCache;
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +24,7 @@ class Permission extends Model
     /** @var array */
     protected $fillable = ['name', 'slug', 'resource', 'system'];
 
-    /** @var array  */
+    /** @var array */
     protected $casts = ['system' => 'bool'];
 
     /**
@@ -35,8 +36,8 @@ class Permission extends Model
      */
     public static function createResource($resource, $system = false)
     {
-        $group       = ucfirst($resource);
-        $slug        = strtolower($group);
+        $group       = Str::title($resource);
+        $slug        = Str::slug(Str::lower($group));
         $permissions = [
             [
                 'slug'     => $slug . '.viewAny',
