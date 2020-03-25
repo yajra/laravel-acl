@@ -37,7 +37,7 @@ class Permission extends Model
     public static function createResource($resource, $system = false)
     {
         $group       = Str::title($resource);
-        $slug        = Str::slug(Str::lower($group));
+        $slug        = Str::slug($group);
         $permissions = [
             [
                 'slug'     => $slug . '.viewAny',
