@@ -4,25 +4,22 @@ namespace Yajra\Acl\Traits;
 
 use Yajra\Acl\Models\Permission;
 
+/**
+ * @property \Illuminate\Database\Eloquent\Collection permissions
+ */
 trait HasPermission
 {
     /**
      * Assigns the given permission to the role.
      *
-     * @param  int $permissionId
-     * @return bool
+     * @param \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array $ids
+     * @param array $attributes
+     * @param bool $touch
+     * @return void
      */
-    public function assignPermission($permissionId = null)
+    public function assignPermission($ids, array $attributes = [], $touch = true)
     {
-        $permissions = $this->permissions;
-
-        if (! $permissions->contains($permissionId)) {
-            $this->permissions()->attach($permissionId);
-
-            return true;
-        }
-
-        return false;
+        $this->permissions()->attach($ids, $attributes, $touch);
     }
 
     /**
@@ -38,29 +35,31 @@ trait HasPermission
     /**
      * Revokes the given permission from the role.
      *
-     * @param  int|null $permissionId
-     * @return bool
+     * @param mixed $ids
+     * @param bool $touch
+     * @return int
      */
-    public function revokePermission($permissionId = null)
+    public function revokePermission($ids = null, $touch = true)
     {
-        return $this->permissions()->detach($permissionId);
+        return $this->permissions()->detach($ids, $touch);
     }
 
     /**
      * Syncs the given permission(s) with the role.
      *
-     * @param  array $permissionIds
-     * @return array|bool
+     * @param \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array $ids
+     * @param bool $detaching
+     * @return array
      */
-    public function syncPermissions(array $permissionIds = [])
+    public function syncPermissions($ids, $detaching = true)
     {
-        return $this->permissions()->sync($permissionIds);
+        return $this->permissions()->sync($ids, $detaching);
     }
 
     /**
      * Revokes all permissions from the role.
      *
-     * @return bool
+     * @return int
      */
     public function revokeAllPermissions()
     {
@@ -70,7 +69,7 @@ trait HasPermission
     /**
      * Checks if the role has the given permission.
      *
-     * @param  string $permission
+     * @param string $permission
      * @return bool
      */
     public function can($permission)
@@ -101,7 +100,7 @@ trait HasPermission
     /**
      * Check if the role has at least one of the given permissions.
      *
-     * @param  array $permission
+     * @param array $permission
      * @return bool
      */
     public function canAtLeast(array $permission = [])
