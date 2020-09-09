@@ -1,5 +1,9 @@
 # Changelog
 
+## v5.1.0 - 2020-09-09
+
+- Add support for Laravel 8.
+
 ## v5.0.0 - 2020-04-02
 
 - [BC] Use viewAny permission for index method.
