@@ -22,7 +22,7 @@ $ composer require yajra/laravel-acl:^5.0
 ```
 
 ## Configuration
-Register service provider (Optional on Laravel 5.5).
+Register service provider (Optional on Laravel 5.5+).
 ``` php
 Yajra\Acl\AclServiceProvider::class
 ```
