@@ -41,7 +41,14 @@ class AclServiceProvider extends ServiceProvider
      */
     protected function publishMigrations()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        /**
+         * @note make it possible to write own migrations by making loadMigrations configurable
+         * sometimes its necessary to replace the default migraitons (e.g. multiple user tables)
+         */
+        if (config('acl.enable_migrations', true)) {
+            $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        }
+
         $this->publishes([
             __DIR__ . '/../migrations' => database_path('migrations'),
         ], 'laravel-acl');
