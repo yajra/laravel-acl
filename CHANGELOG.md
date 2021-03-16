@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.7.0 - 2021-03-16
+- Add config to skip default migrations. [#37](https://github.com/yajra/laravel-acl/pull/37)
+
 ## v3.6.1 - 2019-01-08
 - Fix eloquent collection.
 
