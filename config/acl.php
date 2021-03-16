@@ -10,4 +10,6 @@ return [
      * Permission class used for ACL.
      */
     'permission' => \Yajra\Acl\Models\Permission::class,
+
+    'enable_migrations' => true,
 ];
