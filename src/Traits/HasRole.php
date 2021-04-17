@@ -88,10 +88,6 @@ trait HasRole
      */
     public function hasRole($role): bool
     {
-        if (is_string($role)) {
-            return $this->roles->contains('slug', $role);
-        }
-
         if (is_array($role)) {
             $roles = $this->getRoleSlugs();
 
@@ -101,21 +97,17 @@ trait HasRole
             return $intersectionCount > 0;
         }
 
-        return !!$role->intersect($this->roles)->count();
+        return $this->roles->contains('slug', $role);
     }
 
     /**
      * Get all user roles.
      *
-     * @return array|null
+     * @return array
      */
-    public function getRoleSlugs()
+    public function getRoleSlugs(): array
     {
-        if (!is_null($this->roles)) {
-            return $this->roles->pluck('slug')->toArray();
-        }
-
-        return null;
+        return $this->roles->pluck('slug')->toArray();
     }
 
     /**
