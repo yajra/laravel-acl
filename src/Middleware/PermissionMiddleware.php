@@ -15,7 +15,7 @@ class PermissionMiddleware
      * @param  string  $permission
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $permission)
+    public function handle(Request $request, Closure $next, string $permission)
     {
         if (!auth()->user() || !auth()->user()->can($permission)) {
             if ($request->ajax()) {

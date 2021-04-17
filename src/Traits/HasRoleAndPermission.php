@@ -39,6 +39,38 @@ trait HasRoleAndPermission
     }
 
     /**
+     * Grant user permission by slug.
+     *
+     * @param  string|array  $slug
+     */
+    public function grantPermissionBySlug($slug)
+    {
+        $this->permissions()
+            ->newQuery()
+            ->whereIn('slug', (array) $slug)
+            ->pluck('id')
+            ->each(function ($id) {
+                $this->permissions()->attach($id);
+            });
+    }
+
+    /**
+     * Grant user permissions by resource.
+     *
+     * @param  string|array  $resource
+     */
+    public function grantPermissionByResource($resource)
+    {
+        $this->permissions()
+            ->newQuery()
+            ->whereIn('resource', (array) $resource)
+            ->pluck('id')
+            ->each(function ($id) {
+                $this->permissions()->attach($id);
+            });
+    }
+
+    /**
      * Revokes the given permission from the user.
      *
      * @param  mixed  $ids
