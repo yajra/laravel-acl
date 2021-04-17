@@ -20,9 +20,8 @@
         }
     ],
     "require": {
-        "php": "^7.2.5",
-        "illuminate/support": "^7|^8",
-        "illuminate/database": "^7|^8"
+        "illuminate/support": "^8",
+        "illuminate/database": "^8"
     },
     "require-dev": {
         "orchestra/testbench": "^5"
@@ -42,7 +41,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.0-dev"
+            "dev-master": "6.0-dev"
         },
         "laravel": {
             "providers": [
