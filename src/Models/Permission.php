@@ -30,13 +30,24 @@ class Permission extends Model
     protected $casts = ['system' => 'bool'];
 
     /**
+     * Find a permission by slug.
+     *
+     * @param  string  $slug
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+     */
+    public static function findBySlug(string $slug)
+    {
+        return static::query()->where('slug', $slug)->firstOrFail();
+    }
+
+    /**
      * Create a permissions for a resource.
      *
-     * @param $resource
+     * @param  string  $resource
      * @param  bool  $system
      * @return \Illuminate\Support\Collection
      */
-    public static function createResource($resource, $system = false)
+    public static function createResource(string $resource, $system = false)
     {
         $group = Str::title($resource);
         $slug = Str::slug($group);
