@@ -15,7 +15,6 @@ class PermissionMiddlewareTest extends TestCase
     /** @test */
     public function it_can_access_permission_protected_routes()
     {
-        resolve(GateRegistrar::class)->register();
         Auth::login($this->admin);
 
         $middleware = new PermissionMiddleware;

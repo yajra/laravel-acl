@@ -14,8 +14,6 @@ class HasRoleAndPermissionTest extends TestCase
     /** @test */
     public function is_can_assign_permissions_directly_to_user()
     {
-        resolve(GateRegistrar::class)->register();
-
         /** @var UserWithPermission $user */
         $user = UserWithPermission::forceCreate([
             'name' => 'User with Permissions',
