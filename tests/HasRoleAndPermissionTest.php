@@ -3,10 +3,9 @@
 namespace Yajra\Acl\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Acl\GateRegistrar;
-use Yajra\Acl\Middleware\PermissionMiddleware;
+use Yajra\Acl\Models\Permission;
 use Yajra\Acl\Tests\Models\UserWithPermission;
 
 class HasRoleAndPermissionTest extends TestCase
@@ -14,7 +13,7 @@ class HasRoleAndPermissionTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function it_can_access_permission_protected_routes()
+    public function is_can_assign_permissions_directly_to_user()
     {
         resolve(GateRegistrar::class)->register();
 
@@ -26,15 +25,12 @@ class HasRoleAndPermissionTest extends TestCase
 
         Auth::login($user);
 
-        $middleware = new PermissionMiddleware;
-
-        $this->expectExceptionMessage('You are not authorized to access this resource.');
-        $response = $middleware->handle(new Request(), function () {
-            return 'Pass';
-        }, 'article.create');
+        $this->assertFalse($user->can('article.create'));
+        $this->assertFalse(auth()->user()->can('article.create'));
 
         $user->grantPermissionBySlug('article.create');
 
-        $this->assertEquals('Pass', $response);
+        $this->assertTrue($user->can('article.create'));
+        $this->assertTrue(auth()->user()->can('article.create'));
     }
 }

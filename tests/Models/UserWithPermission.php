@@ -16,11 +16,11 @@ class UserWithPermission extends Authenticatable
 
     public function permissions(): BelongsToMany
     {
-        return $this->belongsToMany(Permission::class, 'permission_user', 'user_id')->withTimestamps();
+        return $this->belongsToMany(Permission::class, 'permission_user', 'user_id', 'permission_id')->withTimestamps();
     }
 
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class, 'permission_role', 'role_id')->withTimestamps();
+        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id')->withTimestamps();
     }
 }

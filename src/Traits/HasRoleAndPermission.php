@@ -15,6 +15,39 @@ trait HasRoleAndPermission
         HasRole::getPermissions as getRolePermissions;
     }
 
+    private $permissionClass;
+
+    /**
+     * Grant user permission by slug.
+     *
+     * @param  string|array  $slug
+     */
+    public function grantPermissionBySlug($slug)
+    {
+        $this->getPermissionClass()
+            ->newQuery()
+            ->whereIn('slug', (array) $slug)
+            ->each(function ($permission) {
+                $this->grantPermission($permission);
+            });
+
+        $this->load('permissions');
+    }
+
+    /**
+     * Get Permission class.
+     *
+     * @return \Yajra\Acl\Models\Permission
+     */
+    public function getPermissionClass(): Permission
+    {
+        if (!isset($this->permissionClass)) {
+            $this->permissionClass = resolve(config('acl.permission'));
+        }
+
+        return $this->permissionClass;
+    }
+
     /**
      * Grants the given permission to the user.
      *
@@ -26,6 +59,7 @@ trait HasRoleAndPermission
     public function grantPermission($id, array $attributes = [], $touch = true)
     {
         $this->permissions()->attach($id, $attributes, $touch);
+        $this->load('permissions');
     }
 
     /**
@@ -39,35 +73,20 @@ trait HasRoleAndPermission
     }
 
     /**
-     * Grant user permission by slug.
-     *
-     * @param  string|array  $slug
-     */
-    public function grantPermissionBySlug($slug)
-    {
-        $this->permissions()
-            ->newQuery()
-            ->whereIn('slug', (array) $slug)
-            ->pluck('id')
-            ->each(function ($id) {
-                $this->permissions()->attach($id);
-            });
-    }
-
-    /**
      * Grant user permissions by resource.
      *
      * @param  string|array  $resource
      */
     public function grantPermissionByResource($resource)
     {
-        $this->permissions()
+        $this->getPermissionClass()
             ->newQuery()
             ->whereIn('resource', (array) $resource)
-            ->pluck('id')
-            ->each(function ($id) {
-                $this->permissions()->attach($id);
+            ->each(function ($permission) {
+                $this->grantPermission($permission);
             });
+
+        $this->load('permissions');
     }
 
     /**

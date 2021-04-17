@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
+use Yajra\Acl\Models\Permission;
 use Yajra\Acl\Models\Role;
 
 /**
@@ -45,7 +46,7 @@ trait HasRole
                 }
             }
         } else {
-            $guest = $this->getRoleClass()->whereSlug('guest')->first();
+            $guest = $this->findRoleBySlug('guest');
 
             if ($guest) {
                 return $guest->canAtLeast($permissions);
@@ -110,44 +111,21 @@ trait HasRole
     /**
      * Attach a role to user using slug.
      *
-     * @param $slug
-     * @return bool
+     * @param  string  $slug
      */
-    public function attachRoleBySlug($slug): bool
+    public function attachRoleBySlug(string $slug)
     {
-        $role = $this->getRoleClass()->where('slug', $slug)->first();
-
-        return $this->attachRole($role);
+        $this->attachRole($this->findRoleBySlug($slug));
     }
 
     /**
-     * Attach a role to user
+     * Attach a role to user.
      *
-     * @param  Role  $role
-     * @return boolean
+     * @param  mixed  $role
      */
-    public function attachRole(Role $role): bool
+    public function attachRole($role)
     {
-        return $this->assignRole($role->id);
-    }
-
-    /**
-     * Assigns the given role to the user.
-     *
-     * @param  int  $roleId
-     * @return bool
-     */
-    public function assignRole($roleId = null): bool
-    {
-        $roles = $this->roles;
-
-        if (!$roles->contains($roleId)) {
-            $this->roles()->attach($roleId);
-
-            return true;
-        }
-
-        return false;
+        $this->roles()->attach($role);
     }
 
     /**
@@ -158,6 +136,17 @@ trait HasRole
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(config('acl.role', Role::class))->withTimestamps();
+    }
+
+    /**
+     * Find a role by slug.
+     *
+     * @param  string  $slug
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     */
+    protected function findRoleBySlug(string $slug): ?Role
+    {
+        return $this->getRoleClass()->newQuery()->where('slug', $slug)->first();
     }
 
     /**
@@ -195,22 +184,22 @@ trait HasRole
      * Revokes the given role from the user using slug.
      *
      * @param  string  $slug
-     * @return bool
+     * @return int
      */
-    public function revokeRoleBySlug($slug): bool
+    public function revokeRoleBySlug(string $slug): int
     {
-        $role = $this->getRoleClass()->where('slug', $slug)->first();
-
-        return $this->roles()->detach($role);
+        return $this->roles()->detach(
+            $this->findRoleBySlug($slug)
+        );
     }
 
     /**
      * Revokes the given role from the user.
      *
      * @param  mixed  $role
-     * @return bool
+     * @return int
      */
-    public function revokeRole($role = ""): bool
+    public function revokeRole($role = ""): int
     {
         return $this->roles()->detach($role);
     }
@@ -229,9 +218,9 @@ trait HasRole
     /**
      * Revokes all roles from the user.
      *
-     * @return bool
+     * @return int
      */
-    public function revokeAllRoles(): bool
+    public function revokeAllRoles(): int
     {
         return $this->roles()->detach();
     }
