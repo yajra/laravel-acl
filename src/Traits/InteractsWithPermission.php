@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Yajra\Acl\Models\Permission;
 
 /**
- * @property \Illuminate\Database\Eloquent\Collection permissions
+ * @property \Illuminate\Database\Eloquent\Collection|Permission[] permissions
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 trait InteractsWithPermission
@@ -112,7 +112,11 @@ trait InteractsWithPermission
      */
     public function revokePermission($id = null, $touch = true): int
     {
-        return $this->permissions()->detach($id, $touch);
+        $detached = $this->permissions()->detach($id, $touch);
+
+        $this->load('permissions');
+
+        return  $detached;
     }
 
     /**
@@ -124,7 +128,11 @@ trait InteractsWithPermission
      */
     public function syncPermissions($ids, $detaching = true): array
     {
-        return $this->permissions()->sync($ids, $detaching);
+        $synced = $this->permissions()->sync($ids, $detaching);
+
+        $this->load('permissions');
+
+        return $synced;
     }
 
     /**
@@ -134,7 +142,11 @@ trait InteractsWithPermission
      */
     public function revokeAllPermissions(): int
     {
-        return $this->permissions()->detach();
+        $detached = $this->permissions()->detach();
+
+        $this->load('permissions');
+
+        return $detached;
     }
 
     /**

@@ -5,10 +5,6 @@ namespace Yajra\Acl\Traits;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Yajra\Acl\Models\Permission;
 
-/**
- * @mixin \Illuminate\Database\Eloquent\Model
- * @property Permission[]|\Illuminate\Database\Eloquent\Collection $permissions
- */
 trait HasRoleAndPermission
 {
     use HasRole {

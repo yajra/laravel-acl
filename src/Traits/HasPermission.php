@@ -5,9 +5,6 @@ namespace Yajra\Acl\Traits;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Yajra\Acl\Models\Permission;
 
-/**
- * @property \Illuminate\Database\Eloquent\Collection permissions
- */
 trait HasPermission
 {
     use InteractsWithPermission;
