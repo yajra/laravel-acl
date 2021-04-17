@@ -9,7 +9,7 @@ use Yajra\Acl\Models\Permission;
  * @mixin \Illuminate\Database\Eloquent\Model
  * @property Permission[]|\Illuminate\Database\Eloquent\Collection $permissions
  */
-trait HasUserPermissions
+trait HasRoleAndPermission
 {
     use HasRole {
         HasRole::getPermissions as getRolePermissions;
