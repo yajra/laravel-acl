@@ -1,5 +1,12 @@
 # Changelog
 
+## v6.0.0 - 2021-04-17
+
+- Allow users to directly have permissions. #38
+- Drop support for Laravel 7
+- Update coding style to PHP 7++
+- Fix #7
+
 ## v5.1.0 - 2020-09-09
 
 - Add support for Laravel 8.
