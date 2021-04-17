@@ -2,11 +2,12 @@
 
 namespace Yajra\Acl;
 
+use Exception;
+use Illuminate\Contracts\Auth\Access\Gate as GateContract;
+use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Yajra\Acl\Models\Permission;
-use Illuminate\Support\Collection;
-use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 
 class GateRegistrar
 {
@@ -23,12 +24,12 @@ class GateRegistrar
     /**
      * GateRegistrar constructor.
      *
-     * @param GateContract $gate
-     * @param Repository $cache
+     * @param  GateContract  $gate
+     * @param  Repository  $cache
      */
     public function __construct(GateContract $gate, Repository $cache)
     {
-        $this->gate  = $gate;
+        $this->gate = $gate;
         $this->cache = $cache;
     }
 
@@ -39,12 +40,12 @@ class GateRegistrar
     {
         $this->getPermissions()->each(function ($permission) {
             $ability = $permission->slug;
-            $policy  = function ($user) use ($permission) {
+            $policy = function ($user) use ($permission) {
                 return collect($user->getPermissions())->contains($permission->slug);
             };
 
             if (Str::contains($permission->slug, '@')) {
-                $policy  = $permission->slug;
+                $policy = $permission->slug;
                 $ability = $permission->name;
             }
 
@@ -68,7 +69,7 @@ class GateRegistrar
             } else {
                 return $this->getPermissionClass()->with('roles')->get();
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->cache->forget($key);
 
             return new Collection;

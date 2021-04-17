@@ -9,7 +9,7 @@ class CanAtLeastDirective extends DirectiveAbstract
     /**
      * Can at least blade directive compiler.
      *
-     * @param string|array $permissions
+     * @param  string|array  $permissions
      * @return bool
      * @throws \Exception
      * @throws \Throwable

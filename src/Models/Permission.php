@@ -2,11 +2,12 @@
 
 namespace Yajra\Acl\Models;
 
+use Exception;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Yajra\Acl\Traits\HasRole;
 use Yajra\Acl\Traits\RefreshCache;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @property string resource
@@ -31,43 +32,43 @@ class Permission extends Model
      * Create a permissions for a resource.
      *
      * @param $resource
-     * @param bool $system
+     * @param  bool  $system
      * @return \Illuminate\Support\Collection
      */
     public static function createResource($resource, $system = false)
     {
-        $group       = Str::title($resource);
-        $slug        = Str::slug($group);
+        $group = Str::title($resource);
+        $slug = Str::slug($group);
         $permissions = [
             [
-                'slug'     => $slug . '.viewAny',
+                'slug' => $slug.'.viewAny',
                 'resource' => $group,
-                'name'     => 'View Any ' . $group,
-                'system'   => $system,
+                'name' => 'View Any '.$group,
+                'system' => $system,
             ],
             [
-                'slug'     => $slug . '.view',
+                'slug' => $slug.'.view',
                 'resource' => $group,
-                'name'     => 'View ' . $group,
-                'system'   => $system,
+                'name' => 'View '.$group,
+                'system' => $system,
             ],
             [
-                'slug'     => $slug . '.create',
+                'slug' => $slug.'.create',
                 'resource' => $group,
-                'name'     => 'Create ' . $group,
-                'system'   => $system,
+                'name' => 'Create '.$group,
+                'system' => $system,
             ],
             [
-                'slug'     => $slug . '.update',
+                'slug' => $slug.'.update',
                 'resource' => $group,
-                'name'     => 'Update ' . $group,
-                'system'   => $system,
+                'name' => 'Update '.$group,
+                'system' => $system,
             ],
             [
-                'slug'     => $slug . '.delete',
+                'slug' => $slug.'.delete',
                 'resource' => $group,
-                'name'     => 'Delete ' . $group,
-                'system'   => $system,
+                'name' => 'Delete '.$group,
+                'system' => $system,
             ],
         ];
 
@@ -75,7 +76,7 @@ class Permission extends Model
         foreach ($permissions as $permission) {
             try {
                 $collection->push(static::create($permission));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // permission already exists.
             }
         }

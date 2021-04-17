@@ -98,21 +98,9 @@ trait HasPermission
     }
 
     /**
-     * Revokes the given permission from the role.
-     *
-     * @param  mixed  $id
-     * @param  bool  $touch
-     * @return int
-     */
-    public function revokePermission($id = null, $touch = true): int
-    {
-        return $this->permissions()->detach($id, $touch);
-    }
-
-    /**
      * Revoke permissions by the given slug(/s).
      *
-     * @param string|array $slug
+     * @param  string|array  $slug
      */
     public function revokePermissionBySlug($slug)
     {
@@ -124,6 +112,18 @@ trait HasPermission
             });
 
         $this->load('permissions');
+    }
+
+    /**
+     * Revokes the given permission from the role.
+     *
+     * @param  mixed  $id
+     * @param  bool  $touch
+     * @return int
+     */
+    public function revokePermission($id = null, $touch = true): int
+    {
+        return $this->permissions()->detach($id, $touch);
     }
 
     /**

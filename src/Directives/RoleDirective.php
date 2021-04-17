@@ -7,7 +7,7 @@ class RoleDirective extends DirectiveAbstract
     /**
      * Is Role blade directive compiler.
      *
-     * @param string $role
+     * @param  string  $role
      * @return bool
      */
     public function handle($role): bool
