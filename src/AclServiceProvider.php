@@ -2,16 +2,15 @@
 
 namespace Yajra\Acl;
 
-use Yajra\Acl\Observers\AclModelObserver;
-use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\View\Compilers\BladeCompiler;
 
 class AclServiceProvider extends ServiceProvider
 {
     /**
      * Register any application authentication / authorization services.
      *
-     * @param GateRegistrar $gate
+     * @param  GateRegistrar  $gate
      * @return void
      */
     public function boot(GateRegistrar $gate)
@@ -29,7 +28,7 @@ class AclServiceProvider extends ServiceProvider
      */
     protected function publishConfig()
     {
-        $path = __DIR__ . '/../config/acl.php';
+        $path = __DIR__.'/../config/acl.php';
 
         $this->publishes([$path => config_path('acl.php')], 'laravel-acl');
 
@@ -41,9 +40,9 @@ class AclServiceProvider extends ServiceProvider
      */
     protected function publishMigrations()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../migrations');
         $this->publishes([
-            __DIR__ . '/../migrations' => database_path('migrations'),
+            __DIR__.'/../migrations' => database_path('migrations'),
         ], 'laravel-acl');
     }
 

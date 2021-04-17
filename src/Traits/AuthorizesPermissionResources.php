@@ -5,6 +5,9 @@ namespace Yajra\Acl\Traits;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
 
+/**
+ * @mixin \Illuminate\Routing\Controller
+ */
 trait AuthorizesPermissionResources
 {
     /**
@@ -25,11 +28,11 @@ trait AuthorizesPermissionResources
     /**
      * Authorize a permission resource action based on the incoming request.
      *
-     * @param  string $resource
+     * @param  string  $resource
      * @param  array $options
      * @return void
      */
-    public function authorizePermissionResource($resource, array $options = [])
+    public function authorizePermissionResource(string $resource, array $options = [])
     {
         $permissions = $this->resourcePermissionMap();
         $collection  = new Collection;
@@ -51,7 +54,7 @@ trait AuthorizesPermissionResources
      *
      * @return array
      */
-    protected function resourcePermissionMap()
+    protected function resourcePermissionMap(): array
     {
         if (property_exists($this, 'customPermissionMap') && is_array($this->customPermissionMap)) {
             return array_merge($this->resourcePermissionMap, $this->customPermissionMap);

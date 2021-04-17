@@ -14,7 +14,7 @@ class CanAtLeastDirective extends DirectiveAbstract
      * @throws \Exception
      * @throws \Throwable
      */
-    public function handle($permissions)
+    public function handle($permissions): bool
     {
         if ($this->auth->check()) {
             return $this->auth->user()->canAtLeast((array) $permissions);

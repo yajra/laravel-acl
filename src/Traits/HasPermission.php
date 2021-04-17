@@ -2,6 +2,7 @@
 
 namespace Yajra\Acl\Traits;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Yajra\Acl\Models\Permission;
 
 /**
@@ -27,7 +28,7 @@ trait HasPermission
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function permissions()
+    public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(config('acl.permission', Permission::class))->withTimestamps();
     }
@@ -35,13 +36,13 @@ trait HasPermission
     /**
      * Revokes the given permission from the role.
      *
-     * @param mixed $ids
+     * @param mixed $id
      * @param bool $touch
      * @return int
      */
-    public function revokePermission($ids = null, $touch = true)
+    public function revokePermission($id = null, $touch = true): int
     {
-        return $this->permissions()->detach($ids, $touch);
+        return $this->permissions()->detach($id, $touch);
     }
 
     /**
@@ -51,7 +52,7 @@ trait HasPermission
      * @param bool $detaching
      * @return array
      */
-    public function syncPermissions($ids, $detaching = true)
+    public function syncPermissions($ids, $detaching = true): array
     {
         return $this->permissions()->sync($ids, $detaching);
     }
@@ -61,7 +62,7 @@ trait HasPermission
      *
      * @return int
      */
-    public function revokeAllPermissions()
+    public function revokeAllPermissions(): int
     {
         return $this->permissions()->detach();
     }
@@ -69,10 +70,10 @@ trait HasPermission
     /**
      * Checks if the role has the given permission.
      *
-     * @param string $permission
+     * @param array|string $permission
      * @return bool
      */
-    public function can($permission)
+    public function can($permission): bool
     {
         $permissions = $this->getPermissions();
 
@@ -81,7 +82,7 @@ trait HasPermission
             $intersection      = array_intersect($permissions, $permission);
             $intersectionCount = count($intersection);
 
-            return ($permissionCount == $intersectionCount) ? true : false;
+            return $permissionCount == $intersectionCount;
         } else {
             return in_array($permission, $permissions);
         }
@@ -92,7 +93,7 @@ trait HasPermission
      *
      * @return array
      */
-    public function getPermissions()
+    public function getPermissions(): array
     {
         return $this->permissions->pluck('slug')->toArray();
     }
@@ -103,13 +104,13 @@ trait HasPermission
      * @param array $permission
      * @return bool
      */
-    public function canAtLeast(array $permission = [])
+    public function canAtLeast(array $permission = []): bool
     {
         $permissions = $this->getPermissions();
 
         $intersection      = array_intersect($permissions, $permission);
         $intersectionCount = count($intersection);
 
-        return ($intersectionCount > 0) ? true : false;
+        return $intersectionCount > 0;
     }
 }

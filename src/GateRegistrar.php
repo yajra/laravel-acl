@@ -57,7 +57,7 @@ class GateRegistrar
      *
      * @return Collection
      */
-    protected function getPermissions()
+    protected function getPermissions(): Collection
     {
         $key = config('acl.cache.key', 'permissions.policies');
         try {
@@ -78,7 +78,7 @@ class GateRegistrar
     /**
      * @return Permission
      */
-    protected function getPermissionClass()
+    protected function getPermissionClass(): Permission
     {
         return resolve(config('acl.permission', Permission::class));
     }
