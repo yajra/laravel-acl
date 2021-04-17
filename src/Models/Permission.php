@@ -5,6 +5,7 @@ namespace Yajra\Acl\Models;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 use Yajra\Acl\Traits\HasRole;
 use Yajra\Acl\Traits\RefreshCache;
@@ -82,5 +83,16 @@ class Permission extends Model
         }
 
         return $collection;
+    }
+
+    /**
+     * Permission can belong to many users.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(config('acl.user', config('auth.providers.users.model')))
+            ->withTimestamps();
     }
 }
