@@ -5,7 +5,6 @@ namespace Yajra\Acl\Tests;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Acl\GateRegistrar;
-use Yajra\Acl\Models\Permission;
 use Yajra\Acl\Tests\Models\UserWithPermission;
 
 class HasRoleAndPermissionTest extends TestCase
