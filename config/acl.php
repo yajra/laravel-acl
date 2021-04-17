@@ -4,7 +4,7 @@ return [
     /**
      * User class used for ACL.
      */
-    'user'       => App\User::class,
+    'user'       => App\Models\User::class,
 
     /**
      * Role class used for ACL.
