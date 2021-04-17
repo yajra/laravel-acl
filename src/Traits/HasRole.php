@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
-use Yajra\Acl\Models\Permission;
 use Yajra\Acl\Models\Role;
 
 /**
@@ -54,6 +53,17 @@ trait HasRole
         }
 
         return $can;
+    }
+
+    /**
+     * Find a role by slug.
+     *
+     * @param  string  $slug
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     */
+    protected function findRoleBySlug(string $slug): ?Role
+    {
+        return $this->getRoleClass()->newQuery()->where('slug', $slug)->first();
     }
 
     /**
@@ -136,17 +146,6 @@ trait HasRole
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(config('acl.role', Role::class))->withTimestamps();
-    }
-
-    /**
-     * Find a role by slug.
-     *
-     * @param  string  $slug
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
-     */
-    protected function findRoleBySlug(string $slug): ?Role
-    {
-        return $this->getRoleClass()->newQuery()->where('slug', $slug)->first();
     }
 
     /**
