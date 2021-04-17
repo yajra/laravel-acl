@@ -2,20 +2,23 @@
 
 namespace Yajra\Acl\Tests;
 
-use Yajra\Acl\Models\Role;
-use Illuminate\Support\Str;
-use Yajra\Acl\Models\Permission;
-use Monolog\Handler\TestHandler;
-use Yajra\Acl\Tests\Models\User;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Database\Schema\Blueprint;
-use Orchestra\Testbench\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabaseState;
+use Illuminate\Support\Str;
+use Monolog\Handler\TestHandler;
+use Orchestra\Testbench\TestCase as BaseTestCase;
+use Yajra\Acl\GateRegistrar;
+use Yajra\Acl\Models\Permission;
+use Yajra\Acl\Models\Role;
+use Yajra\Acl\Tests\Models\User;
 
 abstract class TestCase extends BaseTestCase
 {
+    /** @var User */
     protected $admin;
 
+    /** @var User */
     protected $user;
 
     protected function setUp(): void
@@ -24,6 +27,7 @@ abstract class TestCase extends BaseTestCase
 
         $this->runDatabaseMigrations();
         $this->seedDatabase();
+        $this->registerGates();
     }
 
     protected function runDatabaseMigrations()
@@ -51,7 +55,7 @@ abstract class TestCase extends BaseTestCase
     protected function seedDatabase()
     {
         Permission::createResource('article', true);
-        $adminRole   = $this->createRole('admin');
+        $adminRole = $this->createRole('admin');
         $permissions = Permission::query()->pluck('id')->toArray();
         $adminRole->syncPermissions($permissions);
 
@@ -67,21 +71,21 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * @param string $role
+     * @param  string  $role
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|Role
      */
     protected function createRole($role)
     {
         return Role::query()->create([
-            'name'        => Str::title($role),
-            'slug'        => Str::slug($role),
-            'system'      => true,
+            'name' => Str::title($role),
+            'slug' => Str::slug($role),
+            'system' => true,
             'description' => "{$role} role.",
         ]);
     }
 
     /**
-     * @param string $user
+     * @param  string  $user
      * @return User|\Illuminate\Database\Eloquent\Model
      */
     protected function createUser($user = null)
@@ -89,15 +93,20 @@ abstract class TestCase extends BaseTestCase
         $user = $user ?: Str::random(10);
 
         return User::query()->forceCreate([
-            'name'  => Str::title($user),
-            'email' => $user . '@example.com',
+            'name' => Str::title($user),
+            'email' => $user.'@example.com',
         ]);
+    }
+
+    protected function registerGates(): void
+    {
+        resolve(GateRegistrar::class)->register();
     }
 
     /**
      * Resolve application HTTP Kernel implementation.
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param  \Illuminate\Foundation\Application  $app
      * @return void
      */
     protected function resolveApplicationHttpKernel($app)
@@ -108,7 +117,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Set up the environment.
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param  \Illuminate\Foundation\Application  $app
      */
     protected function getEnvironmentSetUp($app)
     {
@@ -119,12 +128,12 @@ abstract class TestCase extends BaseTestCase
 
         $app['config']->set('database.default', 'sqlite');
         $app['config']->set('database.connections.sqlite', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
 
-        $app['config']->set('view.paths', [__DIR__ . '/resources/views']);
+        $app['config']->set('view.paths', [__DIR__.'/resources/views']);
         $app['config']->set('auth.providers.users.model', User::class);
         $app['log']->getLogger()->pushHandler(new TestHandler());
     }

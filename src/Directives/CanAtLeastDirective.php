@@ -9,12 +9,12 @@ class CanAtLeastDirective extends DirectiveAbstract
     /**
      * Can at least blade directive compiler.
      *
-     * @param string|array $permissions
+     * @param  string|array  $permissions
      * @return bool
      * @throws \Exception
      * @throws \Throwable
      */
-    public function handle($permissions)
+    public function handle($permissions): bool
     {
         if ($this->auth->check()) {
             return $this->auth->user()->canAtLeast((array) $permissions);

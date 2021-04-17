@@ -4,12 +4,12 @@ return [
     /**
      * User class used for ACL.
      */
-    'user'       => App\User::class,
+    'user' => App\Models\User::class,
 
     /**
      * Role class used for ACL.
      */
-    'role'       => Yajra\Acl\Models\Role::class,
+    'role' => Yajra\Acl\Models\Role::class,
 
     /**
      * Permission class used for ACL.
@@ -19,7 +19,7 @@ return [
     /**
      * Cache config.
      */
-    'cache'      => [
+    'cache' => [
         'enabled' => true,
 
         'key' => 'permissions.policies',

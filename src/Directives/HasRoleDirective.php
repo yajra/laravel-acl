@@ -7,10 +7,10 @@ class HasRoleDirective extends DirectiveAbstract
     /**
      * Handle hasRole directive.
      *
-     * @param string|array $roles
+     * @param  string|array  $roles
      * @return bool
      */
-    public function handle($roles)
+    public function handle($roles): bool
     {
         if ($this->auth->check()) {
             return $this->auth->user()->hasRole($roles);

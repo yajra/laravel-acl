@@ -18,7 +18,7 @@ This package was based on the great package [Caffeinated/Shinobi](https://github
 Via Composer
 
 ``` bash
-$ composer require yajra/laravel-acl:^5.0
+$ composer require yajra/laravel-acl:^6.0
 ```
 
 ## Configuration
@@ -77,4 +77,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-downloads]: https://packagist.org/packages/yajra/laravel-acl
 [link-author]: https://github.com/yajra
 [link-contributors]: ../../contributors
-[link-docs]: https://yajrabox.com/docs/laravel-acl/3.0
+[link-docs]: https://yajrabox.com/docs/laravel-acl/master

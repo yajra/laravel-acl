@@ -5,6 +5,9 @@ namespace Yajra\Acl\Traits;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
 
+/**
+ * @mixin \Illuminate\Routing\Controller
+ */
 trait AuthorizesPermissionResources
 {
     /**
@@ -13,36 +16,36 @@ trait AuthorizesPermissionResources
      * @var array
      */
     protected $resourcePermissionMap = [
-        'index'   => 'viewAny',
-        'create'  => 'create',
-        'store'   => 'create',
-        'show'    => 'view',
-        'edit'    => 'update',
-        'update'  => 'update',
+        'index' => 'viewAny',
+        'create' => 'create',
+        'store' => 'create',
+        'show' => 'view',
+        'edit' => 'update',
+        'update' => 'update',
         'destroy' => 'delete',
     ];
 
     /**
      * Authorize a permission resource action based on the incoming request.
      *
-     * @param  string $resource
-     * @param  array $options
+     * @param  string  $resource
+     * @param  array  $options
      * @return void
      */
-    public function authorizePermissionResource($resource, array $options = [])
+    public function authorizePermissionResource(string $resource, array $options = [])
     {
         $permissions = $this->resourcePermissionMap();
-        $collection  = new Collection;
+        $collection = new Collection;
         foreach ($permissions as $method => $ability) {
             $collection->push(new Fluent([
                 'ability' => $ability,
-                'method'  => $method,
+                'method' => $method,
             ]));
         }
 
         $collection->groupBy('ability')->each(function ($permission, $ability) use ($resource, $options) {
             $this->middleware("can:{$resource}.{$ability}")
-                 ->only($permission->pluck('method')->toArray());
+                ->only($permission->pluck('method')->toArray());
         });
     }
 
@@ -51,7 +54,7 @@ trait AuthorizesPermissionResources
      *
      * @return array
      */
-    protected function resourcePermissionMap()
+    protected function resourcePermissionMap(): array
     {
         if (property_exists($this, 'customPermissionMap') && is_array($this->customPermissionMap)) {
             return array_merge($this->resourcePermissionMap, $this->customPermissionMap);
