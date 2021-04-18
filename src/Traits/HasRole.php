@@ -260,25 +260,6 @@ trait HasRole
     }
 
     /**
-     * Magic __call method to handle dynamic methods.
-     *
-     * @param  string  $method
-     * @param  array  $arguments
-     * @return mixed
-     */
-    public function __call($method, $arguments = [])
-    {
-        // Handle canDoSomething() methods
-        if (Str::startsWith($method, 'can') and $method !== 'can') {
-            $permission = substr($method, 3);
-
-            return $this->can($permission);
-        }
-
-        return parent::__call($method, $arguments);
-    }
-
-    /**
      * Check if the given entity/model is owned by the user.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $entity
