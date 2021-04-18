@@ -1,6 +1,6 @@
 # Changelog
 
-## [UNRELEASED] v6.1.0 - 2021-04-18
+## v6.1.0 - 2021-04-18
 
 - Note: several breaking changes were added on this release.
 - Drop isRole and canMagic methods.
@@ -10,6 +10,7 @@
 - Fix refreshing of cache and updating policies registration.
 - Update resource pattern from `action.slug` to `slug-action`. Ex. `posts.create` will now become `create-posts`.
 - Allow comma separated role middleware.
+- Remove `@hasRole` redundant directive. Use `@role`.
 
 ## v6.0.0 - 2021-04-17
 
