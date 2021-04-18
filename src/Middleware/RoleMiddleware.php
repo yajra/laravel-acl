@@ -4,6 +4,7 @@ namespace Yajra\Acl\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class RoleMiddleware
 {
@@ -17,7 +18,7 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, string $role)
     {
-        $role = explode('|', $role);
+        $role = Str::of($role)->split('/[|,]/')->toArray();
         if (!auth()->user() || !auth()->user()->hasRole($role)) {
             if ($request->ajax()) {
                 return response()->json([

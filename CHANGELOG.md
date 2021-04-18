@@ -9,6 +9,7 @@
 - Added a lot of TESTS...
 - Fix refreshing of cache and updating policies registration.
 - Update resource pattern from `action.slug` to `slug-action`. Ex. `posts.create` will now become `create-posts`.
+- Allow comma separated role middleware.
 
 ## v6.0.0 - 2021-04-17
 

@@ -24,6 +24,18 @@ class RoleMiddlewareTest extends TestCase
         $this->actingAs($this->admin)->get('/')->assertSee('Pass');
     }
 
+    /** @test */
+    public function it_can_allows_access_on_comma_separated_roles()
+    {
+        $this->actingAs($this->admin)->get('/comma')->assertSee('Pass');
+    }
+
+    /** @test */
+    public function it_can_allows_access_on_pipe_separated_roles()
+    {
+        $this->actingAs($this->admin)->get('/pipe')->assertSee('Pass');
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -31,5 +43,13 @@ class RoleMiddlewareTest extends TestCase
         $this->app['router']->get('/', function () {
             return 'Pass';
         })->middleware(['web', 'role:admin']);
+
+        $this->app['router']->get('/comma', function () {
+            return 'Pass';
+        })->middleware(['web', 'role:admin,user']);
+
+        $this->app['router']->get('/pipe', function () {
+            return 'Pass';
+        })->middleware(['web', 'role:admin|user']);
     }
 }
