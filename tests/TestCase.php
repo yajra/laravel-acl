@@ -74,7 +74,7 @@ abstract class TestCase extends BaseTestCase
      * @param  string  $role
      * @return Role
      */
-    protected function createRole($role): Role
+    protected function createRole(string $role): Role
     {
         return Role::create([
             'name' => Str::title($role),

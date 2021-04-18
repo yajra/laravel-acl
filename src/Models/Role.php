@@ -8,6 +8,9 @@ use Yajra\Acl\Traits\HasPermission;
 use Yajra\Acl\Traits\RefreshCache;
 
 /**
+ * @property string name
+ * @property string slug
+ * @property string description
  * @property bool system
  */
 class Role extends Model

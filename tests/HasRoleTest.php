@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Yajra\Acl\Models\Role;
+use Yajra\Acl\Tests\Models\User;
 
 class HasRoleTest extends TestCase
 {
@@ -165,5 +166,23 @@ class HasRoleTest extends TestCase
 
         $this->assertFalse(Auth::user()->hasRole('admin'));
         $this->assertFalse($this->admin->hasRole('admin'));
+    }
+
+    /** @test */
+    public function it_can_query_with_having_roles_scopes()
+    {
+        $adminUser = $this->createUser('Yajra');
+        $supportUser = $this->createUser('Kloe');
+        $adminUser->attachRole($manager = $this->createRole('manager'));
+        $adminUser->attachRole($user = $this->createRole('user'));
+        $adminUser->attachRole($support = $this->createRole('support'));
+
+        $supportUser->attachRole($support);
+
+        $roles = User::havingRoles([$manager->getKey(), $support->getKey()])->get();
+        $this->assertCount(2, $roles);
+
+        $roles = User::havingRolesBySlugs([$manager->slug, $user->slug])->get();
+        $this->assertCount(1, $roles);
     }
 }

@@ -10,8 +10,8 @@ use Yajra\Acl\Models\Role;
 
 /**
  * @property \Illuminate\Database\Eloquent\Collection roles
- * @method static Builder havingRoles(array $roleIds)
- * @method static Builder havingRolesBySlugs(array $slugs)
+ * @method static Builder havingRoles($roleIds)
+ * @method static Builder havingRolesBySlugs($slugs)
  */
 trait HasRole
 {
