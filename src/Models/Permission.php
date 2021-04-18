@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 use Yajra\Acl\Traits\HasRole;
+use Yajra\Acl\Traits\InteractsWithRole;
 use Yajra\Acl\Traits\RefreshCache;
 
 /**
@@ -18,7 +19,7 @@ use Yajra\Acl\Traits\RefreshCache;
  */
 class Permission extends Model
 {
-    use HasRole, RefreshCache;
+    use InteractsWithRole, RefreshCache;
 
     /** @var string */
     protected $table = 'permissions';
