@@ -4,6 +4,7 @@ namespace Yajra\Acl\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 use Yajra\Acl\Models\Role;
@@ -18,12 +19,12 @@ trait HasRole
     private $roleClass;
 
     /**
-     * Check if user have access using any of the acl.
+     * Check if user have access using any of the acl (permissions or roles slug).
      *
-     * @param  array  $acl
+     * @param  string|array  $acl
      * @return boolean
      */
-    public function canAccess(array $acl): bool
+    public function canAccess($acl): bool
     {
         return $this->canAtLeast($acl) || $this->hasRole($acl);
     }
@@ -31,24 +32,27 @@ trait HasRole
     /**
      * Check if user has at least one of the given permissions
      *
-     * @param  array  $permissions
+     * @param  string|array  $permissions
      * @return bool
      */
-    public function canAtLeast(array $permissions): bool
+    public function canAtLeast($permissions): bool
     {
         $can = false;
 
         if (auth()->check()) {
+            /** @var Role $role */
             foreach ($this->roles as $role) {
                 if ($role->canAtLeast($permissions)) {
                     $can = true;
                 }
             }
         } else {
-            $guest = $this->findRoleBySlug('guest');
+            try {
+                $guest = $this->findRoleBySlug('guest');
 
-            if ($guest) {
                 return $guest->canAtLeast($permissions);
+            } catch (ModelNotFoundException $exception) {
+                //
             }
         }
 

@@ -44,14 +44,14 @@ trait HasPermission
     /**
      * Check if the role has at least one of the given permissions.
      *
-     * @param  array  $permission
+     * @param  string|array  $permission
      * @return bool
      */
-    public function canAtLeast(array $permission = []): bool
+    public function canAtLeast($permission): bool
     {
         $permissions = $this->getPermissions();
 
-        $intersection = array_intersect($permissions, $permission);
+        $intersection = array_intersect($permissions, (array) $permission);
         $intersectionCount = count($intersection);
 
         return $intersectionCount > 0;
