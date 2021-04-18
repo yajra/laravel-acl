@@ -21,7 +21,7 @@ class PermissionMiddlewareTest extends TestCase
 
         $response   = $middleware->handle(new Request(), function () {
             return 'Pass';
-        }, 'article.create');
+        }, 'create-article');
 
         $this->assertEquals('Pass', $response);
     }

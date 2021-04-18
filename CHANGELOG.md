@@ -2,11 +2,13 @@
 
 ## [UNRELEASED] v6.1.0 - 2021-04-18
 
+- Note: several breaking changes were added on this release.
 - Drop isRole and canMagic methods.
 - Fix grant, revoke, sync methods to match Laravel's attach, detach, sync method signature.
 - Refactor all interactions with permission to its own trait.
-- Add TESTS...
+- Added a lot of TESTS...
 - Fix refreshing of cache and updating policies registration.
+- Update resource pattern from `action.slug` to `slug-action`. Ex. `posts.create` will now become `create-posts`.
 
 ## v6.0.0 - 2021-04-17
 

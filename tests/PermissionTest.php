@@ -18,11 +18,11 @@ class PermissionTest extends TestCase
         $permissions = Permission::createResource('Users');
         $this->assertCount(5, $permissions);
 
-        $this->assertTrue(Permission::findBySlug('users.viewAny')->exists());
-        $this->assertTrue(Permission::findBySlug('users.view')->exists());
-        $this->assertTrue(Permission::findBySlug('users.create')->exists());
-        $this->assertTrue(Permission::findBySlug('users.update')->exists());
-        $this->assertTrue(Permission::findBySlug('users.delete')->exists());
+        $this->assertTrue(Permission::findBySlug('viewAny-users')->exists());
+        $this->assertTrue(Permission::findBySlug('view-users')->exists());
+        $this->assertTrue(Permission::findBySlug('create-users')->exists());
+        $this->assertTrue(Permission::findBySlug('update-users')->exists());
+        $this->assertTrue(Permission::findBySlug('delete-users')->exists());
     }
 
     /** @test */

@@ -105,15 +105,15 @@ class HasRoleTest extends TestCase
         /** @var Role $role */
         $role = $this->admin->roles->first();
 
-        $this->assertTrue(Gate::allows('article.create'));
-        $this->assertTrue(Auth::user()->can('article.create'));
-        $this->assertTrue($this->admin->can('article.create'));
+        $this->assertTrue(Gate::allows('create-article'));
+        $this->assertTrue(Auth::user()->can('create-article'));
+        $this->assertTrue($this->admin->can('create-article'));
 
-        $role->revokePermissionBySlug('article.create');
+        $role->revokePermissionBySlug('create-article');
 
-        $this->assertTrue(Gate::denies('article.create'));
-        $this->assertTrue(Auth::user()->cannot('article.create'));
-        $this->assertTrue($this->admin->cannot('article.create'));
+        $this->assertTrue(Gate::denies('create-article'));
+        $this->assertTrue(Auth::user()->cannot('create-article'));
+        $this->assertTrue($this->admin->cannot('create-article'));
     }
 
     /** @test */
@@ -124,12 +124,12 @@ class HasRoleTest extends TestCase
         /** @var Role $role */
         $role = $this->admin->roles->first();
 
-        $permissions = ['article.create', 'article.update'];
+        $permissions = ['create-article', 'update-article'];
         $this->assertTrue(Gate::any($permissions));
         $this->assertTrue(Auth::user()->canAtLeast($permissions));
         $this->assertTrue($this->admin->canAtLeast($permissions));
 
-        $role->revokePermissionBySlug('article.create');
+        $role->revokePermissionBySlug('create-article');
 
         $this->assertTrue(Gate::any($permissions));
         $this->assertTrue(Auth::user()->canAtLeast($permissions));
@@ -144,11 +144,11 @@ class HasRoleTest extends TestCase
         /** @var Role $role */
         $role = $this->admin->roles->first();
 
-        $permissions = ['article.create', 'admin'];
+        $permissions = ['create-article', 'admin'];
         $this->assertTrue(Auth::user()->canAccess($permissions));
         $this->assertTrue($this->admin->canAccess($permissions));
 
-        $role->revokePermissionBySlug('article.create');
+        $role->revokePermissionBySlug('create-article');
 
         $this->assertTrue(Auth::user()->canAccess($permissions));
         $this->assertTrue($this->admin->canAccess($permissions));

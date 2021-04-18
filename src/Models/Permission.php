@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
-use Yajra\Acl\Traits\HasRole;
 use Yajra\Acl\Traits\InteractsWithRole;
 use Yajra\Acl\Traits\RefreshCache;
 
@@ -54,31 +53,31 @@ class Permission extends Model
         $slug = Str::slug($group);
         $permissions = [
             [
-                'slug' => $slug.'.viewAny',
+                'slug' => 'viewAny-'.$slug,
                 'resource' => $group,
                 'name' => 'View Any '.$group,
                 'system' => $system,
             ],
             [
-                'slug' => $slug.'.view',
+                'slug' => 'view-'.$slug,
                 'resource' => $group,
                 'name' => 'View '.$group,
                 'system' => $system,
             ],
             [
-                'slug' => $slug.'.create',
+                'slug' => 'create-'.$slug,
                 'resource' => $group,
                 'name' => 'Create '.$group,
                 'system' => $system,
             ],
             [
-                'slug' => $slug.'.update',
+                'slug' => 'update-'.$slug,
                 'resource' => $group,
                 'name' => 'Update '.$group,
                 'system' => $system,
             ],
             [
-                'slug' => $slug.'.delete',
+                'slug' => 'delete-'.$slug,
                 'resource' => $group,
                 'name' => 'Delete '.$group,
                 'system' => $system,

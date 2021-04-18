@@ -19,13 +19,13 @@ class HasRoleAndPermissionTest extends TestCase
 
         Auth::login($user);
 
-        $this->assertFalse($user->can('article.create'));
-        $this->assertFalse(auth()->user()->can('article.create'));
+        $this->assertFalse($user->can('create-article'));
+        $this->assertFalse(auth()->user()->can('create-article'));
 
-        $user->grantPermissionBySlug('article.create');
+        $user->grantPermissionBySlug('create-article');
 
-        $this->assertTrue($user->can('article.create'));
-        $this->assertTrue(auth()->user()->can('article.create'));
+        $this->assertTrue($user->can('create-article'));
+        $this->assertTrue(auth()->user()->can('create-article'));
     }
 
     /**
@@ -52,7 +52,7 @@ class HasRoleAndPermissionTest extends TestCase
         $user->grantPermission($this->createPermission('Test'));
         $this->assertCount(1, $user->permissions);
 
-        $user->grantPermissionBySlug('article.create');
+        $user->grantPermissionBySlug('create-article');
         $this->assertCount(2, $user->permissions);
 
         Permission::createResource('Posts');
@@ -68,10 +68,10 @@ class HasRoleAndPermissionTest extends TestCase
         $user->grantPermissionByResource('Posts');
         $this->assertCount(5, $user->permissions);
 
-        $user->revokePermission(Permission::findBySlug('posts.create'));
+        $user->revokePermission(Permission::findBySlug('create-posts'));
         $this->assertCount(4, $user->permissions);
 
-        $user->revokePermissionBySlug('posts.view');
+        $user->revokePermissionBySlug('view-posts');
         $this->assertCount(3, $user->permissions);
 
         $user->revokePermissionByResource('Posts');
