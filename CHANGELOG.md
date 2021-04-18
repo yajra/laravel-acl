@@ -1,5 +1,12 @@
 # Changelog
 
+## [UNRELEASED] v6.1.0 - 2021-04-18
+
+- Drop isRole and canMagic methods.
+- Fix grant, revoke, sync methods to match Laravel's attach, detach, sync method signature.
+- Refactor all interactions with permission to its own trait.
+- Add TESTS...
+
 ## v6.0.0 - 2021-04-17
 
 - Allow users to directly have permissions. #38
