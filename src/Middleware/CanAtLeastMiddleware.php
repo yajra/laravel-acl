@@ -19,7 +19,7 @@ class CanAtLeastMiddleware
     {
         $abilities = is_array($permissions) ? $permissions : explode(',', $permissions);
 
-        if (!auth()->check() || !auth()->user()->canAtLeast($abilities)) {
+        if (!auth()->check() || !auth()->user()->canAny($abilities)) {
             abort(403, 'You are not allowed to view this content!');
         }
 
