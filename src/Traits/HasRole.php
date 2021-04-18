@@ -264,13 +264,6 @@ trait HasRole
      */
     public function __call($method, $arguments = [])
     {
-        // Handle isRoleSlug() methods
-        if (Str::startsWith($method, 'is') and $method !== 'is') {
-            $role = substr($method, 2);
-
-            return $this->isRole($role);
-        }
-
         // Handle canDoSomething() methods
         if (Str::startsWith($method, 'can') and $method !== 'can') {
             $permission = substr($method, 3);
@@ -279,25 +272,6 @@ trait HasRole
         }
 
         return parent::__call($method, $arguments);
-    }
-
-    /**
-     * Checks if the user has the given role.
-     *
-     * @param  string  $slug
-     * @return bool
-     */
-    public function isRole(string $slug): bool
-    {
-        $slug = Str::lower($slug);
-
-        foreach ($this->roles as $role) {
-            if ($role->slug == $slug) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

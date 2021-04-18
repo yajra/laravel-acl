@@ -60,14 +60,6 @@ class AclServiceProvider extends ServiceProvider
             return '<?php endif; ?>';
         });
 
-        /** @deprecated Please use @role directive. */
-        $blade->directive('isRole', function ($expression) {
-            return "<?php if (app('laravel-acl.directives.role')->handle({$expression})): ?>";
-        });
-        $blade->directive('endIsRole', function ($expression) {
-            return '<?php endif; ?>';
-        });
-
         $blade->directive('role', function ($expression) {
             return "<?php if (app('laravel-acl.directives.role')->handle({$expression})): ?>";
         });

@@ -7,13 +7,13 @@ class RoleDirective extends DirectiveAbstract
     /**
      * Is Role blade directive compiler.
      *
-     * @param  string  $role
+     * @param  string|array  $role
      * @return bool
      */
     public function handle($role): bool
     {
         if ($this->auth->check()) {
-            return $this->auth->user()->isRole($role);
+            return $this->auth->user()->hasRole($role);
         }
 
         return $role === 'guest';
