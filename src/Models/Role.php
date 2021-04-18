@@ -29,7 +29,8 @@ class Role extends Model
      * Find a role by slug.
      *
      * @param  string  $slug
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|static
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public static function findBySlug(string $slug)
     {

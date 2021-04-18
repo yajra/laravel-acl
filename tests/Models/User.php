@@ -8,4 +8,6 @@ use Yajra\Acl\Traits\HasRole;
 class User extends Authenticatable
 {
     use HasRole;
+
+    protected $guarded = [];
 }

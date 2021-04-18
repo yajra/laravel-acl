@@ -3,12 +3,11 @@
 namespace Yajra\Acl\Tests\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Yajra\Acl\Models\Permission;
 use Yajra\Acl\Models\Role;
 use Yajra\Acl\Traits\HasRoleAndPermission;
 
-class UserWithPermission extends Authenticatable
+class UserWithPermission extends User
 {
     use HasRoleAndPermission;
 

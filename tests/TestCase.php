@@ -72,11 +72,11 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * @param  string  $role
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|Role
+     * @return Role
      */
-    protected function createRole($role)
+    protected function createRole($role): Role
     {
-        return Role::query()->create([
+        return Role::create([
             'name' => Str::title($role),
             'slug' => Str::slug($role),
             'system' => true,
@@ -86,13 +86,13 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * @param  string  $user
-     * @return User|\Illuminate\Database\Eloquent\Model
+     * @return User
      */
-    protected function createUser($user = null)
+    protected function createUser($user = null): User
     {
         $user = $user ?: Str::random(10);
 
-        return User::query()->forceCreate([
+        return User::create([
             'name' => Str::title($user),
             'email' => $user.'@example.com',
         ]);
@@ -101,6 +101,21 @@ abstract class TestCase extends BaseTestCase
     protected function registerGates(): void
     {
         resolve(GateRegistrar::class)->register();
+    }
+
+    /**
+     * @param  string  $permission
+     * @param  bool  $system
+     * @return Permission
+     */
+    protected function createPermission(string $permission, $system = true): Permission
+    {
+        return Permission::create([
+            'resource' => 'Tests',
+            'name' => $permission,
+            'slug' => Str::slug($permission),
+            'system' => $system,
+        ]);
     }
 
     /**

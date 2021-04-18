@@ -59,11 +59,12 @@ trait HasRole
      * Find a role by slug.
      *
      * @param  string  $slug
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     * @return \Illuminate\Database\Eloquent\Model|static
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    protected function findRoleBySlug(string $slug): ?Role
+    protected function findRoleBySlug(string $slug): Role
     {
-        return $this->getRoleClass()->newQuery()->where('slug', $slug)->first();
+        return $this->getRoleClass()->newQuery()->where('slug', $slug)->firstOrFail();
     }
 
     /**
@@ -179,9 +180,13 @@ trait HasRole
      */
     public function revokeRoleBySlug(string $slug): int
     {
-        return $this->roles()->detach(
+        $detached = $this->roles()->detach(
             $this->findRoleBySlug($slug)
         );
+
+        $this->load('roles');
+
+        return $detached;
     }
 
     /**
@@ -192,7 +197,11 @@ trait HasRole
      */
     public function revokeRole($role = ""): int
     {
-        return $this->roles()->detach($role);
+        $detached = $this->roles()->detach($role);
+
+        $this->load('roles');
+
+        return $detached;
     }
 
     /**
@@ -203,7 +212,11 @@ trait HasRole
      */
     public function syncRoles(array $roles): array
     {
-        return $this->roles()->sync($roles);
+        $synced = $this->roles()->sync($roles);
+
+        $this->load('roles');
+
+        return $synced;
     }
 
     /**
@@ -213,7 +226,11 @@ trait HasRole
      */
     public function revokeAllRoles(): int
     {
-        return $this->roles()->detach();
+        $detached = $this->roles()->detach();
+
+        $this->load('roles');
+
+        return $detached;
     }
 
     /**
