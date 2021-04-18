@@ -18,11 +18,11 @@ class CanAtLeastDirective extends DirectiveAbstract
     {
         if ($this->auth->check()) {
             return $this->auth->user()->canAtLeast((array) $permissions);
-        } else {
-            $guest = Role::whereSlug('guest')->first();
-            if ($guest) {
-                return $guest->canAtLeast((array) $permissions);
-            }
+        }
+
+        $guest = Role::whereSlug('guest')->first();
+        if ($guest) {
+            return $guest->canAtLeast((array) $permissions);
         }
 
         return false;
