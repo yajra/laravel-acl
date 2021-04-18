@@ -104,6 +104,23 @@ trait InteractsWithPermission
     }
 
     /**
+     * Revoke permissions by resource.
+     *
+     * @param string|array $resource
+     */
+    public function revokePermissionByResource($resource)
+    {
+        $this->getPermissionClass()
+            ->newQuery()
+            ->whereIn('resource', (array) $resource)
+            ->each(function ($permission) {
+                $this->revokePermission($permission);
+            });
+
+        $this->load('permissions');
+    }
+
+    /**
      * Revokes the given permission.
      *
      * @param  mixed  $id
