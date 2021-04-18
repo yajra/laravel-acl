@@ -6,6 +6,7 @@
 - Fix grant, revoke, sync methods to match Laravel's attach, detach, sync method signature.
 - Refactor all interactions with permission to its own trait.
 - Add TESTS...
+- Fix refreshing of cache and updating policies registration.
 
 ## v6.0.0 - 2021-04-17
 

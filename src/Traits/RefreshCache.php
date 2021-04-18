@@ -2,6 +2,8 @@
 
 namespace Yajra\Acl\Traits;
 
+use Yajra\Acl\GateRegistrar;
+
 trait RefreshCache
 {
     public static function bootRefreshCache()
@@ -12,6 +14,7 @@ trait RefreshCache
             }
 
             app('cache.store')->forget(config('acl.cache.key', 'permissions.policies'));
+            app(GateRegistrar::class)->register();
         });
 
         static::deleted(function () {
@@ -20,6 +23,7 @@ trait RefreshCache
             }
 
             app('cache.store')->forget(config('acl.cache.key', 'permissions.policies'));
+            app(GateRegistrar::class)->register();
         });
     }
 }
