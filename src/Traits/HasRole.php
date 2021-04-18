@@ -175,14 +175,18 @@ trait HasRole
     /**
      * Revokes the given role from the user using slug.
      *
-     * @param  string  $slug
+     * @param  string|array  $slug
+     * @param  bool  $touch
      * @return int
      */
-    public function revokeRoleBySlug(string $slug): int
+    public function revokeRoleBySlug($slug, $touch = true): int
     {
-        $detached = $this->roles()->detach(
-            $this->findRoleBySlug($slug)
-        );
+        $roles = $this->getRoleClass()
+            ->newQuery()
+            ->whereIn('slug', (array) $slug)
+            ->get();
+
+        $detached = $this->roles()->detach($roles, $touch);
 
         $this->load('roles');
 
@@ -193,11 +197,12 @@ trait HasRole
      * Revokes the given role from the user.
      *
      * @param  mixed  $role
+     * @param  bool  $touch
      * @return int
      */
-    public function revokeRole($role = ""): int
+    public function revokeRole($role, $touch = true): int
     {
-        $detached = $this->roles()->detach($role);
+        $detached = $this->roles()->detach($role, $touch);
 
         $this->load('roles');
 
@@ -207,12 +212,13 @@ trait HasRole
     /**
      * Syncs the given role(s) with the user.
      *
-     * @param  array  $roles
+     * @param  \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array  $roles
+     * @param  bool  $detaching
      * @return array
      */
-    public function syncRoles(array $roles): array
+    public function syncRoles($roles, $detaching = true): array
     {
-        $synced = $this->roles()->sync($roles);
+        $synced = $this->roles()->sync($roles, $detaching);
 
         $this->load('roles');
 
