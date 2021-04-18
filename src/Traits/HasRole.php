@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Str;
 use Yajra\Acl\Models\Role;
 
 /**
@@ -123,16 +122,22 @@ trait HasRole
     public function attachRoleBySlug(string $slug)
     {
         $this->attachRole($this->findRoleBySlug($slug));
+
+        $this->load('roles');
     }
 
     /**
      * Attach a role to user.
      *
      * @param  mixed  $role
+     * @param  array  $attributes
+     * @param  bool  $touch
      */
-    public function attachRole($role)
+    public function attachRole($role, array $attributes = [], $touch = true)
     {
-        $this->roles()->attach($role);
+        $this->roles()->attach($role, $attributes, $touch);
+
+        $this->load('roles');
     }
 
     /**
@@ -149,10 +154,10 @@ trait HasRole
      * Query scope for user having the given roles.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  array  $roles
+     * @param  mixed  $roles
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeHavingRoles(Builder $query, array $roles): Builder
+    public function scopeHavingRoles(Builder $query, $roles): Builder
     {
         return $query->whereExists(function ($query) use ($roles) {
             $query->selectRaw('1')
@@ -166,10 +171,10 @@ trait HasRole
      * Query scope for user having the given roles by slugs.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  array  $slugs
+     * @param  mixed  $slugs
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeHavingRolesBySlugs(Builder $query, array $slugs): Builder
+    public function scopeHavingRolesBySlugs(Builder $query, $slugs): Builder
     {
         return $query->whereHas('roles', function ($query) use ($slugs) {
             $query->whereIn('roles.slug', $slugs);

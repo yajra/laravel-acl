@@ -12,6 +12,71 @@ class HasRoleTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
+    public function it_can_attach_role_to_user()
+    {
+        $role = $this->createRole('Test');
+        $user = $this->createUser('Yajra');
+
+        $this->assertCount(0, $user->roles);
+
+        $user->attachRole($role);
+        $this->assertCount(1, $user->roles);
+    }
+
+    /** @test */
+    public function it_can_attach_role_to_user_by_slug()
+    {
+        $this->createRole('Test');
+        $user = $this->createUser('Yajra');
+
+        $this->assertCount(0, $user->roles);
+
+        $user->attachRoleBySlug('test');
+        $this->assertCount(1, $user->roles);
+    }
+
+    /** @test */
+    public function it_can_revoke_user_role()
+    {
+        $role = $this->createRole('Test');
+        $user = $this->createUser('Yajra');
+
+        $user->attachRole($role);
+        $this->assertCount(1, $user->roles);
+
+        $user->revokeRole($role);
+        $this->assertCount(0, $user->roles);
+    }
+
+    /** @test */
+    public function it_can_revoke_user_role_by_slug()
+    {
+        $this->createRole('Test');
+        $user = $this->createUser('Yajra');
+
+        $user->attachRoleBySlug('test');
+        $this->assertCount(1, $user->roles);
+
+        $user->revokeRoleBySlug('test');
+        $this->assertCount(0, $user->roles);
+    }
+
+    /** @test */
+    public function it_can_revoke_all_user_roles()
+    {
+        $role1 = $this->createRole('one');
+        $role2 = $this->createRole('two');
+        $user = $this->createUser('Yajra');
+
+        $user->attachRole($role1);
+        $user->attachRole($role2);
+        $this->assertCount(2, $user->roles);
+
+        $user->revokeAllRoles();
+        $this->assertCount(0, $user->roles);
+    }
+
+    /** @test */
     public function it_can_revoke_all_roles()
     {
         $this->assertEquals(1, $this->admin->roles->count());
@@ -19,6 +84,16 @@ class HasRoleTest extends TestCase
         $this->admin->revokeAllRoles();
 
         $this->assertEquals(0, $this->admin->roles->count());
+    }
+
+    /** @test */
+    public function it_can_sync_user_roles()
+    {
+        $roles = Role::query()->whereIn('slug', ['admin', 'registered'])->get();
+
+        $this->assertCount(1, $this->admin->roles);
+        $this->admin->syncRoles($roles);
+        $this->assertCount(2, $this->admin->roles);
     }
 
     /** @test */
