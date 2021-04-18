@@ -31,6 +31,17 @@ trait HasPermission
     }
 
     /**
+     * Checks if the role does not have the given permission.
+     *
+     * @param  array|string  $permission
+     * @return bool
+     */
+    public function cannot($permission): bool
+    {
+        return ! $this->can($permission);
+    }
+
+    /**
      * Check if the role has at least one of the given permissions.
      *
      * @param  array  $permission
