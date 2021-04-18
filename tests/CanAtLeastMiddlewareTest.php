@@ -5,9 +5,10 @@ namespace Yajra\Acl\Tests;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Yajra\Acl\Middleware\CanAtLeastMiddleware;
 use Yajra\Acl\Middleware\PermissionMiddleware;
 
-class PermissionMiddlewareTest extends TestCase
+class CanAtLeastMiddlewareTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -16,11 +17,11 @@ class PermissionMiddlewareTest extends TestCase
     {
         Auth::login($this->admin);
 
-        $middleware = new PermissionMiddleware;
+        $middleware = new CanAtLeastMiddleware;
 
         $response = $middleware->handle(new Request(), function () {
             return 'Pass';
-        }, 'create-article');
+        }, 'create-article,non-existing-permission');
 
         $this->assertEquals('Pass', $response);
     }
