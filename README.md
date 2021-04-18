@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
-![Build Status](https://github.com/yajra/laravel-datatables/workflows/tests/badge.svg)
+![Build Status](https://github.com/yajra/laravel-acl/workflows/tests/badge.svg)
 [![Total Downloads][ico-downloads]][link-downloads]
 
 Laravel ACL is a simple role, permission ACL for Laravel Framework.
