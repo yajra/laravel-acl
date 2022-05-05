@@ -20,11 +20,11 @@
         }
     ],
     "require": {
-        "illuminate/support": "^8.24",
-        "illuminate/database": "^8.24"
+        "illuminate/support": "^9.0",
+        "illuminate/database": "^9.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^6"
+        "orchestra/testbench": "^7.4"
     },
     "autoload": {
         "psr-4": {
@@ -41,7 +41,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.0-dev"
+            "dev-master": "9.0-dev"
         },
         "laravel": {
             "providers": [
