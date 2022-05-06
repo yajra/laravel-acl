@@ -12,35 +12,25 @@ use Yajra\Acl\Models\Permission;
 class GateRegistrar
 {
     /**
-     * @var GateContract
-     */
-    private $gate;
-
-    /**
-     * @var Repository
-     */
-    private $cache;
-
-    /**
      * GateRegistrar constructor.
      *
      * @param  GateContract  $gate
      * @param  Repository  $cache
      */
-    public function __construct(GateContract $gate, Repository $cache)
+    public function __construct(public GateContract $gate, public Repository $cache)
     {
-        $this->gate = $gate;
-        $this->cache = $cache;
     }
 
     /**
      * Handle permission gate registration.
      */
-    public function register()
+    public function register(): void
     {
-        $this->getPermissions()->each(function ($permission) {
+        // @phpstan-ignore-next-line
+        $this->getPermissions()->each(function (Permission $permission) {
             $ability = $permission->slug;
             $policy = function ($user) use ($permission) {
+                // @phpstan-ignore-next-line
                 return collect($user->getPermissions())->contains($permission->slug);
             };
 
@@ -60,9 +50,12 @@ class GateRegistrar
      */
     protected function getPermissions(): Collection
     {
+        /** @var string $key */
         $key = config('acl.cache.key', 'permissions.policies');
+
         try {
             if (config('acl.cache.enabled', true)) {
+                // @phpstan-ignore-next-line
                 return $this->cache->rememberForever($key, function () {
                     return $this->getPermissionClass()->with('roles')->get();
                 });
@@ -81,6 +74,9 @@ class GateRegistrar
      */
     protected function getPermissionClass(): Permission
     {
-        return resolve(config('acl.permission', Permission::class));
+        /** @var class-string $class */
+        $class = config('acl.permission', Permission::class);
+
+        return resolve($class);
     }
 }

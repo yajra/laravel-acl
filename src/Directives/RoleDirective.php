@@ -13,6 +13,7 @@ class RoleDirective extends DirectiveAbstract
     public function handle($role): bool
     {
         if ($this->auth->check()) {
+            // @phpstan-ignore-next-line
             return $this->auth->user()->hasRole($role);
         }
 

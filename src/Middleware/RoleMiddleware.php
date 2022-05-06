@@ -19,7 +19,8 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, string $role)
     {
         $role = Str::of($role)->split('/[|,]/')->toArray();
-        if (!auth()->user() || !auth()->user()->hasRole($role)) {
+
+        if (! auth()->user() || ! auth()->user()->hasRole($role)) {
             if ($request->ajax()) {
                 return response()->json([
                     'error' => [

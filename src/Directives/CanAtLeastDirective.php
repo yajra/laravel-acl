@@ -17,6 +17,7 @@ class CanAtLeastDirective extends DirectiveAbstract
     public function handle($permissions): bool
     {
         if ($this->auth->check()) {
+            // @phpstan-ignore-next-line
             return $this->auth->user()->canAtLeast((array) $permissions);
         }
 

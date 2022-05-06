@@ -13,7 +13,7 @@ class AclServiceProvider extends ServiceProvider
      * @param  GateRegistrar  $gate
      * @return void
      */
-    public function boot(GateRegistrar $gate)
+    public function boot(GateRegistrar $gate): void
     {
         $gate->register();
 
@@ -25,8 +25,10 @@ class AclServiceProvider extends ServiceProvider
 
     /**
      * Publish package config file.
+     *
+     * @return void
      */
-    protected function publishConfig()
+    protected function publishConfig(): void
     {
         $path = __DIR__.'/../config/acl.php';
 
@@ -37,8 +39,10 @@ class AclServiceProvider extends ServiceProvider
 
     /**
      * Publish package migration files.
+     *
+     * @return void
      */
-    protected function publishMigrations()
+    protected function publishMigrations(): void
     {
         $this->loadMigrationsFrom(__DIR__.'/../migrations');
         $this->publishes([
@@ -48,11 +52,13 @@ class AclServiceProvider extends ServiceProvider
 
     /**
      * Register custom blade directives.
+     *
+     * @return void
      */
-    protected function registerBladeDirectives()
+    protected function registerBladeDirectives(): void
     {
         /** @var BladeCompiler $blade */
-        $blade = $this->app['blade.compiler'];
+        $blade = resolve('blade.compiler');
         $blade->directive('canAtLeast', function ($expression) {
             return "<?php if (app('laravel-acl.directives.canAtLeast')->handle({$expression})): ?>";
         });

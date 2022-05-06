@@ -8,32 +8,33 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 use Yajra\Acl\Traits\InteractsWithRole;
-use Yajra\Acl\Traits\RefreshCache;
+use Yajra\Acl\Traits\RefreshPermissionsCache;
 
 /**
- * @property string resource
- * @property string name
- * @property string slug
- * @property bool system
+ * @property string $resource
+ * @property string $name
+ * @property string $slug
+ * @property bool $system
  */
 class Permission extends Model
 {
-    use InteractsWithRole, RefreshCache;
+    use InteractsWithRole, RefreshPermissionsCache;
 
     /** @var string */
     protected $table = 'permissions';
 
-    /** @var array */
+    /** @var string[] */
     protected $fillable = ['name', 'slug', 'resource', 'system'];
 
-    /** @var array */
+    /** @var array<string, string> */
     protected $casts = ['system' => 'bool'];
 
     /**
      * Find a permission by slug.
      *
      * @param  string  $slug
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|static
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<\Illuminate\Database\Eloquent\Model>
      */
     public static function findBySlug(string $slug)
     {
@@ -45,9 +46,9 @@ class Permission extends Model
      *
      * @param  string  $resource
      * @param  bool  $system
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public static function createResource(string $resource, $system = false)
+    public static function createResource(string $resource, bool $system = false): Collection
     {
         $group = Str::title($resource);
         $slug = Str::slug($group);
@@ -103,7 +104,9 @@ class Permission extends Model
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(config('acl.user', config('auth.providers.users.model')))
-            ->withTimestamps();
+        /** @var class-string $model */
+        $model = config('acl.user', config('auth.providers.users.model'));
+
+        return $this->belongsToMany($model)->withTimestamps();
     }
 }

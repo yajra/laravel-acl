@@ -5,25 +5,25 @@ namespace Yajra\Acl\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Yajra\Acl\Traits\HasPermission;
-use Yajra\Acl\Traits\RefreshCache;
+use Yajra\Acl\Traits\RefreshPermissionsCache;
 
 /**
- * @property string name
- * @property string slug
- * @property string description
- * @property bool system
+ * @property string $name
+ * @property string $slug
+ * @property string $description
+ * @property bool $system
  */
 class Role extends Model
 {
-    use HasPermission, RefreshCache;
+    use HasPermission, RefreshPermissionsCache;
 
     /** @var string */
     protected $table = 'roles';
 
-    /** @var array */
+    /** @var string[] */
     protected $fillable = ['name', 'slug', 'description', 'system'];
 
-    /** @var array */
+    /** @var array<string, string> */
     protected $casts = [
         'system' => 'bool',
     ];
@@ -47,7 +47,9 @@ class Role extends Model
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(config('acl.user', config('auth.providers.users.model')))
-            ->withTimestamps();
+        /** @var class-string $model */
+        $model = config('acl.user', config('auth.providers.users.model'));
+
+        return $this->belongsToMany($model)->withTimestamps();
     }
 }

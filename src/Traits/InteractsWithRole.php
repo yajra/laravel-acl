@@ -7,13 +7,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Yajra\Acl\Models\Role;
 
 /**
- * @property \Illuminate\Database\Eloquent\Collection|Role[] roles
+ * @property \Illuminate\Database\Eloquent\Collection|Role[] $roles
  * @method static Builder havingRoles($roleIds)
  * @method static Builder havingRolesBySlugs($slugs)
  */
 trait InteractsWithRole
 {
-    private $roleClass;
+    /**
+     * @var class-string|Role
+     */
+    public $roleClass;
 
     /**
      * Check if user has the given role.
@@ -50,7 +53,7 @@ trait InteractsWithRole
      *
      * @param  string  $slug
      */
-    public function attachRoleBySlug(string $slug)
+    public function attachRoleBySlug(string $slug): void
     {
         $this->attachRole($this->findRoleBySlug($slug));
 
@@ -64,7 +67,7 @@ trait InteractsWithRole
      * @param  array  $attributes
      * @param  bool  $touch
      */
-    public function attachRole($role, array $attributes = [], $touch = true)
+    public function attachRole(mixed $role, array $attributes = [], bool $touch = true): void
     {
         $this->roles()->attach($role, $attributes, $touch);
 
@@ -78,7 +81,10 @@ trait InteractsWithRole
      */
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(config('acl.role', Role::class))->withTimestamps();
+        /** @var class-string $model */
+        $model = config('acl.role', Role::class);
+
+        return $this->belongsToMany($model)->withTimestamps();
     }
 
     /**
@@ -88,7 +94,7 @@ trait InteractsWithRole
      * @return \Illuminate\Database\Eloquent\Model|static
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    protected function findRoleBySlug(string $slug): Role
+    protected function findRoleBySlug(string $slug): \Illuminate\Database\Eloquent\Model|static
     {
         return $this->getRoleClass()->newQuery()->where('slug', $slug)->firstOrFail();
     }
@@ -100,8 +106,11 @@ trait InteractsWithRole
      */
     public function getRoleClass(): Role
     {
-        if (!isset($this->roleClass)) {
-            $this->roleClass = resolve(config('acl.role'));
+        if (! $this->roleClass instanceof Role) {
+            /** @var class-string $role */
+            $role = config('acl.role');
+
+            $this->roleClass = resolve($role);
         }
 
         return $this->roleClass;
@@ -118,9 +127,9 @@ trait InteractsWithRole
     {
         return $query->whereExists(function ($query) use ($roles) {
             $query->selectRaw('1')
-                ->from('role_user')
-                ->whereRaw('role_user.user_id = users.id')
-                ->whereIn('role_id', $roles);
+                  ->from('role_user')
+                  ->whereRaw('role_user.user_id = users.id')
+                  ->whereIn('role_id', $roles);
         });
     }
 
@@ -148,9 +157,9 @@ trait InteractsWithRole
     public function revokeRoleBySlug($slug, $touch = true): int
     {
         $roles = $this->getRoleClass()
-            ->newQuery()
-            ->whereIn('slug', (array) $slug)
-            ->get();
+                      ->newQuery()
+                      ->whereIn('slug', (array) $slug)
+                      ->get();
 
         $detached = $this->roles()->detach($roles, $touch);
 

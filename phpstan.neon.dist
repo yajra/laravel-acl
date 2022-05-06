@@ -1,0 +1,20 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+
+    paths:
+        - src
+
+    level: max
+
+    ignoreErrors:
+        - '#Cannot call method load\(\) on Illuminate\\Foundation\\Auth\\User\|null.#'
+        - '#Cannot call method canAtLeast\(\) on Illuminate\\Foundation\\Auth\\User\|null.#'
+        - '#Call to an undefined method Illuminate\\Foundation\\Auth\\User\:\:hasRole\(\).#'
+
+    excludePaths:
+
+    checkMissingIterableValueType: false
+
+    checkGenericClassInNonGenericObjectType: false

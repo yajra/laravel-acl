@@ -6,26 +6,29 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Yajra\Acl\Models\Permission;
 
 /**
- * @property \Illuminate\Database\Eloquent\Collection|Permission[] permissions
+ * @property \Illuminate\Database\Eloquent\Collection|Permission[] $permissions
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 trait InteractsWithPermission
 {
-    private $permissionClass;
+    /**
+     * @var class-string|Permission
+     */
+    public $permissionClass;
 
     /**
      * Grant permissions by slug(/s).
      *
-     * @param  string|array  $slug
+     * @param  array|string  $slug
      */
-    public function grantPermissionBySlug($slug)
+    public function grantPermissionBySlug(array|string $slug): void
     {
         $this->getPermissionClass()
-            ->newQuery()
-            ->whereIn('slug', (array) $slug)
-            ->each(function ($permission) {
-                $this->grantPermission($permission);
-            });
+             ->newQuery()
+             ->whereIn('slug', (array) $slug)
+             ->each(function ($permission) {
+                 $this->grantPermission($permission);
+             });
 
         $this->load('permissions');
     }
@@ -37,8 +40,10 @@ trait InteractsWithPermission
      */
     public function getPermissionClass(): Permission
     {
-        if (!isset($this->permissionClass)) {
-            $this->permissionClass = resolve(config('acl.permission'));
+        if (! $this->permissionClass instanceof Permission) {
+            /** @var class-string $model */
+            $model = config('acl.permission');
+            $this->permissionClass = resolve($model);
         }
 
         return $this->permissionClass;
@@ -51,7 +56,10 @@ trait InteractsWithPermission
      */
     public function permissions(): BelongsToMany
     {
-        return $this->belongsToMany(config('acl.permission', Permission::class))->withTimestamps();
+        /** @var class-string $model */
+        $model = config('acl.permission', Permission::class);
+
+        return $this->belongsToMany($model)->withTimestamps();
     }
 
     /**
@@ -59,14 +67,14 @@ trait InteractsWithPermission
      *
      * @param  string|array  $resource
      */
-    public function grantPermissionByResource($resource)
+    public function grantPermissionByResource(array|string $resource): void
     {
         $this->getPermissionClass()
-            ->newQuery()
-            ->whereIn('resource', (array) $resource)
-            ->each(function ($permission) {
-                $this->grantPermission($permission);
-            });
+             ->newQuery()
+             ->whereIn('resource', (array) $resource)
+             ->each(function ($permission) {
+                 $this->grantPermission($permission);
+             });
 
         $this->load('permissions');
     }
@@ -74,14 +82,14 @@ trait InteractsWithPermission
     /**
      * Grant the given permission.
      *
-     * @param  \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array  $id
+     * @param  mixed  $ids
      * @param  array  $attributes
      * @param  bool  $touch
      * @return void
      */
-    public function grantPermission($id, array $attributes = [], $touch = true)
+    public function grantPermission(mixed $ids, array $attributes = [], bool $touch = true): void
     {
-        $this->permissions()->attach($id, $attributes, $touch);
+        $this->permissions()->attach($ids, $attributes, $touch);
 
         $this->load('permissions');
     }
@@ -89,16 +97,16 @@ trait InteractsWithPermission
     /**
      * Revoke permissions by the given slug(/s).
      *
-     * @param  string|array  $slug
+     * @param  array|string  $slug
      */
-    public function revokePermissionBySlug($slug)
+    public function revokePermissionBySlug(array|string $slug): void
     {
         $this->getPermissionClass()
-            ->newQuery()
-            ->whereIn('slug', (array) $slug)
-            ->each(function ($permission) {
-                $this->revokePermission($permission);
-            });
+             ->newQuery()
+             ->whereIn('slug', (array) $slug)
+             ->each(function ($permission) {
+                 $this->revokePermission($permission);
+             });
 
         $this->load('permissions');
     }
@@ -106,16 +114,16 @@ trait InteractsWithPermission
     /**
      * Revoke permissions by resource.
      *
-     * @param string|array $resource
+     * @param  array|string  $resource
      */
-    public function revokePermissionByResource($resource)
+    public function revokePermissionByResource(array|string $resource): void
     {
         $this->getPermissionClass()
-            ->newQuery()
-            ->whereIn('resource', (array) $resource)
-            ->each(function ($permission) {
-                $this->revokePermission($permission);
-            });
+             ->newQuery()
+             ->whereIn('resource', (array) $resource)
+             ->each(function ($permission) {
+                 $this->revokePermission($permission);
+             });
 
         $this->load('permissions');
     }
@@ -123,17 +131,17 @@ trait InteractsWithPermission
     /**
      * Revokes the given permission.
      *
-     * @param  mixed  $id
+     * @param  mixed|null  $ids
      * @param  bool  $touch
      * @return int
      */
-    public function revokePermission($id = null, $touch = true): int
+    public function revokePermission(mixed $ids = null, bool $touch = true): int
     {
-        $detached = $this->permissions()->detach($id, $touch);
+        $detached = $this->permissions()->detach($ids, $touch);
 
         $this->load('permissions');
 
-        return  $detached;
+        return $detached;
     }
 
     /**
@@ -143,7 +151,7 @@ trait InteractsWithPermission
      * @param  bool  $detaching
      * @return array
      */
-    public function syncPermissions($ids, $detaching = true): array
+    public function syncPermissions(mixed $ids, bool $detaching = true): array
     {
         $synced = $this->permissions()->sync($ids, $detaching);
 
