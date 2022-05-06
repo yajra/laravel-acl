@@ -11,12 +11,19 @@ This package was based on the great package [Caffeinated/Shinobi](https://github
 ## Documentations
 - [Laravel ACL][link-docs]
 
+## Laravel Version Compatibility
+
+| Laravel       | Package |
+|:--------------|:--------|
+| 8.x and below | 6.x     |
+| 9.x           | 9.x     |
+
 ## Installation
 
 Via Composer
 
 ``` bash
-$ composer require yajra/laravel-acl:^6.0
+$ composer require yajra/laravel-acl
 ```
 
 ## Configuration
