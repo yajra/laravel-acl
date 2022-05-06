@@ -80,15 +80,15 @@ abstract class TestCase extends BaseTestCase
             'name' => Str::title($role),
             'slug' => Str::slug($role),
             'system' => true,
-            'description' => "{$role} role.",
+            'description' => "$role role.",
         ]);
     }
 
     /**
-     * @param  string  $user
+     * @param  string|null  $user
      * @return User
      */
-    protected function createUser($user = null): User
+    protected function createUser(string $user = null): User
     {
         $user = $user ?: Str::random(10);
 
@@ -108,7 +108,7 @@ abstract class TestCase extends BaseTestCase
      * @param  bool  $system
      * @return Permission
      */
-    protected function createPermission(string $permission, $system = true): Permission
+    protected function createPermission(string $permission, bool $system = true): Permission
     {
         return Permission::create([
             'resource' => 'Tests',
@@ -153,14 +153,14 @@ abstract class TestCase extends BaseTestCase
         $app['log']->getLogger()->pushHandler(new TestHandler());
     }
 
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             \Yajra\Acl\AclServiceProvider::class,
         ];
     }
 
-    protected function getPackageAliases($app)
+    protected function getPackageAliases($app): array
     {
         return [];
     }
