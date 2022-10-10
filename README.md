@@ -5,7 +5,7 @@
 ![Build Status](https://github.com/yajra/laravel-acl/workflows/tests/badge.svg)
 [![Total Downloads][ico-downloads]][link-downloads]
 
-Laravel ACL is a simple role, permission ACL for Laravel Framework.
+Laravel ACL (Access Control List) is a simple role-permission ACL for the Laravel Framework.
 This package was based on the great package [Caffeinated/Shinobi](https://github.com/caffeinated/shinobi) but is fully compatible with Laravel's built-in Gate/Authorization system.
 
 ## Documentations
