@@ -21,7 +21,6 @@ return [
      */
     'cache' => [
         'enabled' => true,
-
         'key' => 'permissions.policies',
     ],
 ];
