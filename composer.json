@@ -20,12 +20,12 @@
     }
   ],
   "require": {
-    "illuminate/support": "^9.0",
-    "illuminate/database": "^9.0"
+    "illuminate/support": "^10.0",
+    "illuminate/database": "^10.0"
   },
   "require-dev": {
-    "nunomaduro/larastan": "^2.1",
-    "orchestra/testbench": "^7.4"
+    "nunomaduro/larastan": "^2.4",
+    "orchestra/testbench": "^8.0"
   },
   "autoload": {
     "psr-4": {
