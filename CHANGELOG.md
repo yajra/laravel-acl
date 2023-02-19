@@ -1,6 +1,5 @@
 # Changelog
 
-## v9.0.0 - 2022-05-06
+## v10.0.0 - 2023-02-19
 
-- Added support for Laravel 9
-- Added phpstan static analysis
+- Added support for Laravel 10

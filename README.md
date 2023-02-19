@@ -17,6 +17,7 @@ This package was based on the great package [Caffeinated/Shinobi](https://github
 |:--------------|:--------|
 | 8.x and below | 6.x     |
 | 9.x           | 9.x     |
+| 10.x          | 10.x    |
 
 ## Installation
 
