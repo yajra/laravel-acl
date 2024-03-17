@@ -5,6 +5,7 @@ namespace Yajra\Acl\Tests;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabaseState;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Monolog\Handler\TestHandler;
 use Orchestra\Testbench\TestCase as BaseTestCase;
@@ -30,11 +31,9 @@ abstract class TestCase extends BaseTestCase
         $this->registerGates();
     }
 
-    protected function runDatabaseMigrations()
+    protected function runDatabaseMigrations(): void
     {
-        /** @var \Illuminate\Database\Schema\Builder $schemaBuilder */
-        $schemaBuilder = $this->app['db']->connection()->getSchemaBuilder();
-        $schemaBuilder->create('users', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email');
@@ -52,7 +51,7 @@ abstract class TestCase extends BaseTestCase
         });
     }
 
-    protected function seedDatabase()
+    protected function seedDatabase(): void
     {
         Permission::createResource('article', true);
         $adminRole = $this->createRole('admin');
@@ -70,10 +69,6 @@ abstract class TestCase extends BaseTestCase
         })->fresh('roles');
     }
 
-    /**
-     * @param  string  $role
-     * @return Role
-     */
     protected function createRole(string $role): Role
     {
         return Role::create([
@@ -84,11 +79,7 @@ abstract class TestCase extends BaseTestCase
         ]);
     }
 
-    /**
-     * @param  string|null  $user
-     * @return User
-     */
-    protected function createUser(string $user = null): User
+    protected function createUser(?string $user = null): User
     {
         $user = $user ?: Str::random(10);
 
@@ -103,11 +94,6 @@ abstract class TestCase extends BaseTestCase
         resolve(GateRegistrar::class)->register();
     }
 
-    /**
-     * @param  string  $permission
-     * @param  bool  $system
-     * @return Permission
-     */
     protected function createPermission(string $permission, bool $system = true): Permission
     {
         return Permission::create([
@@ -122,11 +108,10 @@ abstract class TestCase extends BaseTestCase
      * Resolve application HTTP Kernel implementation.
      *
      * @param  \Illuminate\Foundation\Application  $app
-     * @return void
      */
-    protected function resolveApplicationHttpKernel($app)
+    protected function resolveApplicationHttpKernel($app): void
     {
-        $app->singleton('Illuminate\Contracts\Http\Kernel', 'Yajra\Acl\Tests\Http\Kernel');
+        $app->singleton(\Illuminate\Contracts\Http\Kernel::class, \Yajra\Acl\Tests\Http\Kernel::class);
     }
 
     /**
@@ -134,7 +119,7 @@ abstract class TestCase extends BaseTestCase
      *
      * @param  \Illuminate\Foundation\Application  $app
      */
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         $app['config']->set('app.debug', true);
         $app['config']->set('cache.default', 'array');

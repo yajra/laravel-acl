@@ -9,9 +9,6 @@ class AclServiceProvider extends ServiceProvider
 {
     /**
      * Register any application authentication / authorization services.
-     *
-     * @param  GateRegistrar  $gate
-     * @return void
      */
     public function boot(GateRegistrar $gate): void
     {
@@ -25,8 +22,6 @@ class AclServiceProvider extends ServiceProvider
 
     /**
      * Publish package config file.
-     *
-     * @return void
      */
     protected function publishConfig(): void
     {
@@ -39,8 +34,6 @@ class AclServiceProvider extends ServiceProvider
 
     /**
      * Publish package migration files.
-     *
-     * @return void
      */
     protected function publishMigrations(): void
     {
@@ -52,26 +45,16 @@ class AclServiceProvider extends ServiceProvider
 
     /**
      * Register custom blade directives.
-     *
-     * @return void
      */
     protected function registerBladeDirectives(): void
     {
         /** @var BladeCompiler $blade */
         $blade = resolve('blade.compiler');
-        $blade->directive('canAtLeast', function ($expression) {
-            return "<?php if (app('laravel-acl.directives.canAtLeast')->handle({$expression})): ?>";
-        });
-        $blade->directive('endCanAtLeast', function ($expression) {
-            return '<?php endif; ?>';
-        });
+        $blade->directive('canAtLeast', fn ($expression) => "<?php if (app('laravel-acl.directives.canAtLeast')->handle({$expression})): ?>");
+        $blade->directive('endCanAtLeast', fn ($expression) => '<?php endif; ?>');
 
-        $blade->directive('role', function ($expression) {
-            return "<?php if (app('laravel-acl.directives.role')->handle({$expression})): ?>";
-        });
-        $blade->directive('endRole', function ($expression) {
-            return '<?php endif; ?>';
-        });
+        $blade->directive('role', fn ($expression) => "<?php if (app('laravel-acl.directives.role')->handle({$expression})): ?>");
+        $blade->directive('endRole', fn ($expression) => '<?php endif; ?>');
     }
 
     /**

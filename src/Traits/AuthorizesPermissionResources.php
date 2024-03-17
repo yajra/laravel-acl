@@ -28,8 +28,6 @@ trait AuthorizesPermissionResources
     /**
      * Authorize a permission resource action based on the incoming request.
      *
-     * @param  string  $resource
-     * @param  array  $options
      * @return void
      */
     public function authorizePermissionResource(string $resource, array $options = [])
@@ -43,7 +41,7 @@ trait AuthorizesPermissionResources
             ]));
         }
 
-        $collection->groupBy('ability')->each(function ($permission, $ability) use ($resource, $options) {
+        $collection->groupBy('ability')->each(function ($permission, $ability) use ($resource) {
             $this->middleware("can:{$resource}.{$ability}")
                 ->only($permission->pluck('method')->toArray());
         });
@@ -51,8 +49,6 @@ trait AuthorizesPermissionResources
 
     /**
      * Get the map of permission resource methods to ability names.
-     *
-     * @return array
      */
     protected function resourcePermissionMap(): array
     {

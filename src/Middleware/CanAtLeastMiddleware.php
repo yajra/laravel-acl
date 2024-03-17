@@ -10,19 +10,25 @@ class CanAtLeastMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  array|string  $permissions
-     * @return mixed
+     * @param  string|string[]  $permissions
      */
-    public function handle(Request $request, Closure $next, $permissions)
+    public function handle(Request $request, Closure $next, array|string $permissions): mixed
     {
         $abilities = is_array($permissions) ? $permissions : explode(',', $permissions);
 
-        if (! auth()->check() || ! auth()->user()->canAtLeast($abilities)) {
+        if ($this->deniesAccessUsing($abilities)) {
             abort(403, 'You are not allowed to view this content!');
         }
 
         return $next($request);
+    }
+
+    /**
+     * @param  string[]  $abilities
+     */
+    protected function deniesAccessUsing(array $abilities): bool
+    {
+        return ! auth()->user()
+            || (method_exists(auth()->user(), 'canAtLeast') && ! auth()->user()->canAtLeast($abilities));
     }
 }

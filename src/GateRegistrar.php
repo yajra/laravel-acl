@@ -5,33 +5,30 @@ namespace Yajra\Acl;
 use Exception;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Str;
 use Yajra\Acl\Models\Permission;
 
 class GateRegistrar
 {
-    /**
-     * GateRegistrar constructor.
-     *
-     * @param  GateContract  $gate
-     * @param  Repository  $cache
-     */
     public function __construct(public GateContract $gate, public Repository $cache)
     {
     }
 
-    /**
-     * Handle permission gate registration.
-     */
     public function register(): void
     {
-        // @phpstan-ignore-next-line
         $this->getPermissions()->each(function (Permission $permission) {
             $ability = $permission->slug;
-            $policy = function ($user) use ($permission) {
-                // @phpstan-ignore-next-line
-                return collect($user->getPermissions())->contains($permission->slug);
+            $policy = function (User $user) use ($permission) {
+                if (method_exists($user, 'getPermissions')) {
+                    // @phpstan-ignore-next-line
+                    $permissions = collect($user->getPermissions());
+
+                    return $permissions->contains($permission->slug);
+                }
+
+                return false;
             };
 
             if (Str::contains($permission->slug, '@')) {
@@ -46,7 +43,7 @@ class GateRegistrar
     /**
      * Get all permissions.
      *
-     * @return Collection
+     * @return \Illuminate\Database\Eloquent\Collection<array-key, \Yajra\Acl\Models\Permission>
      */
     protected function getPermissions(): Collection
     {
@@ -55,26 +52,20 @@ class GateRegistrar
 
         try {
             if (config('acl.cache.enabled', true)) {
-                // @phpstan-ignore-next-line
-                return $this->cache->rememberForever($key, function () {
-                    return $this->getPermissionClass()->with('roles')->get();
-                });
+                return $this->cache->rememberForever($key, fn () => $this->getPermissionClass()->with('roles')->get());
             } else {
                 return $this->getPermissionClass()->with('roles')->get();
             }
-        } catch (Exception $exception) {
+        } catch (Exception) {
             $this->cache->forget($key);
 
-            return new Collection;
+            return Collection::make();
         }
     }
 
-    /**
-     * @return Permission
-     */
     protected function getPermissionClass(): Permission
     {
-        /** @var class-string $class */
+        /** @var class-string<Permission> $class */
         $class = config('acl.permission', Permission::class);
 
         return resolve($class);

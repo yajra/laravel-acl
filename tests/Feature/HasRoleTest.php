@@ -1,18 +1,20 @@
 <?php
 
-namespace Yajra\Acl\Tests;
+namespace Yajra\Acl\Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use PHPUnit\Framework\Attributes\Test;
 use Yajra\Acl\Models\Role;
 use Yajra\Acl\Tests\Models\User;
+use Yajra\Acl\Tests\TestCase;
 
 class HasRoleTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /** @test */
+    #[Test]
     public function it_can_attach_role_to_user()
     {
         $role = $this->createRole('Test');
@@ -24,7 +26,7 @@ class HasRoleTest extends TestCase
         $this->assertCount(1, $user->roles);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_attach_role_to_user_by_slug()
     {
         $this->createRole('Test');
@@ -36,7 +38,7 @@ class HasRoleTest extends TestCase
         $this->assertCount(1, $user->roles);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_revoke_user_role()
     {
         $role = $this->createRole('Test');
@@ -49,7 +51,7 @@ class HasRoleTest extends TestCase
         $this->assertCount(0, $user->roles);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_revoke_user_role_by_slug()
     {
         $this->createRole('Test');
@@ -62,7 +64,7 @@ class HasRoleTest extends TestCase
         $this->assertCount(0, $user->roles);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_revoke_all_user_roles()
     {
         $role1 = $this->createRole('one');
@@ -77,7 +79,7 @@ class HasRoleTest extends TestCase
         $this->assertCount(0, $user->roles);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_revoke_all_roles()
     {
         $this->assertEquals(1, $this->admin->roles->count());
@@ -87,7 +89,7 @@ class HasRoleTest extends TestCase
         $this->assertEquals(0, $this->admin->roles->count());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_sync_user_roles()
     {
         $roles = Role::query()->whereIn('slug', ['admin', 'registered'])->get();
@@ -97,7 +99,7 @@ class HasRoleTest extends TestCase
         $this->assertCount(2, $this->admin->roles);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_authorize_user_access()
     {
         Auth::login($this->admin);
@@ -116,7 +118,7 @@ class HasRoleTest extends TestCase
         $this->assertTrue($this->admin->cannot('create-article'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_authorize_user_with_at_least_one_matching_permission()
     {
         Auth::login($this->admin);
@@ -136,7 +138,7 @@ class HasRoleTest extends TestCase
         $this->assertTrue($this->admin->canAtLeast($permissions));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_authorize_user_with_at_least_one_matching_permission_or_role()
     {
         Auth::login($this->admin);
@@ -154,7 +156,7 @@ class HasRoleTest extends TestCase
         $this->assertTrue($this->admin->canAccess($permissions));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_check_user_with_role()
     {
         Auth::login($this->admin);
@@ -168,7 +170,7 @@ class HasRoleTest extends TestCase
         $this->assertFalse($this->admin->hasRole('admin'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_query_with_having_roles_scopes()
     {
         $adminUser = $this->createUser('Yajra');
@@ -179,10 +181,10 @@ class HasRoleTest extends TestCase
 
         $supportUser->attachRole($support);
 
-        $roles = User::havingRoles([$manager->getKey(), $support->getKey()])->get();
+        $roles = (new User())->havingRoles([$manager->getKey(), $support->getKey()])->get();
         $this->assertCount(2, $roles);
 
-        $roles = User::havingRolesBySlugs([$manager->slug, $user->slug])->get();
+        $roles = (new User())->havingRolesBySlugs([$manager->slug, $user->slug])->get();
         $this->assertCount(1, $roles);
     }
 }

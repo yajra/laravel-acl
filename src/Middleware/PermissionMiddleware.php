@@ -10,14 +10,11 @@ class PermissionMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string  $permission
      * @return mixed
      */
     public function handle(Request $request, Closure $next, string $permission)
     {
-        if (!auth()->user() || !auth()->user()->can($permission)) {
+        if (! auth()->user() || ! auth()->user()->can($permission)) {
             if ($request->ajax()) {
                 return response()->json([
                     'error' => [

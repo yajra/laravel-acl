@@ -1,58 +1,78 @@
 {
-  "name": "yajra/laravel-acl",
-  "description": "Laravel ACL is a simple role, permission ACL for Laravel Framework.",
-  "keywords": [
-    "yajra",
-    "laravel",
-    "acl",
-    "user",
-    "role",
-    "permissions"
-  ],
-  "homepage": "https://github.com/yajra/laravel-acl",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Arjay Angeles",
-      "email": "aqangeles@gmail.com",
-      "homepage": "https://yajrabox.com",
-      "role": "Developer"
-    }
-  ],
-  "require": {
-    "illuminate/support": "^10.0",
-    "illuminate/database": "^10.0"
-  },
-  "require-dev": {
-    "nunomaduro/larastan": "^2.4",
-    "orchestra/testbench": "^8.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "Yajra\\Acl\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Yajra\\Acl\\Tests\\": "tests/"
-    }
-  },
-  "scripts": {
-    "test": "vendor/bin/phpunit"
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "10.0-dev"
+    "name": "yajra/laravel-acl",
+    "description": "Laravel ACL is a simple role, permission ACL for Laravel Framework.",
+    "keywords": [
+        "yajra",
+        "laravel",
+        "acl",
+        "user",
+        "role",
+        "permissions"
+    ],
+    "homepage": "https://github.com/yajra/laravel-acl",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Arjay Angeles",
+            "email": "aqangeles@gmail.com",
+            "homepage": "https://yajrabox.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "illuminate/support": "^11.0",
+        "illuminate/database": "^11.0"
     },
-    "laravel": {
-      "providers": [
-        "Yajra\\Acl\\AclServiceProvider"
-      ]
-    }
-  },
-  "config": {
-    "sort-packages": true
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+    "require-dev": {
+        "larastan/larastan": "^2.9.1",
+        "laravel/pint": "^1.14",
+        "rector/rector": "^1.0",
+        "orchestra/testbench": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yajra\\Acl\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Yajra\\Acl\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "11.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Yajra\\Acl\\AclServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": false
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "test": "./vendor/bin/phpunit",
+        "pint": "./vendor/bin/pint",
+        "rector": "./vendor/bin/rector",
+        "stan": "./vendor/bin/phpstan analyse --memory-limit=2G --ansi --no-progress --no-interaction --configuration=phpstan.neon.dist",
+        "pr": [
+            "@rector",
+            "@pint",
+            "@stan",
+            "@test"
+        ]
+    },
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/yajra"
+        }
+    ]
 }
