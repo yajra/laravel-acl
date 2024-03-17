@@ -27,9 +27,7 @@
         "larastan/larastan": "^2.9.1",
         "laravel/pint": "^1.14",
         "rector/rector": "^1.0",
-        "orchestra/testbench": "^9.0",
-        "pestphp/pest": "^2.34",
-        "pestphp/pest-plugin-laravel": "^2.3"
+        "orchestra/testbench": "^9.0"
     },
     "autoload": {
         "psr-4": {
@@ -54,13 +52,13 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": false
         }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
-        "test": "./vendor/bin/pest",
+        "test": "./vendor/bin/phpunit",
         "pint": "./vendor/bin/pint",
         "rector": "./vendor/bin/rector",
         "stan": "./vendor/bin/phpstan analyse --memory-limit=2G --ansi --no-progress --no-interaction --configuration=phpstan.neon.dist",

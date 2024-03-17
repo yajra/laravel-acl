@@ -1,4 +1,5 @@
-build
+build/
 composer.lock
-docs
-vendor
+docs/
+vendor/
+.phpunit.cache/

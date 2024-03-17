@@ -20,7 +20,7 @@ class CanAtLeastMiddlewareTest extends TestCase
 
         $middleware = new CanAtLeastMiddleware;
 
-        $response = $middleware->handle(new Request(), fn() => 'Pass', 'create-article,non-existing-permission');
+        $response = $middleware->handle(new Request(), fn () => 'Pass', 'create-article,non-existing-permission');
 
         $this->assertEquals('Pass', $response);
     }

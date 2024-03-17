@@ -43,10 +43,10 @@ class RoleMiddlewareTest extends TestCase
     {
         parent::setUp();
 
-        $this->app['router']->get('/', fn() => 'Pass')->middleware(['web', 'role:admin']);
+        $this->app['router']->get('/', fn () => 'Pass')->middleware(['web', 'role:admin']);
 
-        $this->app['router']->get('/comma', fn() => 'Pass')->middleware(['web', 'role:admin,user']);
+        $this->app['router']->get('/comma', fn () => 'Pass')->middleware(['web', 'role:admin,user']);
 
-        $this->app['router']->get('/pipe', fn() => 'Pass')->middleware(['web', 'role:admin|user']);
+        $this->app['router']->get('/pipe', fn () => 'Pass')->middleware(['web', 'role:admin|user']);
     }
 }
