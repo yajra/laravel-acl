@@ -1,15 +1,17 @@
 <?php
 
-namespace Yajra\Acl\Tests;
+namespace Yajra\Acl\Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\Test;
 use Yajra\Acl\Models\Permission;
+use Yajra\Acl\Tests\TestCase;
 
 class PermissionTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /** @test */
+    #[Test]
     public function it_can_create_resource_permissions()
     {
         $permissions = Permission::createResource('Users');
@@ -22,7 +24,7 @@ class PermissionTest extends TestCase
         $this->assertTrue(Permission::findBySlug('delete-users')->exists());
     }
 
-    /** @test */
+    #[Test]
     public function it_refreshes_permissions_policies_cache()
     {
         $permissions = cache('permissions.policies');
@@ -34,7 +36,7 @@ class PermissionTest extends TestCase
         $this->assertCount(10, $permissions);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_interacts_with_role()
     {
         /** @var Permission $permission */

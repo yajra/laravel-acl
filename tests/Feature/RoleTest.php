@@ -1,15 +1,17 @@
 <?php
 
-namespace Yajra\Acl\Tests;
+namespace Yajra\Acl\Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\Test;
 use Yajra\Acl\Models\Permission;
+use Yajra\Acl\Tests\TestCase;
 
 class RoleTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /** @test */
+    #[Test]
     public function is_can_grant_role_permission()
     {
         $role = $this->createRole('Test');
@@ -24,7 +26,7 @@ class RoleTest extends TestCase
         $this->assertTrue($role->can($permission->slug));
     }
 
-    /** @test */
+    #[Test]
     public function is_can_grant_role_permission_by_resource()
     {
         $role = $this->createRole('Resource');
@@ -41,7 +43,7 @@ class RoleTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function is_can_grant_role_permission_by_slug()
     {
         $role = $this->createRole('Test');
@@ -56,7 +58,7 @@ class RoleTest extends TestCase
         $this->assertTrue($role->can($permission->slug));
     }
 
-    /** @test */
+    #[Test]
     public function is_can_revoke_role_permission()
     {
         $role = $this->createRole('Test');
@@ -72,7 +74,7 @@ class RoleTest extends TestCase
         $this->assertFalse($role->can($permission->slug));
     }
 
-    /** @test */
+    #[Test]
     public function is_can_revoke_role_permission_by_slug()
     {
         $role = $this->createRole('Test');
@@ -88,7 +90,7 @@ class RoleTest extends TestCase
         $this->assertFalse($role->can($permission->slug));
     }
 
-    /** @test */
+    #[Test]
     public function is_can_revoke_permission_by_resource()
     {
         $role = $this->createRole('Resource');
@@ -106,7 +108,7 @@ class RoleTest extends TestCase
         $this->assertFalse($role->can($permissions->first->slug));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_revoke_all_role_permissions()
     {
         $role = $this->createRole('Test');
@@ -124,7 +126,7 @@ class RoleTest extends TestCase
         $this->assertFalse($role->can($permissions->first->slug));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_revoke_all_roles()
     {
         $this->assertEquals(1, $this->admin->roles->count());
@@ -134,7 +136,7 @@ class RoleTest extends TestCase
         $this->assertEquals(0, $this->admin->roles->count());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_all_role_permissions()
     {
         $role = $this->createRole('Test');

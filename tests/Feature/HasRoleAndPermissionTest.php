@@ -1,18 +1,20 @@
 <?php
 
-namespace Yajra\Acl\Tests;
+namespace Yajra\Acl\Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\Test;
 use Yajra\Acl\Models\Permission;
 use Yajra\Acl\Tests\Models\UserWithPermission;
+use Yajra\Acl\Tests\TestCase;
 
 class HasRoleAndPermissionTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /** @test */
+    #[Test]
     public function is_can_authorize_user_with_permission()
     {
         $user = $this->createUserWithHasRoleAndPermission();
@@ -41,7 +43,7 @@ class HasRoleAndPermissionTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_grant_permission_to_user()
     {
         $user = $this->createUserWithHasRoleAndPermission();
@@ -59,7 +61,7 @@ class HasRoleAndPermissionTest extends TestCase
         $this->assertCount(7, $user->permissions);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_revoke_user_permission()
     {
         $user = $this->createUserWithHasRoleAndPermission();
@@ -83,7 +85,7 @@ class HasRoleAndPermissionTest extends TestCase
         $this->assertCount(0, $user->permissions);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_return_combined_permissions_from_role_permission_and_user_permission()
     {
         $user = $this->createUserWithHasRoleAndPermission();

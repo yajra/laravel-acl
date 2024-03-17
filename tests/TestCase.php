@@ -70,6 +70,9 @@ abstract class TestCase extends BaseTestCase
         })->fresh('roles');
     }
 
+    /**
+     * @return Role
+     */
     protected function createRole(string $role): Role
     {
         return Role::create([
@@ -80,7 +83,11 @@ abstract class TestCase extends BaseTestCase
         ]);
     }
 
-    protected function createUser(?string $user = null): User
+    /**
+     * @param  string|null  $user
+     * @return User
+     */
+    protected function createUser(string $user = null): User
     {
         $user = $user ?: Str::random(10);
 
@@ -95,6 +102,9 @@ abstract class TestCase extends BaseTestCase
         resolve(GateRegistrar::class)->register();
     }
 
+    /**
+     * @return Permission
+     */
     protected function createPermission(string $permission, bool $system = true): Permission
     {
         return Permission::create([
@@ -113,7 +123,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function resolveApplicationHttpKernel($app)
     {
-        $app->singleton('Illuminate\Contracts\Http\Kernel', 'Yajra\Acl\Tests\Http\Kernel');
+        $app->singleton(\Illuminate\Contracts\Http\Kernel::class, \Yajra\Acl\Tests\Http\Kernel::class);
     }
 
     /**
