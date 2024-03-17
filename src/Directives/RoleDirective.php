@@ -6,10 +6,8 @@ class RoleDirective extends DirectiveAbstract
 {
     /**
      * Is Role blade directive compiler.
-     *
-     * @param  string|array  $role
      */
-    public function handle($role): bool
+    public function handle(string|array $role): bool
     {
         if ($this->auth->check()) {
             // @phpstan-ignore-next-line

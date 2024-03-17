@@ -21,10 +21,8 @@ trait InteractsWithRole
 
     /**
      * Check if user has the given role.
-     *
-     * @param  string|array  $role
      */
-    public function hasRole($role): bool
+    public function hasRole(string|array $role): bool
     {
         if (is_array($role)) {
             $roles = $this->getRoleSlugs();
@@ -104,10 +102,8 @@ trait InteractsWithRole
 
     /**
      * Query scope for user having the given roles.
-     *
-     * @param  mixed  $roles
      */
-    public function scopeHavingRoles(Builder $query, $roles): Builder
+    public function scopeHavingRoles(Builder $query, mixed $roles): Builder
     {
         return $query->whereExists(function ($query) use ($roles) {
             $query->selectRaw('1')
@@ -119,10 +115,8 @@ trait InteractsWithRole
 
     /**
      * Query scope for user having the given roles by slugs.
-     *
-     * @param  mixed  $slugs
      */
-    public function scopeHavingRolesBySlugs(Builder $query, $slugs): Builder
+    public function scopeHavingRolesBySlugs(Builder $query, mixed $slugs): Builder
     {
         return $query->whereHas('roles', function ($query) use ($slugs) {
             $query->whereIn('roles.slug', $slugs);
@@ -132,10 +126,9 @@ trait InteractsWithRole
     /**
      * Revokes the given role from the user using slug.
      *
-     * @param  string|array  $slug
      * @param  bool  $touch
      */
-    public function revokeRoleBySlug($slug, $touch = true): int
+    public function revokeRoleBySlug(string|array $slug, $touch = true): int
     {
         $roles = $this->getRoleClass()
             ->newQuery()
@@ -152,10 +145,9 @@ trait InteractsWithRole
     /**
      * Revokes the given role from the user.
      *
-     * @param  mixed  $role
      * @param  bool  $touch
      */
-    public function revokeRole($role, $touch = true): int
+    public function revokeRole(mixed $role, $touch = true): int
     {
         $detached = $this->roles()->detach($role, $touch);
 

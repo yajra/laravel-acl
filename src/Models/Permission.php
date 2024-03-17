@@ -85,7 +85,7 @@ class Permission extends Model
         foreach ($permissions as $permission) {
             try {
                 $collection->push(static::create($permission));
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // permission already exists.
             }
         }

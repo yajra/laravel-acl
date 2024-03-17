@@ -26,10 +26,8 @@ class GateRegistrar
         // @phpstan-ignore-next-line
         $this->getPermissions()->each(function (Permission $permission) {
             $ability = $permission->slug;
-            $policy = function ($user) use ($permission) {
-                // @phpstan-ignore-next-line
-                return collect($user->getPermissions())->contains($permission->slug);
-            };
+            $policy = fn ($user) => // @phpstan-ignore-next-line
+collect($user->getPermissions())->contains($permission->slug);
 
             if (Str::contains($permission->slug, '@')) {
                 $policy = $permission->slug;
@@ -51,13 +49,11 @@ class GateRegistrar
         try {
             if (config('acl.cache.enabled', true)) {
                 // @phpstan-ignore-next-line
-                return $this->cache->rememberForever($key, function () {
-                    return $this->getPermissionClass()->with('roles')->get();
-                });
+                return $this->cache->rememberForever($key, fn () => $this->getPermissionClass()->with('roles')->get());
             } else {
                 return $this->getPermissionClass()->with('roles')->get();
             }
-        } catch (Exception $exception) {
+        } catch (Exception) {
             $this->cache->forget($key);
 
             return new Collection;

@@ -10,10 +10,8 @@ trait HasPermission
 
     /**
      * Checks if the role has the given permission.
-     *
-     * @param  array|string  $permission
      */
-    public function can($permission): bool
+    public function can(array|string $permission): bool
     {
         $permissions = $this->getPermissions();
 
@@ -30,20 +28,16 @@ trait HasPermission
 
     /**
      * Checks if the role does not have the given permission.
-     *
-     * @param  array|string  $permission
      */
-    public function cannot($permission): bool
+    public function cannot(array|string $permission): bool
     {
         return ! $this->can($permission);
     }
 
     /**
      * Check if the role has at least one of the given permissions.
-     *
-     * @param  string|array  $permission
      */
-    public function canAtLeast($permission): bool
+    public function canAtLeast(string|array $permission): bool
     {
         $permissions = $this->getPermissions();
 

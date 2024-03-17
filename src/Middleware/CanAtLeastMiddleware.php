@@ -10,10 +10,9 @@ class CanAtLeastMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  array|string  $permissions
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $permissions)
+    public function handle(Request $request, Closure $next, array|string $permissions)
     {
         $abilities = is_array($permissions) ? $permissions : explode(',', $permissions);
 

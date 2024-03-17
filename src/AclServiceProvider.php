@@ -50,19 +50,11 @@ class AclServiceProvider extends ServiceProvider
     {
         /** @var BladeCompiler $blade */
         $blade = resolve('blade.compiler');
-        $blade->directive('canAtLeast', function ($expression) {
-            return "<?php if (app('laravel-acl.directives.canAtLeast')->handle({$expression})): ?>";
-        });
-        $blade->directive('endCanAtLeast', function ($expression) {
-            return '<?php endif; ?>';
-        });
+        $blade->directive('canAtLeast', fn ($expression) => "<?php if (app('laravel-acl.directives.canAtLeast')->handle({$expression})): ?>");
+        $blade->directive('endCanAtLeast', fn ($expression) => '<?php endif; ?>');
 
-        $blade->directive('role', function ($expression) {
-            return "<?php if (app('laravel-acl.directives.role')->handle({$expression})): ?>";
-        });
-        $blade->directive('endRole', function ($expression) {
-            return '<?php endif; ?>';
-        });
+        $blade->directive('role', fn ($expression) => "<?php if (app('laravel-acl.directives.role')->handle({$expression})): ?>");
+        $blade->directive('endRole', fn ($expression) => '<?php endif; ?>');
     }
 
     /**

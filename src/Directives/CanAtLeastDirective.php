@@ -9,12 +9,10 @@ class CanAtLeastDirective extends DirectiveAbstract
     /**
      * Can at least blade directive compiler.
      *
-     * @param  string|array  $permissions
-     *
      * @throws \Exception
      * @throws \Throwable
      */
-    public function handle($permissions): bool
+    public function handle(string|array $permissions): bool
     {
         if ($this->auth->check()) {
             // @phpstan-ignore-next-line
