@@ -8,6 +8,7 @@ use Yajra\Acl\Models\Role;
 
 /**
  * @property \Illuminate\Database\Eloquent\Collection|Role[] $roles
+ *
  * @method static Builder havingRoles($roleIds)
  * @method static Builder havingRolesBySlugs($slugs)
  */
@@ -22,7 +23,6 @@ trait InteractsWithRole
      * Check if user has the given role.
      *
      * @param  string|array  $role
-     * @return bool
      */
     public function hasRole($role): bool
     {
@@ -40,8 +40,6 @@ trait InteractsWithRole
 
     /**
      * Get all user roles.
-     *
-     * @return array
      */
     public function getRoleSlugs(): array
     {
@@ -50,8 +48,6 @@ trait InteractsWithRole
 
     /**
      * Attach a role to user using slug.
-     *
-     * @param  string  $slug
      */
     public function attachRoleBySlug(string $slug): void
     {
@@ -62,10 +58,6 @@ trait InteractsWithRole
 
     /**
      * Attach a role to user.
-     *
-     * @param  mixed  $role
-     * @param  array  $attributes
-     * @param  bool  $touch
      */
     public function attachRole(mixed $role, array $attributes = [], bool $touch = true): void
     {
@@ -76,8 +68,6 @@ trait InteractsWithRole
 
     /**
      * Model can have many roles.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function roles(): BelongsToMany
     {
@@ -90,8 +80,6 @@ trait InteractsWithRole
     /**
      * Find a role by slug.
      *
-     * @param  string  $slug
-     * @return \Illuminate\Database\Eloquent\Model|static
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     protected function findRoleBySlug(string $slug): \Illuminate\Database\Eloquent\Model|static
@@ -101,8 +89,6 @@ trait InteractsWithRole
 
     /**
      * Get Role class.
-     *
-     * @return Role
      */
     public function getRoleClass(): Role
     {
@@ -119,26 +105,22 @@ trait InteractsWithRole
     /**
      * Query scope for user having the given roles.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  mixed  $roles
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeHavingRoles(Builder $query, $roles): Builder
     {
         return $query->whereExists(function ($query) use ($roles) {
             $query->selectRaw('1')
-                  ->from('role_user')
-                  ->whereRaw('role_user.user_id = users.id')
-                  ->whereIn('role_id', $roles);
+                ->from('role_user')
+                ->whereRaw('role_user.user_id = users.id')
+                ->whereIn('role_id', $roles);
         });
     }
 
     /**
      * Query scope for user having the given roles by slugs.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  mixed  $slugs
-     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeHavingRolesBySlugs(Builder $query, $slugs): Builder
     {
@@ -152,14 +134,13 @@ trait InteractsWithRole
      *
      * @param  string|array  $slug
      * @param  bool  $touch
-     * @return int
      */
     public function revokeRoleBySlug($slug, $touch = true): int
     {
         $roles = $this->getRoleClass()
-                      ->newQuery()
-                      ->whereIn('slug', (array) $slug)
-                      ->get();
+            ->newQuery()
+            ->whereIn('slug', (array) $slug)
+            ->get();
 
         $detached = $this->roles()->detach($roles, $touch);
 
@@ -173,7 +154,6 @@ trait InteractsWithRole
      *
      * @param  mixed  $role
      * @param  bool  $touch
-     * @return int
      */
     public function revokeRole($role, $touch = true): int
     {
@@ -189,7 +169,6 @@ trait InteractsWithRole
      *
      * @param  \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array  $roles
      * @param  bool  $detaching
-     * @return array
      */
     public function syncRoles($roles, $detaching = true): array
     {
@@ -202,8 +181,6 @@ trait InteractsWithRole
 
     /**
      * Revokes all roles from the user.
-     *
-     * @return int
      */
     public function revokeAllRoles(): int
     {

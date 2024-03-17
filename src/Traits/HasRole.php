@@ -14,7 +14,6 @@ trait HasRole
      * Check if user have access using any of the acl (permissions or roles slug).
      *
      * @param  string|array  $acl
-     * @return boolean
      */
     public function canAccess($acl): bool
     {
@@ -25,7 +24,6 @@ trait HasRole
      * Check if user has at least one of the given permissions
      *
      * @param  string|array  $permissions
-     * @return bool
      */
     public function canAtLeast($permissions): bool
     {
@@ -51,11 +49,8 @@ trait HasRole
         return $can;
     }
 
-
     /**
      * Get all user role permissions.
-     *
-     * @return array
      */
     public function getPermissions(): array
     {
@@ -71,9 +66,7 @@ trait HasRole
     /**
      * Check if the given entity/model is owned by the user.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $entity
      * @param  string  $relation
-     * @return bool
      */
     public function owns(Model $entity, $relation = 'user_id'): bool
     {

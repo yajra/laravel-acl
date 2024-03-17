@@ -13,9 +13,6 @@ class GateRegistrar
 {
     /**
      * GateRegistrar constructor.
-     *
-     * @param  GateContract  $gate
-     * @param  Repository  $cache
      */
     public function __construct(public GateContract $gate, public Repository $cache)
     {
@@ -45,8 +42,6 @@ class GateRegistrar
 
     /**
      * Get all permissions.
-     *
-     * @return Collection
      */
     protected function getPermissions(): Collection
     {
@@ -69,9 +64,6 @@ class GateRegistrar
         }
     }
 
-    /**
-     * @return Permission
-     */
     protected function getPermissionClass(): Permission
     {
         /** @var class-string $class */

@@ -70,10 +70,6 @@ abstract class TestCase extends BaseTestCase
         })->fresh('roles');
     }
 
-    /**
-     * @param  string  $role
-     * @return Role
-     */
     protected function createRole(string $role): Role
     {
         return Role::create([
@@ -84,11 +80,7 @@ abstract class TestCase extends BaseTestCase
         ]);
     }
 
-    /**
-     * @param  string|null  $user
-     * @return User
-     */
-    protected function createUser(string $user = null): User
+    protected function createUser(?string $user = null): User
     {
         $user = $user ?: Str::random(10);
 
@@ -103,11 +95,6 @@ abstract class TestCase extends BaseTestCase
         resolve(GateRegistrar::class)->register();
     }
 
-    /**
-     * @param  string  $permission
-     * @param  bool  $system
-     * @return Permission
-     */
     protected function createPermission(string $permission, bool $system = true): Permission
     {
         return Permission::create([

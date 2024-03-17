@@ -13,8 +13,6 @@ abstract class DirectiveAbstract
 
     /**
      * IsRoleDirective constructor.
-     *
-     * @param  \Illuminate\Contracts\Auth\Guard  $auth
      */
     public function __construct(Guard $auth)
     {

@@ -9,9 +9,6 @@ class AclServiceProvider extends ServiceProvider
 {
     /**
      * Register any application authentication / authorization services.
-     *
-     * @param  GateRegistrar  $gate
-     * @return void
      */
     public function boot(GateRegistrar $gate): void
     {
@@ -25,8 +22,6 @@ class AclServiceProvider extends ServiceProvider
 
     /**
      * Publish package config file.
-     *
-     * @return void
      */
     protected function publishConfig(): void
     {
@@ -39,8 +34,6 @@ class AclServiceProvider extends ServiceProvider
 
     /**
      * Publish package migration files.
-     *
-     * @return void
      */
     protected function publishMigrations(): void
     {
@@ -52,8 +45,6 @@ class AclServiceProvider extends ServiceProvider
 
     /**
      * Register custom blade directives.
-     *
-     * @return void
      */
     protected function registerBladeDirectives(): void
     {

@@ -32,8 +32,8 @@ class Permission extends Model
     /**
      * Find a permission by slug.
      *
-     * @param  string  $slug
      * @return \Illuminate\Database\Eloquent\Model|static
+     *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<\Illuminate\Database\Eloquent\Model>
      */
     public static function findBySlug(string $slug)
@@ -43,10 +43,6 @@ class Permission extends Model
 
     /**
      * Create a permissions for a resource.
-     *
-     * @param  string  $resource
-     * @param  bool  $system
-     * @return \Illuminate\Database\Eloquent\Collection
      */
     public static function createResource(string $resource, bool $system = false): Collection
     {
@@ -99,8 +95,6 @@ class Permission extends Model
 
     /**
      * Permission can belong to many users.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users(): BelongsToMany
     {

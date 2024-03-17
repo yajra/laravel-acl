@@ -3,10 +3,7 @@
 namespace Yajra\Acl\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Yajra\Acl\Models\Permission;
-use Yajra\Acl\Models\Role;
 
 class PermissionTest extends TestCase
 {

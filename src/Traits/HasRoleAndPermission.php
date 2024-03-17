@@ -2,15 +2,11 @@
 
 namespace Yajra\Acl\Traits;
 
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Yajra\Acl\Models\Permission;
-
 trait HasRoleAndPermission
 {
     use HasRole {
         HasRole::getPermissions as getRolePermissions;
     }
-
     use InteractsWithPermission;
 
     /**

@@ -14,8 +14,8 @@ class RoleMiddlewareTest extends TestCase
     public function a_user_cannot_access_admin_routes()
     {
         $this->actingAs($this->user)
-             ->get('/')
-             ->assertSee('Unauthorized');
+            ->get('/')
+            ->assertSee('Unauthorized');
     }
 
     /** @test */

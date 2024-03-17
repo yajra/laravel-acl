@@ -6,7 +6,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Acl\Middleware\CanAtLeastMiddleware;
-use Yajra\Acl\Middleware\PermissionMiddleware;
 
 class CanAtLeastMiddlewareTest extends TestCase
 {

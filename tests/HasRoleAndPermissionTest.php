@@ -30,7 +30,6 @@ class HasRoleAndPermissionTest extends TestCase
 
     /**
      * @param  string|null  $user
-     * @return \Yajra\Acl\Tests\Models\UserWithPermission
      */
     protected function createUserWithHasRoleAndPermission($user = null): UserWithPermission
     {

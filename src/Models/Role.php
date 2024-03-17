@@ -31,8 +31,8 @@ class Role extends Model
     /**
      * Find a role by slug.
      *
-     * @param  string  $slug
      * @return \Illuminate\Database\Eloquent\Model|static
+     *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public static function findBySlug(string $slug)
@@ -42,8 +42,6 @@ class Role extends Model
 
     /**
      * Roles can belong to many users.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users(): BelongsToMany
     {

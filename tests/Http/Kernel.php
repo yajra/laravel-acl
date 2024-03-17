@@ -71,4 +71,3 @@ final class Kernel extends HttpKernel
         'canAtLeast' => CanAtLeastMiddleware::class,
     ];
 }
-
