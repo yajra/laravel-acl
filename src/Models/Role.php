@@ -17,35 +17,35 @@ class Role extends Model
 {
     use HasPermission, RefreshPermissionsCache;
 
-    /** @var string */
     protected $table = 'roles';
 
-    /** @var string[] */
-    protected $fillable = ['name', 'slug', 'description', 'system'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'system',
+    ];
 
-    /** @var array<string, string> */
     protected $casts = [
         'system' => 'bool',
     ];
 
     /**
      * Find a role by slug.
-     *
-     * @return \Illuminate\Database\Eloquent\Model|static
-     *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public static function findBySlug(string $slug)
+    public static function findBySlug(string $slug): Role
     {
         return static::query()->where('slug', $slug)->firstOrFail();
     }
 
     /**
      * Roles can belong to many users.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\Illuminate\Foundation\Auth\User>
      */
     public function users(): BelongsToMany
     {
-        /** @var class-string $model */
+        /** @var class-string<\Illuminate\Foundation\Auth\User> $model */
         $model = config('acl.user', config('auth.providers.users.model'));
 
         return $this->belongsToMany($model)->withTimestamps();

@@ -2,14 +2,24 @@
 
 namespace Yajra\Acl\Traits;
 
-use Yajra\Acl\Models\Permission;
-
 trait HasPermission
 {
     use InteractsWithPermission;
 
     /**
+     * Checks if the role does not have the given permission.
+     *
+     * @param  string|string[]  $permission
+     */
+    public function cannot(array|string $permission): bool
+    {
+        return ! $this->can($permission);
+    }
+
+    /**
      * Checks if the role has the given permission.
+     *
+     * @param  string|string[]  $permission
      */
     public function can(array|string $permission): bool
     {
@@ -27,15 +37,9 @@ trait HasPermission
     }
 
     /**
-     * Checks if the role does not have the given permission.
-     */
-    public function cannot(array|string $permission): bool
-    {
-        return ! $this->can($permission);
-    }
-
-    /**
      * Check if the role has at least one of the given permissions.
+     *
+     * @param  string|string[]  $permission
      */
     public function canAtLeast(string|array $permission): bool
     {

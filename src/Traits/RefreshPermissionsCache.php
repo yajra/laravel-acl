@@ -2,6 +2,7 @@
 
 namespace Yajra\Acl\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Yajra\Acl\GateRegistrar;
 
 trait RefreshPermissionsCache
@@ -9,7 +10,7 @@ trait RefreshPermissionsCache
     public static function bootRefreshPermissionsCache(): void
     {
         static::saved(function () {
-            if (auth()->check()) {
+            if (auth()->check() && auth()->user() instanceof Model) {
                 auth()->user()->load('roles');
             }
 
@@ -21,7 +22,7 @@ trait RefreshPermissionsCache
         });
 
         static::deleted(function () {
-            if (auth()->check()) {
+            if (auth()->check() && auth()->user() instanceof Model) {
                 auth()->user()->load('roles');
             }
 

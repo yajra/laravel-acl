@@ -3,11 +3,13 @@
 namespace Yajra\Acl\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 use Yajra\Acl\Models\Role;
 
 /**
- * @property \Illuminate\Database\Eloquent\Collection|Role[] $roles
+ * @property \Illuminate\Database\Eloquent\Collection<array-key, Role> $roles
  *
  * @method static Builder havingRoles($roleIds)
  * @method static Builder havingRolesBySlugs($slugs)
@@ -21,13 +23,15 @@ trait InteractsWithRole
 
     /**
      * Check if user has the given role.
+     *
+     * @param  string|string[]  $role
      */
     public function hasRole(string|array $role): bool
     {
         if (is_array($role)) {
             $roles = $this->getRoleSlugs();
 
-            $intersection = array_intersect($roles, (array) $role);
+            $intersection = array_intersect($roles, $role);
             $intersectionCount = count($intersection);
 
             return $intersectionCount > 0;
@@ -38,6 +42,8 @@ trait InteractsWithRole
 
     /**
      * Get all user roles.
+     *
+     * @return array<array-key, mixed>
      */
     public function getRoleSlugs(): array
     {
@@ -56,6 +62,8 @@ trait InteractsWithRole
 
     /**
      * Attach a role to user.
+     *
+     * @param  array<array-key, mixed>  $attributes
      */
     public function attachRole(mixed $role, array $attributes = [], bool $touch = true): void
     {
@@ -66,6 +74,8 @@ trait InteractsWithRole
 
     /**
      * Model can have many roles.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<Role>
      */
     public function roles(): BelongsToMany
     {
@@ -80,7 +90,7 @@ trait InteractsWithRole
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    protected function findRoleBySlug(string $slug): \Illuminate\Database\Eloquent\Model|static
+    protected function findRoleBySlug(string $slug): Model|static
     {
         return $this->getRoleClass()->newQuery()->where('slug', $slug)->firstOrFail();
     }
@@ -102,8 +112,12 @@ trait InteractsWithRole
 
     /**
      * Query scope for user having the given roles.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<\Yajra\Acl\Models\Permission>  $query
+     * @param  array<array-key, int>  $roles
+     * @return \Illuminate\Database\Eloquent\Builder<\Yajra\Acl\Models\Permission>
      */
-    public function scopeHavingRoles(Builder $query, mixed $roles): Builder
+    public function scopeHavingRoles(Builder $query, array $roles): Builder
     {
         return $query->whereExists(function ($query) use ($roles) {
             $query->selectRaw('1')
@@ -115,8 +129,12 @@ trait InteractsWithRole
 
     /**
      * Query scope for user having the given roles by slugs.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<\Yajra\Acl\Models\Permission>  $query
+     * @param  array<array-key, string>  $slugs
+     * @return \Illuminate\Database\Eloquent\Builder<\Yajra\Acl\Models\Permission>
      */
-    public function scopeHavingRolesBySlugs(Builder $query, mixed $slugs): Builder
+    public function scopeHavingRolesBySlugs(Builder $query, array $slugs): Builder
     {
         return $query->whereHas('roles', function ($query) use ($slugs) {
             $query->whereIn('roles.slug', $slugs);
@@ -126,6 +144,7 @@ trait InteractsWithRole
     /**
      * Revokes the given role from the user using slug.
      *
+     * @param  string|string[]  $slug
      * @param  bool  $touch
      */
     public function revokeRoleBySlug(string|array $slug, $touch = true): int
@@ -159,10 +178,10 @@ trait InteractsWithRole
     /**
      * Syncs the given role(s) with the user.
      *
-     * @param  \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model|array  $roles
-     * @param  bool  $detaching
+     * @param  Collection<array-key, mixed>|Model|array<array-key, int>  $roles
+     * @return array<array-key, mixed>
      */
-    public function syncRoles($roles, $detaching = true): array
+    public function syncRoles(Collection|Model|array $roles, bool $detaching = true): array
     {
         $synced = $this->roles()->sync($roles, $detaching);
 

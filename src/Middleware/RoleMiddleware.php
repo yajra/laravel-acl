@@ -11,13 +11,16 @@ class RoleMiddleware
     /**
      * Handle an incoming request.
      *
-     * @return mixed
+     * @param  string|string[]  $role
      */
-    public function handle(Request $request, Closure $next, string $role)
+    public function handle(Request $request, Closure $next, string|array $role): mixed
     {
-        $role = Str::of($role)->split('/[|,]/')->toArray();
+        if (is_string($role)) {
+            /** @var string[] $role */
+            $role = Str::of($role)->split('/[|,]/')->toArray();
+        }
 
-        if (! auth()->user() || ! auth()->user()->hasRole($role)) {
+        if ($this->deniesAccessUsing($role)) {
             if ($request->ajax()) {
                 return response()->json([
                     'error' => [
@@ -32,5 +35,14 @@ class RoleMiddleware
         }
 
         return $next($request);
+    }
+
+    /**
+     * @param  string[]  $role
+     */
+    protected function deniesAccessUsing(array $role): bool
+    {
+        return ! auth()->user()
+            || (method_exists(auth()->user(), 'hasRole') && ! auth()->user()->hasRole($role));
     }
 }

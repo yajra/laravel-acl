@@ -3,9 +3,9 @@
 namespace Yajra\Acl\Models;
 
 use Exception;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Yajra\Acl\Traits\InteractsWithRole;
 use Yajra\Acl\Traits\RefreshPermissionsCache;
@@ -20,29 +20,31 @@ class Permission extends Model
 {
     use InteractsWithRole, RefreshPermissionsCache;
 
-    /** @var string */
     protected $table = 'permissions';
 
-    /** @var string[] */
-    protected $fillable = ['name', 'slug', 'resource', 'system'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'resource',
+        'system',
+    ];
 
-    /** @var array<string, string> */
-    protected $casts = ['system' => 'bool'];
+    protected $casts = [
+        'system' => 'bool',
+    ];
 
     /**
      * Find a permission by slug.
-     *
-     * @return \Illuminate\Database\Eloquent\Model|static
-     *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<\Illuminate\Database\Eloquent\Model>
      */
-    public static function findBySlug(string $slug)
+    public static function findBySlug(string $slug): Permission
     {
         return static::query()->where('slug', $slug)->firstOrFail();
     }
 
     /**
      * Create a permissions for a resource.
+     *
+     * @return \Illuminate\Support\Collection<array-key, \Yajra\Acl\Models\Permission>
      */
     public static function createResource(string $resource, bool $system = false): Collection
     {
@@ -95,10 +97,12 @@ class Permission extends Model
 
     /**
      * Permission can belong to many users.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\Illuminate\Foundation\Auth\User>
      */
     public function users(): BelongsToMany
     {
-        /** @var class-string $model */
+        /** @var class-string<\Illuminate\Foundation\Auth\User> $model */
         $model = config('acl.user', config('auth.providers.users.model'));
 
         return $this->belongsToMany($model)->withTimestamps();
