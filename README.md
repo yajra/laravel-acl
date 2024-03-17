@@ -2,7 +2,9 @@
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
-![Build Status](https://github.com/yajra/laravel-acl/workflows/tests/badge.svg)
+
+[![Continuous Integration](https://github.com/yajra/laravel-acl/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/yajra/laravel-acl/actions/workflows/continuous-integration.yml)
+[![Static Analysis](https://github.com/yajra/laravel-acl/actions/workflows/static-analysis.yml/badge.svg)](https://github.com/yajra/laravel-acl/actions/workflows/static-analysis.yml)
 [![Total Downloads][ico-downloads]][link-downloads]
 
 Laravel ACL (Access Control List) is a simple role-permission ACL for the Laravel Framework.
