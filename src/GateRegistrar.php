@@ -2,10 +2,8 @@
 
 namespace Yajra\Acl;
 
-use Exception;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Str;
 use Yajra\Acl\Models\Permission;
@@ -18,7 +16,9 @@ class GateRegistrar
 
     public function register(): void
     {
-        $this->getPermissions()->each(function (Permission $permission) {
+        collect($this->getPermissions())->each(function ($data) {
+            $permission = new Permission($data);
+
             $ability = $permission->slug;
             $policy = function (User $user) use ($permission) {
                 if (method_exists($user, 'getPermissions')) {
@@ -43,24 +43,36 @@ class GateRegistrar
     /**
      * Get all permissions.
      *
-     * @return \Illuminate\Database\Eloquent\Collection<array-key, \Yajra\Acl\Models\Permission>
+     * @return array<array<string, mixed>>
      */
-    protected function getPermissions(): Collection
+    protected function getPermissions(): array
     {
         /** @var string $key */
         $key = config('acl.cache.key', 'permissions.policies');
 
         try {
             if (config('acl.cache.enabled', true)) {
-                return $this->cache->rememberForever($key, fn () => $this->getPermissionClass()->with('roles')->get());
+                return $this->cache->rememberForever($key, fn () => $this->getPermissionsFromQuery());
             } else {
-                return $this->getPermissionClass()->with('roles')->get();
+                return $this->getPermissionsFromQuery();
             }
-        } catch (Exception) {
+        } catch (\Throwable) {
             $this->cache->forget($key);
 
-            return Collection::make();
+            return [];
         }
+    }
+
+    /**
+     * @return array<array<string, mixed>>
+     */
+    public function getPermissionsFromQuery(): array
+    {
+        // @phpstan-ignore-next-line
+        return $this->getPermissionClass()
+            ->with('roles')
+            ->get()
+            ->toArray();
     }
 
     protected function getPermissionClass(): Permission
