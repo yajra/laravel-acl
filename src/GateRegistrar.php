@@ -65,6 +65,7 @@ class GateRegistrar
      */
     public function getPermissionsFromQuery(): array
     {
+        // @phpstan-ignore-next-line
         return $this->getPermissionClass()
             ->with('roles')
             ->get()
