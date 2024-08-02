@@ -21,6 +21,7 @@ class GateRegistrar
             $ability = $permission->slug;
             $policy = function (User $user) use ($permission) {
                 if (method_exists($user, 'getPermissions')) {
+                    // @phpstan-ignore-next-line
                     return collect($user->getPermissions())->contains($permission->slug);
                 }
 
