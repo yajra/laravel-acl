@@ -24,10 +24,10 @@
         "illuminate/database": "^11.0"
     },
     "require-dev": {
-        "larastan/larastan": "^2.9.1",
-        "laravel/pint": "^1.14",
-        "rector/rector": "^1.0",
-        "orchestra/testbench": "^9.0"
+        "larastan/larastan": "^2.9.8",
+        "laravel/pint": "^1.17.1",
+        "rector/rector": "^1.2.2",
+        "orchestra/testbench": "^9.2"
     },
     "autoload": {
         "psr-4": {
