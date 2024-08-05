@@ -5,15 +5,13 @@ namespace Yajra\Acl;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Foundation\Auth\User;
-use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Yajra\Acl\Models\Permission;
 
 class GateRegistrar
 {
-    public function __construct(public GateContract $gate, public Repository $cache)
-    {
-    }
+    public function __construct(public GateContract $gate, public Repository $cache) {}
 
     public function register(): void
     {
@@ -39,8 +37,6 @@ class GateRegistrar
 
     /**
      * Get all permissions.
-     *
-     * @return \Illuminate\Support\Collection
      */
     protected function getPermissions(): Collection
     {
@@ -60,9 +56,6 @@ class GateRegistrar
         }
     }
 
-    /**
-     * @return array
-     */
     public function getPermissionsFromQuery(): array
     {
         // @phpstan-ignore-next-line

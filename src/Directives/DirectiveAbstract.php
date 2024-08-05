@@ -9,7 +9,5 @@ abstract class DirectiveAbstract
     /**
      * IsRoleDirective constructor.
      */
-    public function __construct(protected Guard $auth)
-    {
-    }
+    public function __construct(protected Guard $auth) {}
 }
