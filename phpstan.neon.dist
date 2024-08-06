@@ -11,5 +11,3 @@ parameters:
     ignoreErrors:
 
     excludePaths:
-
-    checkMissingIterableValueType: true

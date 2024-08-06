@@ -37,6 +37,8 @@ class GateRegistrar
 
     /**
      * Get all permissions.
+     *
+     * @return \Illuminate\Support\Collection<array-key, Permission>
      */
     protected function getPermissions(): Collection
     {
@@ -44,25 +46,24 @@ class GateRegistrar
         $key = config('acl.cache.key', 'permissions.policies');
 
         try {
-            $permissions = config('acl.cache.enabled', true)
+            return config('acl.cache.enabled', true)
                 ? $this->cache->rememberForever($key, fn () => $this->getPermissionsFromQuery())
                 : $this->getPermissionsFromQuery();
-
-            return collect($permissions)->map(fn ($data) => new Permission($data));
         } catch (\Throwable) {
             $this->cache->forget($key);
 
-            return collect([]);
+            return collect();
         }
     }
 
-    public function getPermissionsFromQuery(): array
+    /**
+     * @return \Illuminate\Support\Collection<array-key, Permission>
+     */
+    public function getPermissionsFromQuery(): Collection
     {
-        // @phpstan-ignore-next-line
         return $this->getPermissionClass()
             ->with('roles')
-            ->get()
-            ->toArray();
+            ->get();
     }
 
     protected function getPermissionClass(): Permission
