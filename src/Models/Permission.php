@@ -105,6 +105,7 @@ class Permission extends Model
         /** @var class-string<\Illuminate\Foundation\Auth\User> $model */
         $model = config('acl.user', config('auth.providers.users.model'));
 
+        // @phpstan-ignore-next-line
         return $this->belongsToMany($model)->withTimestamps();
     }
 }

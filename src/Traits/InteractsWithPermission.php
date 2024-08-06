@@ -69,9 +69,10 @@ trait InteractsWithPermission
      */
     public function permissions(): BelongsToMany
     {
-        /** @var class-string $model */
+        /** @var class-string<Permission> $model */
         $model = config('acl.permission', Permission::class);
 
+        // @phpstan-ignore-next-line
         return $this->belongsToMany($model)->withTimestamps();
     }
 

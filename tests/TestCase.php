@@ -135,7 +135,7 @@ abstract class TestCase extends BaseTestCase
 
         $app['config']->set('view.paths', [__DIR__.'/resources/views']);
         $app['config']->set('auth.providers.users.model', User::class);
-        $app['log']->getLogger()->pushHandler(new TestHandler());
+        $app['log']->getLogger()->pushHandler(new TestHandler);
     }
 
     protected function getPackageProviders($app): array

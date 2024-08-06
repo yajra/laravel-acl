@@ -181,10 +181,10 @@ class HasRoleTest extends TestCase
 
         $supportUser->attachRole($support);
 
-        $roles = (new User())->havingRoles([$manager->getKey(), $support->getKey()])->get();
+        $roles = (new User)->havingRoles([$manager->getKey(), $support->getKey()])->get();
         $this->assertCount(2, $roles);
 
-        $roles = (new User())->havingRolesBySlugs([$manager->slug, $user->slug])->get();
+        $roles = (new User)->havingRolesBySlugs([$manager->slug, $user->slug])->get();
         $this->assertCount(1, $roles);
     }
 }

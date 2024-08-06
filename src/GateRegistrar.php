@@ -5,27 +5,22 @@ namespace Yajra\Acl;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Yajra\Acl\Models\Permission;
 
 class GateRegistrar
 {
-    public function __construct(public GateContract $gate, public Repository $cache)
-    {
-    }
+    public function __construct(public GateContract $gate, public Repository $cache) {}
 
     public function register(): void
     {
-        collect($this->getPermissions())->each(function ($data) {
-            $permission = new Permission($data);
-
+        $this->getPermissions()->each(function (Permission $permission) {
             $ability = $permission->slug;
             $policy = function (User $user) use ($permission) {
                 if (method_exists($user, 'getPermissions')) {
                     // @phpstan-ignore-next-line
-                    $permissions = collect($user->getPermissions());
-
-                    return $permissions->contains($permission->slug);
+                    return collect($user->getPermissions())->contains($permission->slug);
                 }
 
                 return false;
@@ -43,36 +38,32 @@ class GateRegistrar
     /**
      * Get all permissions.
      *
-     * @return array<array<string, mixed>>
+     * @return \Illuminate\Support\Collection<array-key, Permission>
      */
-    protected function getPermissions(): array
+    protected function getPermissions(): Collection
     {
         /** @var string $key */
         $key = config('acl.cache.key', 'permissions.policies');
 
         try {
-            if (config('acl.cache.enabled', true)) {
-                return $this->cache->rememberForever($key, fn () => $this->getPermissionsFromQuery());
-            } else {
-                return $this->getPermissionsFromQuery();
-            }
+            return config('acl.cache.enabled', true)
+                ? $this->cache->rememberForever($key, fn () => $this->getPermissionsFromQuery())
+                : $this->getPermissionsFromQuery();
         } catch (\Throwable) {
             $this->cache->forget($key);
 
-            return [];
+            return collect();
         }
     }
 
     /**
-     * @return array<array<string, mixed>>
+     * @return \Illuminate\Support\Collection<array-key, Permission>
      */
-    public function getPermissionsFromQuery(): array
+    public function getPermissionsFromQuery(): Collection
     {
-        // @phpstan-ignore-next-line
         return $this->getPermissionClass()
             ->with('roles')
-            ->get()
-            ->toArray();
+            ->get();
     }
 
     protected function getPermissionClass(): Permission

@@ -79,9 +79,10 @@ trait InteractsWithRole
      */
     public function roles(): BelongsToMany
     {
-        /** @var class-string $model */
+        /** @var class-string<Role> $model */
         $model = config('acl.role', Role::class);
 
+        // @phpstan-ignore-next-line
         return $this->belongsToMany($model)->withTimestamps();
     }
 
