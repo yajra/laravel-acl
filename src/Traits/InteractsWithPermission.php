@@ -173,6 +173,8 @@ trait InteractsWithPermission
      */
     public function getPermissions(): array
     {
+        $this->loadMissing('permissions');
+
         return $this->permissions->pluck('slug')->toArray();
     }
 }
