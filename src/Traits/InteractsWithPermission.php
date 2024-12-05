@@ -173,6 +173,10 @@ trait InteractsWithPermission
      */
     public function getPermissions(): array
     {
+        if (! $this->relationLoaded('permissions')) {
+            $this->load('permissions');
+        }
+
         return $this->permissions->pluck('slug')->toArray();
     }
 }
