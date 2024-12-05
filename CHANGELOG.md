@@ -2,6 +2,10 @@
 
 ## UNRELEASED
 
+## v11.1.2 - 2024-12-05
+
+- fix: lazy loading issue with permissions #55
+
 ## v11.1.1 - 2024-08-06
 
 - fix: Ensure getPermissions returns Collection and simplify logic #53 
