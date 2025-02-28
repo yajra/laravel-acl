@@ -1,20 +1,29 @@
 name: PHP Linting
 on:
-  pull_request:
-  push:
-    branches:
-      - master
+    pull_request:
+    push:
+        branches:
+            - master
+            - '*.x'
 jobs:
-  phplint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: "laravel-pint"
-        uses: aglipanci/laravel-pint-action@2.0.0
-        with:
-          preset: laravel
-          verboseMode: true
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "fix: pint"
+    phplint:
+        runs-on: ubuntu-latest
 
+        permissions:
+            contents: write
+            pull-requests: write
+
+        steps:
+            -   uses: actions/checkout@v4
+                with:
+                    ref: ${{ github.head_ref }}
+
+            -   name: "laravel-pint"
+                uses: aglipanci/laravel-pint-action@latest
+                with:
+                    preset: laravel
+                    verboseMode: true
+
+            -   uses: stefanzweifel/git-auto-commit-action@v5
+                with:
+                    commit_message: "fix: pint"
