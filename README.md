@@ -21,13 +21,14 @@ This package was based on the great package [Caffeinated/Shinobi](https://github
 | 9.x           | 9.x     |
 | 10.x          | 10.x    |
 | 11.x          | 11.x    |
+| 12.x          | 12.x    |
 
 ## Installation
 
 Via Composer
 
 ``` bash
-$ composer require yajra/laravel-acl:^11
+$ composer require yajra/laravel-acl:^12
 ```
 
 ## Configuration
