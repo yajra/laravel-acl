@@ -25,7 +25,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.2
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, gd, memcached, oci8
           tools: composer:v2
           coverage: none
 
