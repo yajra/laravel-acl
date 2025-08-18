@@ -22,22 +22,22 @@ trait InteractsWithRole
     public $roleClass;
 
     /**
-     * Check if user has the given role.
+     * Check if the user has the given role.
      *
-     * @param  string|string[]  $role
+     * @param  mixed  $role  Role slug (string), array of slugs, or enum
      */
-    public function hasRole(string|array $role): bool
+    public function hasRole(mixed $role): bool
     {
         if (is_array($role)) {
             $roles = $this->getRoleSlugs();
-
             $intersection = array_intersect($roles, $role);
-            $intersectionCount = count($intersection);
 
-            return $intersectionCount > 0;
+            return count($intersection) > 0;
         }
 
-        return $this->roles->contains('slug', $role);
+        $roleSlug = $this->resolveRoleSlug($role);
+
+        return $this->roles->contains('slug', $roleSlug);
     }
 
     /**
@@ -68,18 +68,9 @@ trait InteractsWithRole
     {
         // If role is a string or enum, find the role by slug
         if (is_string($role)) {
-            $roleSlug = $role;
-            $role = $this->findRoleBySlug($roleSlug);
-        } elseif (is_object($role) && enum_exists($role::class)) {
-            // Handle backed enums properly by accessing the value property
-            if ($role instanceof \BackedEnum) {
-                $roleSlug = (string) $role->value;
-            } elseif ($role instanceof \UnitEnum) {
-                // For pure enums, use the name property
-                $roleSlug = $role->name;
-            } else {
-                throw new \InvalidArgumentException('Invalid enum type provided');
-            }
+            $role = $this->findRoleBySlug($role);
+        } elseif (is_object($role) && ! ($role instanceof Model)) {
+            $roleSlug = $this->resolveRoleSlug($role);
             $role = $this->findRoleBySlug($roleSlug);
         }
 
@@ -217,5 +208,43 @@ trait InteractsWithRole
         $this->load('roles');
 
         return $detached;
+    }
+
+    /**
+     * Resolve a role slug from various input types.
+     *
+     * @param  mixed  $role  Role slug (string) or enum
+     *
+     * @throws \InvalidArgumentException When the role type is not supported
+     */
+    private function resolveRoleSlug(mixed $role): string
+    {
+        if (is_string($role)) {
+            return $role;
+        }
+
+        if (is_object($role)) {
+            if ($role instanceof \BackedEnum) {
+                return (string) $role->value;
+            }
+
+            if ($role instanceof \UnitEnum) {
+                return $role->name;
+            }
+
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Invalid role type provided. Expected string, BackedEnum, or UnitEnum, got %s.',
+                    $role::class
+                )
+            );
+        }
+
+        throw new \InvalidArgumentException(
+            sprintf(
+                'Invalid role type provided. Expected string or enum, got %s.',
+                gettype($role)
+            )
+        );
     }
 }
