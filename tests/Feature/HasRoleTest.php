@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use PHPUnit\Framework\Attributes\Test;
 use Yajra\Acl\Models\Role;
+use Yajra\Acl\Tests\Enums\RoleEnum;
 use Yajra\Acl\Tests\Models\User;
 use Yajra\Acl\Tests\TestCase;
 
@@ -186,5 +187,45 @@ class HasRoleTest extends TestCase
 
         $roles = (new User)->havingRolesBySlugs([$manager->slug, $user->slug])->get();
         $this->assertCount(1, $roles);
+    }
+
+    #[Test]
+    public function it_can_attach_role_to_user_using_enum()
+    {
+        // Create roles that match our enum values
+        $this->createRole('test-admin');  // This will create slug 'test-admin'
+        $this->createRole('test-manager'); // This will create slug 'test-manager'
+        $user = $this->createUser('Yajra');
+
+        $this->assertCount(0, $user->roles);
+
+        // Test attaching role using enum
+        $user->attachRole(RoleEnum::TEST_ADMIN);
+        $this->assertCount(1, $user->roles);
+        $this->assertTrue($user->hasRole('test-admin'));
+
+        // Test attaching another role using enum
+        $user->attachRole(RoleEnum::TEST_MANAGER);
+        $this->assertCount(2, $user->roles);
+        $this->assertTrue($user->hasRole('test-manager'));
+
+        // Verify both roles are attached
+        $rolesSlugs = $user->getRoleSlugs();
+        $this->assertContains('test-admin', $rolesSlugs);
+        $this->assertContains('test-manager', $rolesSlugs);
+    }
+
+    #[Test]
+    public function it_can_attach_role_using_string_slug()
+    {
+        $this->createRole('user'); // This will create slug 'user'
+        $user = $this->createUser('Yajra');
+
+        $this->assertCount(0, $user->roles);
+
+        // Test attaching role using string slug directly with attachRole
+        $user->attachRole('user');
+        $this->assertCount(1, $user->roles);
+        $this->assertTrue($user->hasRole('user'));
     }
 }
