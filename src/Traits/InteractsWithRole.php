@@ -70,9 +70,16 @@ trait InteractsWithRole
         if (is_string($role)) {
             $roleSlug = $role;
             $role = $this->findRoleBySlug($roleSlug);
-        } elseif (is_object($role) && enum_exists(get_class($role))) {
+        } elseif (is_object($role) && enum_exists($role::class)) {
             // Handle backed enums properly by accessing the value property
-            $roleSlug = $role instanceof \BackedEnum ? $role->value : (string) $role;
+            if ($role instanceof \BackedEnum) {
+                $roleSlug = (string) $role->value;
+            } elseif ($role instanceof \UnitEnum) {
+                // For pure enums, use the name property
+                $roleSlug = $role->name;
+            } else {
+                throw new \InvalidArgumentException('Invalid enum type provided');
+            }
             $role = $this->findRoleBySlug($roleSlug);
         }
 
