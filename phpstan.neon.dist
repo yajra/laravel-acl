@@ -12,7 +12,6 @@ parameters:
         -   identifier: return.type
         -   identifier: method.nonObject
         -   identifier: assign.propertyType
-        -   identifier: generics.lessTypes
         -   identifier: missingType.generics
         -   identifier: trait.unused
         -   identifier: encapsedStringPart.nonString

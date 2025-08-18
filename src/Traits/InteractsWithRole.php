@@ -91,7 +91,7 @@ trait InteractsWithRole
     /**
      * Model can have many roles.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<Role>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\Yajra\Acl\Models\Role, $this>
      */
     public function roles(): BelongsToMany
     {
