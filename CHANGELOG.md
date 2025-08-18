@@ -2,6 +2,10 @@
 
 ## UNRELEASED
 
+## v12.1.1 - 2025-08-18
+
+- fix: hasRole to support enum type #60
+
 ## v12.1.0 - 2025-08-18
 
 - feat: add support for backed enum role #59
