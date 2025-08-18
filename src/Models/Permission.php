@@ -98,14 +98,13 @@ class Permission extends Model
     /**
      * Permission can belong to many users.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\Illuminate\Foundation\Auth\User>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\Illuminate\Foundation\Auth\User, $this>
      */
     public function users(): BelongsToMany
     {
         /** @var class-string<\Illuminate\Foundation\Auth\User> $model */
         $model = config('acl.user', config('auth.providers.users.model'));
 
-        // @phpstan-ignore-next-line
         return $this->belongsToMany($model)->withTimestamps();
     }
 }

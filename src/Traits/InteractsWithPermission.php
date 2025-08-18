@@ -65,14 +65,13 @@ trait InteractsWithPermission
     /**
      * Get related permissions.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<Permission>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\Yajra\Acl\Models\Permission, $this>
      */
     public function permissions(): BelongsToMany
     {
         /** @var class-string<Permission> $model */
         $model = config('acl.permission', Permission::class);
 
-        // @phpstan-ignore-next-line
         return $this->belongsToMany($model)->withTimestamps();
     }
 

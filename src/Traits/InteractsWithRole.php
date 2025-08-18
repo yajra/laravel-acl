@@ -55,18 +55,34 @@ trait InteractsWithRole
      */
     public function attachRoleBySlug(string $slug): void
     {
-        $this->attachRole($this->findRoleBySlug($slug));
-
-        $this->load('roles');
+        $this->attachRole($slug);
     }
 
     /**
      * Attach a role to user.
      *
+     * @param  mixed  $role  Role model instance, role slug (string), or enum that can be cast to string
      * @param  array<array-key, mixed>  $attributes
      */
     public function attachRole(mixed $role, array $attributes = [], bool $touch = true): void
     {
+        // If role is a string or enum, find the role by slug
+        if (is_string($role)) {
+            $roleSlug = $role;
+            $role = $this->findRoleBySlug($roleSlug);
+        } elseif (is_object($role) && enum_exists($role::class)) {
+            // Handle backed enums properly by accessing the value property
+            if ($role instanceof \BackedEnum) {
+                $roleSlug = (string) $role->value;
+            } elseif ($role instanceof \UnitEnum) {
+                // For pure enums, use the name property
+                $roleSlug = $role->name;
+            } else {
+                throw new \InvalidArgumentException('Invalid enum type provided');
+            }
+            $role = $this->findRoleBySlug($roleSlug);
+        }
+
         $this->roles()->attach($role, $attributes, $touch);
 
         $this->load('roles');
@@ -75,7 +91,7 @@ trait InteractsWithRole
     /**
      * Model can have many roles.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<Role>
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\Yajra\Acl\Models\Role, $this>
      */
     public function roles(): BelongsToMany
     {
