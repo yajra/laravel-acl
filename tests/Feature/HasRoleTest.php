@@ -228,4 +228,79 @@ class HasRoleTest extends TestCase
         $this->assertCount(1, $user->roles);
         $this->assertTrue($user->hasRole('user'));
     }
+
+    #[Test]
+    public function it_can_check_user_role_using_enum()
+    {
+        // Create roles that match our enum values
+        $this->createRole('test-admin');
+        $this->createRole('test-manager');
+        $user = $this->createUser('Yajra');
+
+        // Attach role using enum
+        $user->attachRole(RoleEnum::TEST_ADMIN);
+
+        // Test hasRole with enum
+        $this->assertTrue($user->hasRole(RoleEnum::TEST_ADMIN));
+        $this->assertFalse($user->hasRole(RoleEnum::TEST_MANAGER));
+
+        // Test hasRole still works with string
+        $this->assertTrue($user->hasRole('test-admin'));
+        $this->assertFalse($user->hasRole('test-manager'));
+
+        // Attach another role
+        $user->attachRole(RoleEnum::TEST_MANAGER);
+
+        // Test both roles
+        $this->assertTrue($user->hasRole(RoleEnum::TEST_ADMIN));
+        $this->assertTrue($user->hasRole(RoleEnum::TEST_MANAGER));
+    }
+
+    #[Test]
+    public function it_can_check_user_role_with_array_including_enums()
+    {
+        $this->createRole('test-admin');
+        $this->createRole('moderator');
+        $user = $this->createUser('Yajra');
+
+        $user->attachRole(RoleEnum::TEST_ADMIN);
+
+        // Test hasRole with array of strings
+        $this->assertTrue($user->hasRole(['test-admin', 'moderator']));
+        $this->assertTrue($user->hasRole(['test-admin']));
+        $this->assertFalse($user->hasRole(['moderator', 'guest']));
+    }
+
+    #[Test]
+    public function it_throws_exception_for_invalid_role_type_in_has_role()
+    {
+        $user = $this->createUser('Yajra');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid role type provided. Expected string, BackedEnum, or UnitEnum, got stdClass.');
+
+        $user->hasRole(new \stdClass);
+    }
+
+    #[Test]
+    public function it_throws_exception_for_invalid_role_type_in_attach_role()
+    {
+        $user = $this->createUser('Yajra');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid role type provided. Expected string, BackedEnum, or UnitEnum, got stdClass.');
+
+        $user->attachRole(new \stdClass);
+    }
+
+    #[Test]
+    public function it_throws_exception_for_invalid_primitive_type_in_resolve_role_slug()
+    {
+        $user = $this->createUser('Yajra');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid role type provided. Expected string or enum, got integer.');
+
+        $user->hasRole(123);
+    }
 }
