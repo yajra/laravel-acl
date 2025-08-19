@@ -172,10 +172,19 @@ trait InteractsWithRole
     /**
      * Revokes the given role from the user.
      *
+     * @param  mixed  $role  Role model instance, role slug (string), or enum that can be cast to string
      * @param  bool  $touch
      */
     public function revokeRole(mixed $role, $touch = true): int
     {
+        // If role is a string or enum, find the role by slug
+        if (is_string($role)) {
+            $role = $this->findRoleBySlug($role);
+        } elseif (is_object($role) && ! ($role instanceof Model)) {
+            $roleSlug = $this->resolveRoleSlug($role);
+            $role = $this->findRoleBySlug($roleSlug);
+        }
+
         $detached = $this->roles()->detach($role, $touch);
 
         $this->load('roles');
