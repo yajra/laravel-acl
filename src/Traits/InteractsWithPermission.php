@@ -53,11 +53,20 @@ trait InteractsWithPermission
     /**
      * Grant the given permission.
      *
+     * @param  mixed  $permission  Permission model instance, permission slug (string), or enum that can be cast to string
      * @param  array<array-key, mixed>  $attributes
      */
-    public function grantPermission(mixed $ids, array $attributes = [], bool $touch = true): void
+    public function grantPermission(mixed $permission, array $attributes = [], bool $touch = true): void
     {
-        $this->permissions()->attach($ids, $attributes, $touch);
+        // If permission is a string or enum, find the permission by slug
+        if (is_string($permission)) {
+            $permission = $this->findPermissionBySlug($permission);
+        } elseif (is_object($permission) && ! ($permission instanceof Model)) {
+            $permissionSlug = $this->resolvePermissionSlug($permission);
+            $permission = $this->findPermissionBySlug($permissionSlug);
+        }
+
+        $this->permissions()->attach($permission, $attributes, $touch);
 
         $this->load('permissions');
     }
@@ -175,5 +184,53 @@ trait InteractsWithPermission
         $this->loadMissing('permissions');
 
         return $this->permissions->pluck('slug')->toArray();
+    }
+
+    /**
+     * Find a permission by slug.
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
+    protected function findPermissionBySlug(string $slug): Model|static
+    {
+        return $this->getPermissionClass()->newQuery()->where('slug', $slug)->firstOrFail();
+    }
+
+    /**
+     * Resolve a permission slug from various input types.
+     *
+     * @param  mixed  $permission  Permission slug (string) or enum
+     *
+     * @throws \InvalidArgumentException When the permission type is not supported
+     */
+    private function resolvePermissionSlug(mixed $permission): string
+    {
+        if (is_string($permission)) {
+            return $permission;
+        }
+
+        if (is_object($permission)) {
+            if ($permission instanceof \BackedEnum) {
+                return (string) $permission->value;
+            }
+
+            if ($permission instanceof \UnitEnum) {
+                return $permission->name;
+            }
+
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Invalid permission type provided. Expected string, BackedEnum, or UnitEnum, got %s.',
+                    $permission::class
+                )
+            );
+        }
+
+        throw new \InvalidArgumentException(
+            sprintf(
+                'Invalid permission type provided. Expected string or enum, got %s.',
+                gettype($permission)
+            )
+        );
     }
 }

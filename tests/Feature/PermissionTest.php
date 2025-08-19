@@ -5,6 +5,7 @@ namespace Yajra\Acl\Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use PHPUnit\Framework\Attributes\Test;
 use Yajra\Acl\Models\Permission;
+use Yajra\Acl\Tests\Enums\PermissionEnum;
 use Yajra\Acl\Tests\TestCase;
 
 class PermissionTest extends TestCase
@@ -61,5 +62,77 @@ class PermissionTest extends TestCase
 
         $permission->syncRoles([1]);
         $this->assertCount(1, $permission->roles);
+    }
+
+    #[Test]
+    public function it_can_grant_permission_using_enum()
+    {
+        $user = $this->createUser();
+
+        // Create permissions that match our enum values
+        Permission::create([
+            'name' => 'Create Post',
+            'slug' => 'create-post',
+            'resource' => 'posts',
+        ]);
+
+        Permission::create([
+            'name' => 'Edit Post',
+            'slug' => 'edit-post',
+            'resource' => 'posts',
+        ]);
+
+        // Test granting permission using enum
+        $user->grantPermission(PermissionEnum::CREATE_POST);
+        $this->assertTrue($user->permissions->contains('slug', 'create-post'));
+
+        // Test granting another permission using enum
+        $user->grantPermission(PermissionEnum::EDIT_POST);
+        $this->assertTrue($user->permissions->contains('slug', 'edit-post'));
+
+        // Verify we have 2 permissions
+        $this->assertCount(2, $user->permissions);
+    }
+
+    #[Test]
+    public function it_can_grant_permission_using_string()
+    {
+        $user = $this->createUser();
+
+        // Create permission that matches string slug
+        Permission::create([
+            'name' => 'Delete Post',
+            'slug' => 'delete-post',
+            'resource' => 'posts',
+        ]);
+
+        // Test granting permission using string
+        $user->grantPermission('delete-post');
+        $this->assertTrue($user->permissions->contains('slug', 'delete-post'));
+
+        $this->assertCount(1, $user->permissions);
+    }
+
+    #[Test]
+    public function it_throws_exception_for_invalid_permission_enum()
+    {
+        $user = $this->createUser();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid permission type provided');
+
+        // Pass an invalid object type
+        $user->grantPermission(new \stdClass);
+    }
+
+    #[Test]
+    public function it_throws_exception_for_nonexistent_permission_slug()
+    {
+        $user = $this->createUser();
+
+        $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+
+        // Try to grant a permission that doesn't exist
+        $user->grantPermission('nonexistent-permission');
     }
 }

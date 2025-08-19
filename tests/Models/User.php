@@ -3,11 +3,11 @@
 namespace Yajra\Acl\Tests\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Yajra\Acl\Traits\HasRole;
+use Yajra\Acl\Traits\HasRoleAndPermission;
 
 class User extends Authenticatable
 {
-    use HasRole;
+    use HasRoleAndPermission;
 
     protected $guarded = [];
 }
