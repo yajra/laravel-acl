@@ -2,6 +2,11 @@
 
 ## UNRELEASED
 
+## v12.3.1 - 2025-08-19
+
+- fix: Target class [RoleDirective] does not exist #63
+- fix: #58
+
 ## v12.3.0 - 2025-08-19
 
 - feat: revoke permission via string and enum #62
