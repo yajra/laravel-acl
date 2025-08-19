@@ -135,4 +135,82 @@ class PermissionTest extends TestCase
         // Try to grant a permission that doesn't exist
         $user->grantPermission('nonexistent-permission');
     }
+
+    #[Test]
+    public function it_can_revoke_permission_using_enum()
+    {
+        $user = $this->createUser();
+
+        // Create permissions that match our enum values
+        $createPermission = Permission::create([
+            'name' => 'Create Post',
+            'slug' => 'create-post',
+            'resource' => 'posts',
+        ]);
+
+        $editPermission = Permission::create([
+            'name' => 'Edit Post',
+            'slug' => 'edit-post',
+            'resource' => 'posts',
+        ]);
+
+        // Grant permissions first
+        $user->grantPermission($createPermission);
+        $user->grantPermission($editPermission);
+        $this->assertCount(2, $user->permissions);
+
+        // Test revoking permission using enum
+        $user->revokePermission(PermissionEnum::CREATE_POST);
+        $this->assertFalse($user->permissions->contains('slug', 'create-post'));
+        $this->assertTrue($user->permissions->contains('slug', 'edit-post'));
+
+        // Verify we now have 1 permission
+        $this->assertCount(1, $user->permissions);
+    }
+
+    #[Test]
+    public function it_can_revoke_permission_using_string()
+    {
+        $user = $this->createUser();
+
+        // Create permission that matches string slug
+        $deletePermission = Permission::create([
+            'name' => 'Delete Post',
+            'slug' => 'delete-post',
+            'resource' => 'posts',
+        ]);
+
+        // Grant permission first
+        $user->grantPermission($deletePermission);
+        $this->assertTrue($user->permissions->contains('slug', 'delete-post'));
+
+        // Test revoking permission using string
+        $user->revokePermission('delete-post');
+        $this->assertFalse($user->permissions->contains('slug', 'delete-post'));
+
+        $this->assertCount(0, $user->permissions);
+    }
+
+    #[Test]
+    public function it_throws_exception_for_invalid_permission_enum_on_revoke()
+    {
+        $user = $this->createUser();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid permission type provided');
+
+        // Pass an invalid object type
+        $user->revokePermission(new \stdClass);
+    }
+
+    #[Test]
+    public function it_throws_exception_for_nonexistent_permission_slug_on_revoke()
+    {
+        $user = $this->createUser();
+
+        $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+
+        // Try to revoke a permission that doesn't exist
+        $user->revokePermission('nonexistent-permission');
+    }
 }

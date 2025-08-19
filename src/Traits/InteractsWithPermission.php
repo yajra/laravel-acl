@@ -120,10 +120,20 @@ trait InteractsWithPermission
 
     /**
      * Revokes the given permission.
+     *
+     * @param  mixed  $permission  Permission model instance, permission slug (string), or enum that can be cast to string
      */
-    public function revokePermission(mixed $ids = null, bool $touch = true): int
+    public function revokePermission(mixed $permission = null, bool $touch = true): int
     {
-        $detached = $this->permissions()->detach($ids, $touch);
+        // If permission is a string or enum, find the permission by slug
+        if (is_string($permission)) {
+            $permission = $this->findPermissionBySlug($permission);
+        } elseif (is_object($permission) && ! ($permission instanceof Model)) {
+            $permissionSlug = $this->resolvePermissionSlug($permission);
+            $permission = $this->findPermissionBySlug($permissionSlug);
+        }
+
+        $detached = $this->permissions()->detach($permission, $touch);
 
         $this->load('permissions');
 
