@@ -2,6 +2,12 @@
 
 ## UNRELEASED
 
+## v12.3.0 - 2025-08-19
+
+- feat: revoke permission via string and enum #62
+- feat: revoke role via string and enum
+- feat: havingRoles scope with string and enum
+
 ## v12.2.0 - 2025-08-19
 
 - feat: allow string and enum to grant permission #61
