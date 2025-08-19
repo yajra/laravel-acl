@@ -216,4 +216,127 @@ class RoleTest extends TestCase
         // Try to revoke a role that doesn't exist
         $user->revokeRole('nonexistent-role');
     }
+
+    #[Test]
+    public function it_can_query_users_having_roles_with_mixed_types()
+    {
+        // Create test roles
+        $adminRole = $this->createRole('test-admin');
+        $managerRole = $this->createRole('test-manager');
+        $moderatorRole = $this->createRole('moderator');
+        $guestRole = $this->createRole('guest');
+
+        // Create test users with different roles
+        $user1 = $this->createUser();
+        $user1->attachRole($adminRole);
+
+        $user2 = $this->createUser();
+        $user2->attachRole($managerRole);
+
+        $user3 = $this->createUser();
+        $user3->attachRole($moderatorRole);
+
+        $user4 = $this->createUser();
+        $user4->attachRole($guestRole);
+
+        $user5 = $this->createUser(); // No roles
+
+        // Test mixed array with role ID, string slug, enum, and model instance
+        $mixedRoles = [
+            $adminRole->id,              // Role ID (integer)
+            'test-manager',              // String slug
+            RoleEnum::MODERATOR,         // Enum
+            $guestRole,                   // Model instance
+        ];
+
+        $usersWithRoles = $user1::havingRoles($mixedRoles)->get();
+
+        // Should return users 1, 2, 3, and 4 (all except user5)
+        $this->assertCount(4, $usersWithRoles);
+
+        $userIds = $usersWithRoles->pluck('id')->toArray();
+        $this->assertContains($user1->id, $userIds);
+        $this->assertContains($user2->id, $userIds);
+        $this->assertContains($user3->id, $userIds);
+        $this->assertContains($user4->id, $userIds);
+        $this->assertNotContains($user5->id, $userIds);
+    }
+
+    #[Test]
+    public function it_can_query_users_having_roles_with_only_enums()
+    {
+        // Create test roles that match enum values
+        $adminRole = $this->createRole('test-admin');
+        $moderatorRole = $this->createRole('moderator');
+
+        // Create test users
+        $user1 = $this->createUser();
+        $user1->attachRole($adminRole);
+
+        $user2 = $this->createUser();
+        $user2->attachRole($moderatorRole);
+
+        $user3 = $this->createUser(); // No roles
+
+        // Test with only enum values
+        $enumRoles = [RoleEnum::TEST_ADMIN, RoleEnum::MODERATOR];
+
+        $usersWithRoles = $user1::havingRoles($enumRoles)->get();
+
+        // Should return users 1 and 2
+        $this->assertCount(2, $usersWithRoles);
+
+        $userIds = $usersWithRoles->pluck('id')->toArray();
+        $this->assertContains($user1->id, $userIds);
+        $this->assertContains($user2->id, $userIds);
+        $this->assertNotContains($user3->id, $userIds);
+    }
+
+    #[Test]
+    public function it_can_query_users_having_roles_with_only_strings()
+    {
+        // Create test roles with unique names
+        $editorRole = $this->createRole('editor');
+        $writerRole = $this->createRole('writer');
+
+        // Create test users
+        $user1 = $this->createUser();
+        $user1->attachRole($editorRole);
+
+        $user2 = $this->createUser();
+        $user2->attachRole($writerRole);
+
+        $user3 = $this->createUser(); // No roles
+
+        // Test with only string slugs
+        $stringRoles = ['editor', 'writer'];
+
+        $usersWithRoles = $user1::havingRoles($stringRoles)->get();
+
+        // Should return users 1 and 2
+        $this->assertCount(2, $usersWithRoles);
+
+        $userIds = $usersWithRoles->pluck('id')->toArray();
+        $this->assertContains($user1->id, $userIds);
+        $this->assertContains($user2->id, $userIds);
+        $this->assertNotContains($user3->id, $userIds);
+    }
+
+    #[Test]
+    public function it_returns_empty_result_when_no_users_have_specified_roles()
+    {
+        // Create users with different roles
+        $user1 = $this->createUser();
+        $user1->attachRole($this->createRole('editor'));
+
+        $user2 = $this->createUser();
+        $user2->attachRole($this->createRole('viewer'));
+
+        // Search for roles that don't exist on any user
+        $nonExistentRoles = ['super-admin', RoleEnum::TEST_ADMIN];
+
+        $usersWithRoles = $user1::havingRoles($nonExistentRoles)->get();
+
+        $this->assertCount(0, $usersWithRoles);
+    }
 }

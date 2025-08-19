@@ -122,16 +122,48 @@ trait InteractsWithRole
      * Query scope for user having the given roles.
      *
      * @param  \Illuminate\Database\Eloquent\Builder<\Yajra\Acl\Models\Permission>  $query
-     * @param  array<array-key, int>  $roles
+     * @param  array<array-key, mixed>  $roles  Array of role IDs, slugs, or enums
      * @return \Illuminate\Database\Eloquent\Builder<\Yajra\Acl\Models\Permission>
      */
     public function scopeHavingRoles(Builder $query, array $roles): Builder
     {
-        return $query->whereExists(function ($query) use ($roles) {
-            $query->selectRaw('1')
-                ->from('role_user')
-                ->whereRaw('role_user.user_id = users.id')
-                ->whereIn('role_id', $roles);
+        // Separate role IDs from slugs/enums
+        $roleIds = [];
+        $roleSlugs = [];
+
+        foreach ($roles as $role) {
+            if (is_int($role)) {
+                // It's a role ID
+                $roleIds[] = $role;
+            } elseif (is_string($role)) {
+                // It's a role slug
+                $roleSlugs[] = $role;
+            } elseif (is_object($role) && ! ($role instanceof Model)) {
+                // It's an enum, resolve to slug
+                $roleSlugs[] = $this->resolveRoleSlug($role);
+            } elseif ($role instanceof Model) {
+                // It's a role model, get the ID with proper type checking
+                $roleIds[] = $role->getKey();
+            }
+        }
+
+        return $query->where(function ($query) use ($roleIds, $roleSlugs) {
+            // Query by role IDs if we have any
+            if (! empty($roleIds)) {
+                $query->whereExists(function ($subQuery) use ($roleIds) {
+                    $subQuery->selectRaw('1')
+                        ->from('role_user')
+                        ->whereRaw('role_user.user_id = users.id')
+                        ->whereIn('role_id', $roleIds);
+                });
+            }
+
+            // Query by role slugs if we have any
+            if (! empty($roleSlugs)) {
+                $query->orWhereHas('roles', function ($subQuery) use ($roleSlugs) {
+                    $subQuery->whereIn('roles.slug', $roleSlugs);
+                });
+            }
         });
     }
 
