@@ -3,7 +3,7 @@
 namespace Yajra\Acl;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\View\Compilers\BladeCompiler;
+use Illuminate\Support\Facades\Blade;
 use Yajra\Acl\Directives\CanAtLeastDirective;
 use Yajra\Acl\Directives\RoleDirective;
 
@@ -38,13 +38,11 @@ class AclServiceProvider extends ServiceProvider
 
     protected function registerBladeDirectives(): void
     {
-        /** @var BladeCompiler $blade */
-        $blade = resolve('blade.compiler');
-        $blade->directive('canAtLeast', fn (string|array $expression) => "<?php if (app(CanAtLeastDirective::class)->handle({$expression})): ?>");
-        $blade->directive('endCanAtLeast', fn (string|array $expression) => '<?php endif; ?>');
+        Blade::directive('canAtLeast', fn (string|array $expression) => "<?php if (app('laravel-acl.directives.canAtLeast')->handle({$expression})): ?>");
+        Blade::directive('endCanAtLeast', fn (string|array $expression) => '<?php endif; ?>');
 
-        $blade->directive('role', fn ($expression) => "<?php if (app(RoleDirective::class)->handle({$expression})): ?>");
-        $blade->directive('endRole', fn ($expression) => '<?php endif; ?>');
+        Blade::directive('role', fn ($expression) => "<?php if (app('laravel-acl.directives.role')->handle({$expression})): ?>");
+        Blade::directive('endRole', fn ($expression) => '<?php endif; ?>');
     }
 
     public function register(): void
