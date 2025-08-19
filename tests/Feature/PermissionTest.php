@@ -122,7 +122,7 @@ class PermissionTest extends TestCase
         $this->expectExceptionMessage('Invalid permission type provided');
 
         // Pass an invalid object type
-        $user->grantPermission(new \stdClass());
+        $user->grantPermission(new \stdClass);
     }
 
     #[Test]
