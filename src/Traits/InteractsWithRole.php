@@ -74,6 +74,10 @@ trait InteractsWithRole
             $role = $this->findRoleBySlug($roleSlug);
         }
 
+        if ($this->roles->contains($role)) {
+            return;
+        }
+
         $this->roles()->attach($role, $attributes, $touch);
 
         $this->load('roles');
