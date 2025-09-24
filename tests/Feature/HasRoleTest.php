@@ -4,6 +4,7 @@ namespace Yajra\Acl\Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use PHPUnit\Framework\Attributes\Test;
 use Yajra\Acl\Models\Role;
@@ -302,5 +303,41 @@ class HasRoleTest extends TestCase
         $this->expectExceptionMessage('Invalid role type provided. Expected string or enum, got integer.');
 
         $user->hasRole(123);
+    }
+
+    #[Test]
+    public function it_handles_unique_role_user_combination()
+    {
+        $role = $this->createRole('UniqueRole');
+        $user = $this->createUser('UniqueUser');
+
+        // First attachment should succeed
+        $user->attachRole($role);
+        $this->assertCount(1, $user->roles);
+
+        // Second attachment of the same role should not be duplicated
+        $user->attachRole($role);
+        $this->assertCount(1, $user->roles->fresh());
+    }
+
+    #[Test]
+    public function it_throws_database_exceptions_when_inserting_duplicate_role_user()
+    {
+        $this->expectException(\Illuminate\Database\QueryException::class);
+
+        $role = $this->createRole('DuplicateRole');
+        $user = $this->createUser('DuplicateUser');
+
+        // Directly insert duplicate entries to trigger database exception
+        DB::table('role_user')->insert([
+            'role_id' => $role->id,
+            'user_id' => $user->id,
+        ]);
+
+        // This second insert should violate the unique constraint
+        DB::table('role_user')->insert([
+            'role_id' => $role->id,
+            'user_id' => $user->id,
+        ]);
     }
 }
