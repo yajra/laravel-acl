@@ -38,7 +38,7 @@ class GateRegistrar
     /**
      * Get all permissions.
      *
-     * @return \Illuminate\Support\Collection<array-key, Permission>
+     * @return Collection<array-key, Permission>
      */
     protected function getPermissions(): Collection
     {
@@ -57,7 +57,7 @@ class GateRegistrar
     }
 
     /**
-     * @return \Illuminate\Support\Collection<array-key, Permission>
+     * @return Collection<array-key, Permission>
      */
     public function getPermissionsFromQuery(): Collection
     {

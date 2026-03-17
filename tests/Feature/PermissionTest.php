@@ -2,6 +2,7 @@
 
 namespace Yajra\Acl\Tests\Feature;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use PHPUnit\Framework\Attributes\Test;
 use Yajra\Acl\Models\Permission;
@@ -130,7 +131,7 @@ class PermissionTest extends TestCase
     {
         $user = $this->createUser();
 
-        $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+        $this->expectException(ModelNotFoundException::class);
 
         // Try to grant a permission that doesn't exist
         $user->grantPermission('nonexistent-permission');
@@ -208,7 +209,7 @@ class PermissionTest extends TestCase
     {
         $user = $this->createUser();
 
-        $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+        $this->expectException(ModelNotFoundException::class);
 
         // Try to revoke a permission that doesn't exist
         $user->revokePermission('nonexistent-permission');

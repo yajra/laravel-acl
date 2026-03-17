@@ -4,11 +4,13 @@ namespace Yajra\Acl\Tests;
 
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Monolog\Handler\TestHandler;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Yajra\Acl\AclServiceProvider;
 use Yajra\Acl\GateRegistrar;
 use Yajra\Acl\Models\Permission;
 use Yajra\Acl\Models\Role;
@@ -107,17 +109,17 @@ abstract class TestCase extends BaseTestCase
     /**
      * Resolve application HTTP Kernel implementation.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      */
     protected function resolveApplicationHttpKernel($app): void
     {
-        $app->singleton(\Illuminate\Contracts\Http\Kernel::class, \Yajra\Acl\Tests\Http\Kernel::class);
+        $app->singleton(\Illuminate\Contracts\Http\Kernel::class, Http\Kernel::class);
     }
 
     /**
      * Set up the environment.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      */
     protected function getEnvironmentSetUp($app): void
     {
@@ -141,7 +143,7 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageProviders($app): array
     {
         return [
-            \Yajra\Acl\AclServiceProvider::class,
+            AclServiceProvider::class,
         ];
     }
 
