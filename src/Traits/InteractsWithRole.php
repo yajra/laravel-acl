@@ -4,8 +4,10 @@ namespace Yajra\Acl\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
+use Yajra\Acl\Models\Permission;
 use Yajra\Acl\Models\Role;
 
 /**
@@ -82,7 +84,7 @@ trait InteractsWithRole
     /**
      * Model can have many roles.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\Yajra\Acl\Models\Role, $this>
+     * @return BelongsToMany<Role, $this>
      */
     public function roles(): BelongsToMany
     {
@@ -96,7 +98,7 @@ trait InteractsWithRole
     /**
      * Find a role by slug.
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws ModelNotFoundException
      */
     protected function findRoleBySlug(string $slug): Model|static
     {
@@ -121,9 +123,9 @@ trait InteractsWithRole
     /**
      * Query scope for user having the given roles.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder<\Yajra\Acl\Models\Permission>  $query
+     * @param  Builder<Permission>  $query
      * @param  array<array-key, mixed>  $roles  Array of role IDs, slugs, or enums
-     * @return \Illuminate\Database\Eloquent\Builder<\Yajra\Acl\Models\Permission>
+     * @return Builder<Permission>
      */
     public function scopeHavingRoles(Builder $query, array $roles): Builder
     {
@@ -170,9 +172,9 @@ trait InteractsWithRole
     /**
      * Query scope for user having the given roles by slugs.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder<\Yajra\Acl\Models\Permission>  $query
+     * @param  Builder<Permission>  $query
      * @param  array<array-key, string>  $slugs
-     * @return \Illuminate\Database\Eloquent\Builder<\Yajra\Acl\Models\Permission>
+     * @return Builder<Permission>
      */
     public function scopeHavingRolesBySlugs(Builder $query, array $slugs): Builder
     {

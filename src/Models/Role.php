@@ -4,6 +4,7 @@ namespace Yajra\Acl\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Foundation\Auth\User;
 use Yajra\Acl\Traits\HasPermission;
 use Yajra\Acl\Traits\RefreshPermissionsCache;
 
@@ -41,11 +42,11 @@ class Role extends Model
     /**
      * Roles can belong to many users.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\Illuminate\Foundation\Auth\User, $this>
+     * @return BelongsToMany<User, $this>
      */
     public function users(): BelongsToMany
     {
-        /** @var class-string<\Illuminate\Foundation\Auth\User> $model */
+        /** @var class-string<User> $model */
         $model = config('acl.user', config('auth.providers.users.model'));
 
         return $this->belongsToMany($model)->withTimestamps();

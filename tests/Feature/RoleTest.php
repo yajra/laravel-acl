@@ -2,6 +2,7 @@
 
 namespace Yajra\Acl\Tests\Feature;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use PHPUnit\Framework\Attributes\Test;
 use Yajra\Acl\Models\Permission;
@@ -211,7 +212,7 @@ class RoleTest extends TestCase
     {
         $user = $this->createUser();
 
-        $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+        $this->expectException(ModelNotFoundException::class);
 
         // Try to revoke a role that doesn't exist
         $user->revokeRole('nonexistent-role');

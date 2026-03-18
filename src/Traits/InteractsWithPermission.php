@@ -3,6 +3,7 @@
 namespace Yajra\Acl\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use Yajra\Acl\Models\Permission;
@@ -10,7 +11,7 @@ use Yajra\Acl\Models\Permission;
 /**
  * @property \Illuminate\Database\Eloquent\Collection<array-key, Permission> $permissions
  *
- * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin Model
  */
 trait InteractsWithPermission
 {
@@ -74,7 +75,7 @@ trait InteractsWithPermission
     /**
      * Get related permissions.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\Yajra\Acl\Models\Permission, $this>
+     * @return BelongsToMany<Permission, $this>
      */
     public function permissions(): BelongsToMany
     {
@@ -199,7 +200,7 @@ trait InteractsWithPermission
     /**
      * Find a permission by slug.
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws ModelNotFoundException
      */
     protected function findPermissionBySlug(string $slug): Model|static
     {

@@ -2,6 +2,7 @@
 
 namespace Yajra\Acl\Tests\Feature;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Acl\Directives\CanAtLeastDirective;
 use Yajra\Acl\Directives\RoleDirective;
@@ -100,7 +101,7 @@ class BladeDirectiveServiceProviderTest extends TestCase
             // If we reach here without exception, the fix worked
             $this->assertInstanceOf(RoleDirective::class, $directive);
             $this->assertInstanceOf(CanAtLeastDirective::class, $canAtLeastDirective);
-        } catch (\Illuminate\Contracts\Container\BindingResolutionException $e) {
+        } catch (BindingResolutionException $e) {
             $this->fail('Service provider fix failed. Directives could not be resolved: '.$e->getMessage());
         }
     }

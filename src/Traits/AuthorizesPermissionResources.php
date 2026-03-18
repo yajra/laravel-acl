@@ -2,11 +2,12 @@
 
 namespace Yajra\Acl\Traits;
 
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
 
 /**
- * @mixin \Illuminate\Routing\Controller
+ * @mixin Controller
  */
 trait AuthorizesPermissionResources
 {

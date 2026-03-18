@@ -1,20 +1,24 @@
 <?php
 
+use App\Models\User;
+use Yajra\Acl\Models\Permission;
+use Yajra\Acl\Models\Role;
+
 return [
     /**
      * User class used for ACL.
      */
-    'user' => App\Models\User::class,
+    'user' => User::class,
 
     /**
      * Role class used for ACL.
      */
-    'role' => Yajra\Acl\Models\Role::class,
+    'role' => Role::class,
 
     /**
      * Permission class used for ACL.
      */
-    'permission' => Yajra\Acl\Models\Permission::class,
+    'permission' => Permission::class,
 
     /**
      * Cache config.

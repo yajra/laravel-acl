@@ -5,6 +5,7 @@ namespace Yajra\Acl\Models;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Yajra\Acl\Traits\InteractsWithRole;
@@ -44,7 +45,7 @@ class Permission extends Model
     /**
      * Create a permissions for a resource.
      *
-     * @return \Illuminate\Support\Collection<array-key, \Yajra\Acl\Models\Permission>
+     * @return Collection<array-key, Permission>
      */
     public static function createResource(string $resource, bool $system = false): Collection
     {
@@ -98,11 +99,11 @@ class Permission extends Model
     /**
      * Permission can belong to many users.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\Illuminate\Foundation\Auth\User, $this>
+     * @return BelongsToMany<User, $this>
      */
     public function users(): BelongsToMany
     {
-        /** @var class-string<\Illuminate\Foundation\Auth\User> $model */
+        /** @var class-string<User> $model */
         $model = config('acl.user', config('auth.providers.users.model'));
 
         return $this->belongsToMany($model)->withTimestamps();
