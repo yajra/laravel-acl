@@ -188,7 +188,7 @@ trait InteractsWithPermission
     /**
      * Get list of permissions slug.
      *
-     * @return array<array-key, mixed>
+     * @return array<array-key, string>
      */
     public function getPermissions(): array
     {
