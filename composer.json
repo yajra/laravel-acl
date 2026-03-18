@@ -20,14 +20,15 @@
         }
     ],
     "require": {
-        "illuminate/support": "^12.0",
-        "illuminate/database": "^12.0"
+        "php": "^8.3",
+        "illuminate/support": "^13.0",
+        "illuminate/database": "^13.0"
     },
     "require-dev": {
         "larastan/larastan": "^3.1",
         "laravel/pint": "^1.21.0",
         "rector/rector": "^2.0.9",
-        "orchestra/testbench": "^10"
+        "orchestra/testbench": "^11.0"
     },
     "autoload": {
         "psr-4": {
@@ -41,7 +42,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "12.x-dev"
+            "dev-master": "13.x-dev"
         },
         "laravel": {
             "providers": [

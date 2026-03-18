@@ -2,6 +2,10 @@
 
 ## UNRELEASED
 
+## v13.0.0 - 2026-03-18
+
+- Laravel 13 support
+
 ## v12.3.1 - 2025-08-19
 
 - fix: Target class [RoleDirective] does not exist #63
