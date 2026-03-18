@@ -56,7 +56,7 @@ trait HasRole
             $permissions[] = $role->getPermissions();
         }
 
-        return call_user_func_array('array_merge', $permissions);
+        return call_user_func_array(array_merge(...), $permissions);
     }
 
     /**
