@@ -27,6 +27,8 @@ trait InteractsWithRole
      * Check if the user has the given role.
      *
      * @param  mixed  $role  Role slug (string), array of slugs, or enum
+     *
+     * @phpstan-param string|array<int|string, string>|\BackedEnum|\UnitEnum $role
      */
     public function hasRole(mixed $role): bool
     {
@@ -45,7 +47,7 @@ trait InteractsWithRole
     /**
      * Get all user roles.
      *
-     * @return array<array-key, mixed>
+     * @return array<array-key, string>
      */
     public function getRoleSlugs(): array
     {

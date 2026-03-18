@@ -9,28 +9,30 @@ trait RefreshPermissionsCache
 {
     public static function bootRefreshPermissionsCache(): void
     {
-        static::saved(function () {
-            if (auth()->check() && auth()->user() instanceof Model) {
-                auth()->user()->load('roles');
-            }
+        static::whenBooted(function () {
+            static::saved(function () {
+                if (auth()->check() && auth()->user() instanceof Model) {
+                    auth()->user()->load('roles');
+                }
 
-            /** @var string $key */
-            $key = config('acl.cache.key', 'permissions.policies');
+                /** @var string $key */
+                $key = config('acl.cache.key', 'permissions.policies');
 
-            app('cache.store')->forget($key);
-            app(GateRegistrar::class)->register();
-        });
+                app('cache.store')->forget($key);
+                app(GateRegistrar::class)->register();
+            });
 
-        static::deleted(function () {
-            if (auth()->check() && auth()->user() instanceof Model) {
-                auth()->user()->load('roles');
-            }
+            static::deleted(function () {
+                if (auth()->check() && auth()->user() instanceof Model) {
+                    auth()->user()->load('roles');
+                }
 
-            /** @var string $key */
-            $key = config('acl.cache.key', 'permissions.policies');
+                /** @var string $key */
+                $key = config('acl.cache.key', 'permissions.policies');
 
-            app('cache.store')->forget($key);
-            app(GateRegistrar::class)->register();
+                app('cache.store')->forget($key);
+                app(GateRegistrar::class)->register();
+            });
         });
     }
 }
