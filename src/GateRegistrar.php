@@ -46,14 +46,43 @@ class GateRegistrar
         $key = config('acl.cache.key', 'permissions.policies');
 
         try {
-            return config('acl.cache.enabled', true)
-                ? $this->cache->rememberForever($key, fn () => $this->getPermissionsFromQuery())
-                : $this->getPermissionsFromQuery();
+            if (! config('acl.cache.enabled', true)) {
+                return $this->getPermissionsFromQuery();
+            }
+
+            $payload = $this->cache->rememberForever(
+                $key,
+                fn () => $this->permissionsToCachePayload($this->getPermissionsFromQuery())
+            );
+
+            return $this->hydratePermissionsFromCache($payload);
         } catch (\Throwable) {
             $this->cache->forget($key);
 
             return collect();
         }
+    }
+
+    /**
+     * Plain arrays for cache storage (Laravel may forbid unserializing arbitrary PHP classes).
+     *
+     * @param  Collection<int, Permission>  $permissions
+     * @return array<int, array<string, mixed>>
+     */
+    protected function permissionsToCachePayload(Collection $permissions): array
+    {
+        return $permissions->map(fn (Permission $permission) => $permission->getAttributes())->all();
+    }
+
+    /**
+     * @param  array<int, array<string, mixed>>  $rows
+     * @return Collection<int, Permission>
+     */
+    protected function hydratePermissionsFromCache(array $rows): Collection
+    {
+        $model = $this->getPermissionClass();
+
+        return collect($rows)->map(fn (array $attributes) => $model->newFromBuilder($attributes));
     }
 
     /**
